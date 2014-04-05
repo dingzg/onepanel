@@ -12,7 +12,7 @@ with POSIX (Linux, UNIX, MacOSX and the BSD's).
 
 More details please refer [Core Team](http://codex.onepanel.org/Core_Team)
 
-##Downloading onePanel
+##Downloading OnePanel
 
 To download onePanel please use the links found on [our download page](http://onepanel.org/download/).
 
