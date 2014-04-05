@@ -14,7 +14,7 @@ More details please refer [Core Team](http://codex.onepanel.org/Core_Team)
 
 ##Downloading OnePanel
 
-To download onePanel please use the links found on [our download page](http://onepanel.org/download/).
+To download OnePanel please use the links found on [our download page](http://onepanel.org/download/).
 
 ##License agreement
 
