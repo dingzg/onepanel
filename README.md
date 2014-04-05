@@ -7,7 +7,7 @@
 
 ##Description
 
-onePanel is an open-source, enterprise class web hosting control panel written in Python and is compatible
+OnePanel is an open-source, enterprise class web hosting control panel written in Python and is compatible
 with POSIX (Linux, UNIX, MacOSX and the BSD's).
 
 More details please refer [Core Team](http://codex.onepanel.org/Core_Team)
