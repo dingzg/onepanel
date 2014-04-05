@@ -18,7 +18,7 @@ To download onePanel please use the links found on [our download page](http://on
 
 ##License agreement
 
-onePanel is licensed under the GNU GENERAL PUBLIC LICENSE (GPL v3) you can view a copy of this license either by opening the LICENSE file in the root of this folder or by visiting:- http://www.gnu.org/copyleft/gpl.html
+onePanel is licensed under the Apache LICENSE (Version 2.0) you can view a copy of this license either by opening the LICENSE file in the root of this folder or by visiting:- http://www.apache.org/licenses/
 
 ##Getting support
 
