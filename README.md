@@ -25,5 +25,5 @@ OnePanel is licensed under the Apache LICENSE (Version 2.0) you can view a copy 
 We provide excellent free [support](http://forum.onepanel.org/) and [documentation](http://codex.onepanel.org/) at our website.
 
 ##Copyright
-Copyright (C) 2014-2014 Ding ZhiGang, Chen DengYue and Chen Xiang
-GNU General Public License version 3 or any later version
+Copyright (C) 2014-2014 OnePanel
+Apache LICENSE (Version 2.0) version 3 or any later version
