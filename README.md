@@ -26,4 +26,4 @@ We provide excellent free [support](http://forum.onepanel.org/) and [documentati
 
 ##Copyright
 Copyright (C) 2014-2014 OnePanel
-Apache LICENSE (Version 2.0) version 3 or any later version.
+Apache license version 2.0 or any later version.
