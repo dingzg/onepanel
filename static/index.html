@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" ng-app="vpsmate">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" href="css/login.css" type="text/css"/>
+<script src="lib/jquery/jquery-1.8.2.min.js"></script>
+<script src="lib/md5/md5.min.js"></script>
+<title>OnePanel Login</title>
+
+</head>
+<body>
+<script> 
+	<!--
+	// Login
+	function userLogin(){
+	
+		document.getElementById("errMsg").innerHTML = "";
+		
+		var userName = document.getElementById("userName").value;
+		if(userName == null || userName==""){
+			document.getElementById("errMsg").innerHTML = "Please input the User Name and Password.";
+			return;
+		}
+	
+		var password = document.getElementById("password").value;
+
+		$.ajax({
+			url:'/xsrf',
+			type:"get",
+			async:false,
+			success:function(data){
+				//alert("xsrf ok!");
+				
+				$.postJSON('/login',
+				{username:userName,password: password},
+				function(data){
+				if (data.code >= 0) {
+					location.href='../static/main.html';
+					// TODO
+					//location.href='../static/partials/command_shell.html';
+				} else {
+					alert("login fail!");
+				}
+			});
+			}
+		});
+	}
+	
+	function getCookie(name) {
+	    var r = document.cookie.match("\\b" + name + "=([^;]*)\\b");
+	    return r ? r[1] : undefined;
+	}
+
+	jQuery.postJSON = function(url, args, callback) {
+	    args._xsrf = getCookie("XSRF-TOKEN");
+	   // alert(getCookie("XSRF-TOKEN"));
+	    $.ajax({url: url, data: $.param(args), type: "POST",
+	        success: function(response) {
+	        callback(response);
+	    }});
+	};
+
+
+	// clear data
+	function dataClear(){
+		document.getElementById("errMsg").innerHTML="";
+		document.getElementById("userName").value="";
+		document.getElementById("password").value="";
+	}
+	
+
+	//-->
+</script> 
+<div class="login_box">
+<form name="loginForm" onsubmit="return false;">
+<div>
+<input type="hidden" id="_xsrf" name="_xsrf">
+	<div><div class="login_pic"></div> </div> 
+	<div>
+		<p><span id="errMsg" class="errMsg"></span><p>
+	</div>
+	<div>
+	<p><span class="input_label">User Name:</span>
+	<input class="input" type="text" name="userName" id="userName" placeholder="Username"/>
+	</p></div>
+    <div>
+    <p><span class="input_label">Password:</span>
+    <input class="input" type="password" name="password" id="password" placeholder="Password"/></p>
+    </div>
+    <div>
+    
+    <p><input type="button" name="button" class="button" value="Login" onclick="userLogin();"/>
+    <input type="button" name="clear" class="button" value="Clear" onclick="dataClear();"/></p>
+    </div>
+</div>
+</form>
+</div>
+</body>
+</html>
