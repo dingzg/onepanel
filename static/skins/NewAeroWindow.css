@@ -1,0 +1,628 @@
+/* CSS Document */
+html{
+	margin: 0px;
+	padding: 0px;
+	height:100%;
+}
+body {
+	background: url(../images/win88.jpg) no-repeat fixed;
+	background-position:center;
+	font-family: arial;
+	overflow: hidden;
+	height:100%;
+	width:100%;
+	margin:0px;
+	background-attachment:fixed;/*必要，防抖动*/
+}
+/*------------------------------------------
+	AeroWindow Style
+  ------------------------------------------*/
+.AeroWindow {
+	position: absolute;
+	background: url(../images/WinAeroStyle/inactive/lines.png) 0px -100px;
+	overflow: hidden;
+	display: block;
+	left: -6px;
+	top: -3px;
+	/*-moz-border-radius: 15px;
+	border-radius: 15px;  
+	border-radius: 15px;  */
+}
+
+.AeroWindow .tb-tl {
+	background-image: url(../images/WinAeroStyle/inactive/tl.png);
+	min-width: 9px;
+  	height: 9px;
+}
+.AeroWindow .tb-tm {
+	background-image: url(../images/WinAeroStyle/inactive/tm.png);
+}
+.AeroWindow .tb-tr {
+	background-image: url(../images/WinAeroStyle/inactive/tr.png);
+	height: 9px;
+	width: 9px;
+}
+.AeroWindow .tb-lm {
+	background-image: url(../images/WinAeroStyle/inactive/lm.png);
+}
+.AeroWindow .tb-bl {
+	background-image: url(../images/WinAeroStyle/inactive/bl.png);
+	height: 9px;
+	width: 9px;
+}
+.AeroWindow .tb-rm { background-image: url(../images/WinAeroStyle/inactive/rm.png); }
+.AeroWindow .tb-br {
+	background-image: url(../images/WinAeroStyle/inactive/br.png);
+	height: 9px;
+	width: 9px;
+}
+.AeroWindow .tb-bm {
+	background-image: url(../images/WinAeroStyle/inactive/bm.png);
+}
+.AeroWindow .tb-mm { background-image: url(../images/WinAeroStyle/inactive/mm.png);
+ }
+
+/*************************************************
+	AeroWindow Style active
+ *************************************************/
+ 
+ .AeroWindow.active .tb-tl {
+	background-image: url(../images/WinAeroStyle/active/tl.png);
+}
+.AeroWindow.active .tb-tm {
+	background-image: url(../images/WinAeroStyle/active/tm.png);
+}
+.AeroWindow.active .tb-tr {
+	background-image: url(../images/WinAeroStyle/active/tr.png);
+}
+.AeroWindow.active .tb-lm {
+	background-image: url(../images/WinAeroStyle/active/lm.png);
+}
+.AeroWindow.active .tb-bl {
+	background-image: url(../images/WinAeroStyle/active/bl.png);
+}
+.AeroWindow.active .tb-rm { background-image: url(../images/WinAeroStyle/active/rm.png); }
+.AeroWindow.active .tb-br {
+	background-image: url(../images/WinAeroStyle/active/br.png);
+}
+.AeroWindow.active .tb-bm {
+	background-image: url(../images/WinAeroStyle/active/bm.png);
+}
+.AeroWindow.active .tb-mm { background-image: url(../images/WinAeroStyle/active/mm.png);
+ }
+
+/*---------------------------------------------------
+	AeroWindow Buttons Regular Window
+-----------------------------------------------------*/
+.winBtns {
+	position: relative;
+	top: -6px;
+	float:right;
+	margin:0px;
+	padding:0px;
+}
+.AeroWindow .winBtns .winbtn-spread{
+	width: 24px;
+  	height: 24px;
+	background-image: url(../images/WinAeroStyle/winbtns/btn_down.png);
+	display:block;
+	margin:0 10px 0 100px;
+	float:left;
+}
+.AeroWindow .winBtns .winbtn-leftadge { 
+	background-image: url(../images/WinAeroStyle/winbtns/left.png); 
+	width: 2px;
+    height: 19px;
+    float: left;
+}
+.AeroWindow .winBtns .win-minbtn {
+	width: 27px;
+  	height: 19px;
+	background-image: url(../images/WinAeroStyle/winbtns/btn-min.png);
+	display:block;
+	float:left;
+}
+.AeroWindow .winBtns .winbtn-spacer {
+	background-image: url(../images/WinAeroStyle/winbtns/spacer.png);
+	float: left;
+	height: 19px;
+	width: 1px;
+}
+.AeroWindow .winBtns .win-maxbtn {
+	background-image: url(../images/WinAeroStyle/winbtns/btn-max.png);
+	float: left;
+	height: 19px;
+	width: 26px;
+	display:block;
+}
+.AeroWindow .winBtns .win-regbtn {
+  width: 26px;
+  height: 19px;
+  display: block;
+  float: left;
+  background: url(../images/WinAeroStyle/winbtns/btn-reg.png);
+}  
+.AeroWindow .winBtns .win-closebtn {
+	background: url(../images/WinAeroStyle/winbtns/btn-close.png);
+	float: left;
+	height: 19px;
+	width: 46px;
+	display:block;
+}
+.AeroWindow .winBtns .winbtn-rightedge {
+	background-image: url(../images/WinAeroStyle/winbtns/right.png);
+	float: left;
+	height: 19px;
+	width: 1px;
+}
+
+/*****************************************************
+	AeroWindow Buttons Active
+ *****************************************************/
+.AeroWindow.active .winBtns .win-minbtn {
+	background: url(../images/WinAeroStyle/winbtns/btn-min.png) 0px -38px;}
+.AeroWindow.active .winBtns .win-maxbtn {
+	background: url(../images/WinAeroStyle/winbtns/btn-max.png) 0px -38px;}
+.AeroWindow.active .winBtns .win-regbtn {
+  	background: url(../images/WinAeroStyle/winbtns/btn-reg.png) 0px -38px;}
+.AeroWindow.active .winBtns .win-closebtn {
+	background: url(../images/WinAeroStyle/winbtns/btn-close.png) 0px -38px;}
+
+/*****************************************************
+	AeroWindow Title
+ *****************************************************/
+.AeroWindow .winTitle {
+  text-shadow: #fff 0px 0px 4px; 
+  color: #333;
+  font-family: arial;
+  font-size: 14px;
+  margin:0px;
+  padding:0px 0 5px 5px;
+  cursor: default;
+  height:30px;
+  position:absolute;
+  top:0px;
+}
+.AeroWindow .winTitle img {
+	border:0px;
+	width:22px;
+	height:22px;
+	margin:0px;
+	padding:0 5px 0 0px;
+}
+.AeroWindow .winTitle span {
+	text-align:center;
+	line-height:40px;
+	position:relative;
+	margin:0px;
+}
+
+/*****************************************************
+	AeroWindow Containter
+ *****************************************************/
+.AeroWindow .tb-mm-container {
+  border: 0px solid #b0c6e4;
+}
+.AeroWindow .tb-mm-content {
+  font-family: arial;
+  padding: 0px;
+  border: 1px solid #999;
+  border-radius: 3px 3px 3px 3px;
+  -moz-border-radius: 3px 3px 3px 3px; 
+  overflow: auto;
+  background: #fff;
+ 
+}
+.AeroWindow .tb-mm-content.loading {
+  background: #fff url(../images/loading.gif) center center no-repeat!important;
+} 
+.AeroWindow .tb-mm-dialogs {
+  font-family: arial;
+  padding: 0px;
+  border-radius: 3px 3px 3px 3px;
+  -moz-border-radius: 3px 3px 3px 3px; 
+  overflow:auto;
+} 
+
+/*******************************************************
+	Taskbar Menu
+ ******************************************************/
+#AeroTaskbar.tskbg-hori {
+  background: url(../images/Taskbar/TaskBar-bg-hori.png) repeat-x;
+  /*display: none;*/ 
+  width: 100%;
+  height: 40px;
+  position: fixed;
+  z-index: 10000;
+}
+#AeroTaskbar.horiTop{
+  bottom: auto;
+  top:0px;
+  background-position:left bottom;
+}
+#AeroTaskbar.horiBottom{
+  bottom: 0px;
+  top:auto;
+  background-position:left top;
+  _top:expression(eval(document.documentElement.scrollTop+document.documentElement.clientHeight-this.offsetHeight-(parseInt(this.currentStyle.marginTop,10)||0)-(parseInt(this.currentStyle.marginBottom,10)||0)));
+}
+
+#AeroTaskbar.tskbg-vert {
+  background: url(../images/Taskbar/TaskBar-bg-vert.png) repeat-y; 
+  /*display: none;*/
+  height: 100%;
+  width: 44px;
+  position:fixed;
+  z-index: 10000;
+}
+#AeroTaskbar.vertLeft{
+  right: auto;
+  left:0px;
+  float:left;
+  background-position:right top;
+}
+#AeroTaskbar.vertRight{
+  right: 0px;
+  left:auto;
+  float:right;
+  background-position:left top;
+}
+
+#TaskbarSeparate{ 
+	background: url(../images/Taskbar/TaskbarSeparate.png);
+	height: 39px;
+	width: 10px;
+	float: left;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+#AeroTaskbar #TaskbarShowDesktop {
+  background: url(../images/Taskbar/TaskbarShowDesktopItem.png);
+  height: 39px;
+  width: 14px;
+  float: right;
+  margin-right:2px;
+}
+#AeroTaskbar #TaskbarShowDesktop.hover {
+  background-position: 0px -39px;
+}
+
+#AeroTaskbar .Taskbar-Item {
+  background: url(../images/Taskbar/TaskbarItem.png);
+  height: 39px;
+  width: 60px;
+  float: left;
+  margin-right: 2px;
+}
+#AeroTaskbar .Taskbar-Item.hover {
+  background: url(../images/taskbar/TaskbarItemHover.png);
+}
+#AeroTaskbar .Taskbar-Item.active {
+  background: url(../images/taskbar/TaskbarItemActive.png);
+}
+#AeroTaskbar .Taskbar-Item:hover {
+  background: url(../images/Taskbar/TaskbarItemActiveHover.png);
+}
+#AeroTaskbar .Taskbar-Item img{
+  height: 32px;
+  width: 32px;
+  position: relative;
+  top: 4px;
+  left: 14px;
+}
+
+/*********************************************************
+	StartMenu Button
+ *********************************************************/
+ /*#NavItems { background: url(../images/Startmenu/StartMenuBG.png) no-repeat; }*/
+#StartMenu-Btn {
+	background: url(../images/Taskbar/StartBtnIcon.png) 0 -7px no-repeat;
+	width:46px;
+	height:39px;
+	float:left;
+	padding-left:10px;
+}
+#StartMenu-Btn.hover {
+  background-position: 0px -61px;
+}
+#StartMenu-Btn.active {
+  background-position: 0px -115px;
+}
+
+/*********************************************************
+	StartMenu Item
+ *********************************************************/
+ #Start-Menu {
+  height: 500px;
+  position: fixed;
+  z-index: 10000;
+  bottom: 40px; display:none;
+  /*visibility: hidden;*/
+  /*background: url(images/Startmenu/StartMenuBG.png) no-repeat; */
+}
+#Start-Menu span{
+	position:relative;
+	line-height: 36px;
+	height: 36px;
+	margin: 0px;
+	width: 150px;
+	font-family: arial;
+	font-size: 12px;
+}
+
+#Start-Menu.Start-position{
+	bottom: 40px;
+	top:auto;
+}
+
+#Start-Menu .sm-tl{
+	width:9px;
+	height:9px;
+	background:url(../images/WinAeroStyle/inactive/tl.png);
+}
+#Start-Menu .sm-tm{
+	width:9px;
+	height:9px;
+	background:url(../images/WinAeroStyle/inactive/tm.png);
+}
+#Start-Menu .sm-tr{
+	width:9px;
+	height:9px;
+	background:url(../images/WinAeroStyle/inactive/tr.png);
+}
+
+#Start-Menu .sm-lm{
+	width:9px;
+	height:9px;
+	background:url(../images/WinAeroStyle/inactive/lm.png);
+}
+#Start-Menu .sm-rm{
+	width:9px;
+	height:9px;
+	background:url(../images/WinAeroStyle/inactive/rm.png);
+}
+#Start-Menu .sm-bl{
+	width:9px;
+	height:9px;
+	background:url(../images/WinAeroStyle/inactive/bl.png);
+}
+#Start-Menu .sm-br{
+	width:9px;
+	height:9px;
+	background:url(../images/WinAeroStyle/inactive/br.png);
+}
+#Start-Menu .sm-bm{
+	width:9px;
+	height:9px;
+	background:url(../images/WinAeroStyle/inactive/bm.png);
+}
+#Start-Menu .sm-bg{
+	/*background:url(images/bg.jpg) center;*/
+}
+#Start-Menu #StartMContaiter{
+	height: 488px;
+	background:url(../images/WinAeroStyle/inactive/200791.png) center;
+	border-radius:5px 5px 5px 5px;
+}
+
+#Start-Menu .NavItems{
+	list-style:none;
+	padding:5px 0 5px 0;
+	margin:0pxx;;
+	border-radius:5px 5px 5px 5px;
+}
+#Start-Menu #NavItemsLeft {
+	margin:0px;
+height: 478px;
+background:url(../images/WinAeroStyle/inactive/smbg.png) top left;
+/*background-color:#FFF;
+opacity:0.7;
+filter:alpha(opacity=70);*/
+}
+#Start-Menu #NavItemsLeft li {
+  cursor: default;
+  height: 36px;
+  width: 200px;
+  margin:0 5px 0 5px;
+}
+#Start-Menu #NavItemsLeft li span{	padding-left: 40px;display: block;}
+
+#Start-Menu #NavItemsLeft li:hover {
+  background: url(../images/Startmenu/StartmenuItemBG.gif) no-repeat; 
+}
+
+#Start-Menu #NavItemsCenter{
+	margin-left:10px;
+}
+#Start-Menu #NavItemsCenter li{
+  cursor: default;
+  height: 36px;
+  width: 160px;
+  padding:0px;
+  margin:0 5px 0 5px;
+}
+#Start-Menu #NavItemsCenter li a{
+  text-align:center;
+  text-decoration:none;
+}
+
+#Start-Menu #NavItemsCenter li img{
+	height:30px;
+	width:30px;
+	border:0px;
+	padding:0 5px 0 4px;
+}
+#Start-Menu #NavItemsCenter li:hover {
+  background: url(../images/Startmenu/StartmenuItemBG.gif) no-repeat; 
+}
+/*#Start-Menu {
+  height: 519px;
+  width: 415px;
+  position: fixed;
+  z-index: 10000;
+  background: url(../images/Startmenu/StartMenuBG.png) no-repeat; 
+
+}
+#Start-Menu.Start-Bottom{
+	bottom: 40px;
+}
+#Start-Menu #NavItems {
+  bottom: 60px;
+  margin-left: 12px;
+  list-style: none;
+  position:absolute;
+}
+#Start-Menu #NavItems li {
+  cursor: default;
+  height: 36px;
+  width: 246px;
+}
+#Start-Menu #NavItems li:hover {
+  background: url(../images/Startmenu/StartmenuItemBG.gif) no-repeat; 
+}
+#Start-Menu #NavItems span {
+  padding-left: 40px;
+  line-height: 36px;
+  height: 36px;
+  margin: 0px;
+  display: block;
+  width: 246px;
+  font-family: arial;
+  font-size: 12px;
+}*/
+
+#StartMItem_RestoreMinWin span, #StartMItem_RestoreMinWinDelay span {
+  background: url(../images/Startmenu/restoreWindows.png) no-repeat 2px 2px; 
+}
+#StartMItem_SortOverlapping span {
+  background: url(../images/Startmenu/WindowOverlap.png) no-repeat 2px 2px; 
+}
+#StartMItem_SortGrid span {
+  background: url(../images/Startmenu/WindowGrid.png) no-repeat 2px 2px; 
+}
+#StartMItem_MinOpenWindows span, #StartMItem_MinOpenWinDelay span {
+  background: url(../images/Startmenu/minimizeWindows.png) no-repeat 2px 2px; 
+}
+#StartMItem_CreateNewWindow span, #StartMItem_CreateNewWindowAndIcon span {
+  background: url(../images/Startmenu/newWindow.png) no-repeat 2px 2px; 
+}
+
+
+/*************************************************
+  Desktop Icons Containers
+ ************************************************/
+ 
+#DesktopIcons {
+  width: 300px;
+}
+#DesktopIcons .DesktopIconContainer {
+  width: 114px;
+  font-family: arial;
+  font-size: 12px;
+  float: left;
+  margin-right:  10px;
+  margin-bottom: 10px;
+}
+
+#DesktopIcons .DesktopIconContainer p {
+  font-family: arial;
+  font-size: 12px;
+  margin:0;
+  padding:2px;
+}
+
+#DesktopIcons .DesktopIconContainer table {
+  width: 100%;
+  margin: 0px;
+}
+
+#DesktopIcons .DesktopIconContainer .bg-top {
+  height: 3px;
+}
+#DesktopIcons .DesktopIconContainer .bg-middle {
+  text-align: center;
+}
+#DesktopIcons .DesktopIconContainer .bg-bg {
+  text-align: center;
+  text-shadow: #fff 0px 0px 5px; 
+  cursor: default;
+  padding: 0px 2px 2px 2px;
+}
+#DesktopIcons .DesktopIconContainer .bg-bottom {
+  height: 3px;
+}
+
+#DesktopIcons .DesktopIconContainer.mouseover .bg-top {
+  background: url(../images/DesktopIconContainer/DIBgMouseout_top.png) no-repeat; 
+}
+#DesktopIcons .DesktopIconContainer.mouseover .bg-middle {
+  background: url(../images/DesktopIconContainer/DIBgMouseover_middle.png) no-repeat; 
+}
+#DesktopIcons .DesktopIconContainer.mouseover .bg-bg {
+  background: url(../images/DesktopIconContainer/DIBgMouseover_bg.png) repeat-y; 
+}
+#DesktopIcons .DesktopIconContainer.mouseover .bg-bottom {
+  background: url(../images/DesktopIconContainer/DIBgMouseover_bottom.png) no-repeat; 
+}
+
+
+#DesktopIcons .DesktopIconContainer.mouseclicked .bg-top {
+  background: url(../images/DesktopIconContainer/DIBgClicked_top.png) no-repeat; 
+}
+#DesktopIcons .DesktopIconContainer.mouseclicked .bg-middle {
+  background: url(../images/DesktopIconContainer/DIBgClicked_middle.png) no-repeat; 
+}
+#DesktopIcons .DesktopIconContainer.mouseclicked .bg-bg {
+  background: url(../images/DesktopIconContainer/DIBgClicked_bg.png) repeat-y; 
+}
+#DesktopIcons .DesktopIconContainer.mouseclicked .bg-bottom {
+  background: url(../images/DesktopIconContainer/DIBgClicked_bottom.png) no-repeat; 
+}
+
+
+#DesktopIcons .DesktopIconContainer.mouseout .bg-top {
+  background: url(../images/DesktopIconContainer/DIBgMouseout_top.png) no-repeat; 
+}
+#DesktopIcons .DesktopIconContainer.mouseout .bg-middle {
+  background: url(../images/DesktopIconContainer/DIBgMouseout_middle.png) no-repeat; 
+}
+#DesktopIcons .DesktopIconContainer.mouseout .bg-bg {
+  background: url(../images/DesktopIconContainer/DIBgMouseout_bg.png) repeat-y; 
+}
+#DesktopIcons .DesktopIconContainer.mouseout .bg-bottom {
+  background: url(../images/DesktopIconContainer/DIBgMouseout_bottom.png) no-repeat; 
+}
+
+
+.AeroWindow .tb-mm-container .tb-mm-dialog { 
+  width:auto; 
+  height:auto;
+  border:1px solid #fff;
+  /*border-radius:3px;*/
+  /*background-color:#FFF;
+  opacity:0.5;*/
+}
+.AeroWindow .tb-mm-container .dialogBtns { 
+  float:right; 
+  width:80px; 
+  text-align:center; 
+  height:26px; 
+  line-height:26px; 
+  border:1px dashed #03F; 
+  margin:5px 5px 10px 0;
+}
+.AeroWindow .tb-mm-dialog .d-BtnOK{
+  
+}
+
+.iframeHelper  {
+  display: block; 
+  height: 100%; 
+  width: 100%; 
+  position: absolute; 
+  left: 10px; 
+  top: 50px; 
+  background: url(../images/WinAeroStyle/empty.gif);
+  z-index: 0;
+}

@@ -1,0 +1,276 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh" xml:lang="zh">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<script src="../lib/jquery/jquery-1.8.2.min.js"></script>
+<title>Command Shell</title>
+</head>
+<style type="text/css">
+<!--
+
+body{
+	background:url(../images/table1.jpg);
+}
+
+.content2 {
+	font-size: 12px; 
+	background-color:#F5F5F5;
+	padding:10px; 
+	width:auto; 
+	border:solid #DDDDDD 1px; 
+	height:330px;
+	margin-left: auto;
+	margin-right: auto;
+    overflow:hidden;
+	margin-top:5px; 
+	margin-left:30PX;
+   	margin-right:15PX;	
+}
+	
+.content1 {
+	font-size: 12px; 
+	background-color:#F5F5F5;
+	padding:10px; 
+	width:auto; 
+	border:solid #E7E7E7 1px; 
+	height:auto;
+	margin-left: auto;
+	margin-right: auto;
+    overflow:hidden;
+	margin-top:5px; 
+	margin-left:30PX;
+   	margin-right:15PX;	
+}
+.content3 {
+	font-size: 12px; 
+	background-color:#F5F5F5;
+	padding:10px; 
+	width:auto; 
+	border:solid #E7E7E7 1px; 
+	height:100px;
+	margin-left: auto;
+	margin-right: auto;
+    overflow:hidden;
+	margin-top:5px; 
+	margin-left:30PX;
+   	margin-right:15PX;	
+}
+
+.title{
+	font-size: 12px; 
+	width:auto; 
+	background-color:#DDFF77;
+	border:solid #E7E7E7 1px; 
+	height:100px;
+	margin-left: auto;
+	margin-right: auto;
+    overflow:hidden;
+    padding: 3px;
+}
+.page{
+	font-size: 12px; 
+	background-color:#FFFFFF;
+	padding:2px; 
+	width:800px; 
+	border:ridge #E7E7E7 3px; 
+	height:auto;
+	margin-left: auto;
+	margin-right: auto;
+    overflow:hidden;
+	margin-top:10px; 
+}
+.main{
+	font-size: 12px; 
+	background-color:#FFFFFF;
+	width:auto; 
+	border:solid #888888 1px; 
+	height:auto;
+	margin-left: auto;
+	margin-right: auto;
+    overflow:hidden;
+    padding: 0.25em;
+    margin:2px;
+    margin-bottom: 2px;
+}
+.info{
+	padding:2px; 
+	width:auto; 
+	border:solid #E7E7E7 1px; 
+	height:70px;
+	margin-left: auto;
+	margin-right: auto;
+    overflow:hidden;
+   	margin-top:5px; 
+   	margin-left:30PX;
+   	margin-right:15PX;	
+
+}
+
+.subject{
+	padding:2px; 
+	width:auto; 
+	border:solid #E7E7E7 1px; 
+	height:20px;
+	margin-left: auto;
+	margin-right: auto;
+    overflow:hidden;
+   	margin-top:10px;
+   	margin-left:15PX;
+   	margin-right:15PX;
+}
+
+.subfontstyle{
+	font-size: 18px; 
+	font-weight: 900;
+}
+
+.infofont{
+	font-size: 14px; 
+	font-style:italic;
+}
+.addfont{
+	font-size: 14px; 
+}
+
+.warning{
+	color:#FF0000;
+}
+
+.addle{
+	width:80px; 
+	float:left; 
+	text-align:right; 
+	height:35px;
+	border:solid #E7E7E7 1px; 
+	
+	}
+.addrt{
+	width:620px; 
+	float:left;
+	height:35px;
+	border:solid #E7E7E7 1px; 
+	margin-left:5PX;
+	}
+.errorinfo{
+	width:320px; 
+	float:right;
+	height:35px;
+	border:solid #E7E7E7 1px; 
+}
+.command_content{
+	width:600px; 
+}
+-->
+</style>
+<script>
+
+	// Execute command
+	function executeCommand(){
+		var commandVal = $("#commandContent").val();
+
+		// add new option
+		$("#commandHistoryList").append("<option value='"+commandVal+"'>"+commandVal+"</option>");
+
+		$.ajax({
+			url:'/xsrf',
+			type:"get",
+			async:false,
+			success:function(data){
+				$.postJSON('/operation/task',{"action":'',"cmd":commandVal},function(data){
+					$("#exceuteCommandResult").append("> " + commandVal);
+					$("#exceuteCommandResult").append("<br>")
+					$("#exceuteCommandResult").append((data.data).replace(/\n/g,"<br>"));
+					$("#exceuteCommandResult").append("<br>")
+				});
+			}
+		});
+
+	}
+	
+	function getCookie(name) {
+	    var r = document.cookie.match("\\b" + name + "=([^;]*)\\b");
+	    return r ? r[1] : undefined;
+	}
+
+	jQuery.postJSON = function(url, args, callback) {
+	    args._xsrf = getCookie("XSRF-TOKEN");
+	   // alert(getCookie("XSRF-TOKEN"));
+	    $.ajax({url: url, data: $.param(args), type: "POST",
+	        success: function(response) {
+	        callback(response);
+	    }});
+	};
+	
+	// Clear command
+	function clearCommand(){
+		$("#commandContent").attr("value","");
+	}
+	
+	// Clear history
+	function clearHistory(){
+		$("#exceuteCommandResult").empty();
+	}
+	
+	// Edit previous
+	function editPrevious(){
+		var val =$("#commandHistoryList").val();
+		$("#commandContent").attr("value",val);
+	}
+	
+	function executePreviousCommand(){
+		var val =$("#commandHistoryList").val();
+		
+		$.ajax({
+			url:'/xsrf',
+			type:"get",
+			async:false,
+			success:function(data){
+				$.postJSON('/operation/task',{"action":'',"cmd":val},function(data){
+					$("#exceuteCommandResult").append("> " + val);
+					$("#exceuteCommandResult").append("<br>")
+					$("#exceuteCommandResult").append((data.data).replace(/\n/g,"<br>"));
+					$("#exceuteCommandResult").append("<br>")
+				});
+			}
+		});
+	}
+
+</script>
+<body>
+  <form id="form1" name="form1" method="post" action="">
+<div class="page">
+<div class="main">
+<div class="title"></div>
+<div class="subject"><span class="subfontstyle">Command Shell</span></div>
+<div class="info"><span class="infofont">Enter a shell command to execute in the text field below. 
+The cd command may be used to change directory for subsequent commands.
+<p></p>
+<span class="warning">Warning: </span>You need to have a good knowledge of Linux commands before you can use the commends effectively.
+</span>
+</div>
+ <div class="subject"><span class="subfontstyle">Module Config</span></div>
+<div class="content1" id="exceuteCommandResult"></div>
+
+ <div class="subject"><span class="subfontstyle">Execute Command</span></div>
+<div class="content2">
+	<div class="addle"><span class="addfont">Command:</span></div> 
+	<div class="addrt"><input type="text" class="command_content" id="commandContent"></div>
+	<div class="addle"></div> 
+  	<div class="addrt">
+  		<input name="" type="button" value="Execute command" onclick="executeCommand();"/>
+  		<input name="" type="button" value="Clear command" onclick="clearCommand();"/>
+  		<input name="" type="button" value="Clear history" onclick="clearHistory();"/>
+  </div>
+  	<div class="addle"></div> 
+  	<div class="addrt">
+  		<input name="" type="button" value="Execute previous command" onclick="executePreviousCommand();"/>
+  		<select id="commandHistoryList">
+  			<option value=""></option>
+  		</select>
+  		<input name="" type="button" value="Edit previous" onclick="editPrevious();"/>
+  </div>
+</div>
+</div>
+  </form>
+</body>
+</html>
