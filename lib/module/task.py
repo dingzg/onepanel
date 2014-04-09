@@ -41,18 +41,18 @@ user_dir='/var/spool/cron'
 def listcron(username):
 	arr_cron=[]
 	#read the master crontab file
-	readcron(system_crontab)
+	readcron(system_crontab,"sys")
 
 	#read package-specific cron files
 	files = os.listdir(cronfiles_dir)
 	for filename in files:
-        readcron(cronfiles_dir+'/'+filename)
+        readcron(cronfiles_dir+'/'+filename,"spec")
 
     #Read a single user's crontab file
 
     return arr_cron
 # 
-def readcron(filename):
+def readcron(filename,option):
     with open(filename) as f:
         for line in f:
             line=line.replace('\r','')
