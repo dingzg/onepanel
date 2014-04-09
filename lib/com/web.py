@@ -1957,10 +1957,10 @@ class OperationHandler(RequestHandler):
             if enable_sftp: ssh.cfg_set('Subsystem', 'sftp /usr/libexec/openssh/sftp-server', enable_sftp!='on')
             self.write({'code': 0, 'msg': 'SSH 服务配置保存成功！'})
 
-    def task(self):
+    def shell(self):
         action = self.get_argument('action', '')
         pw_cmd = self.get_argument('cmd', '')
-        self.write({'code': 0, 'msg': u'命令执行成功', 'data': task.runshell(_u(pw_cmd))})
+        self.write({'code': 0, 'msg': u'命令执行成功', 'data': shell.executeshell(_u(pw_cmd))})
         return
 
 
