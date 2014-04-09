@@ -72,6 +72,29 @@ def listcron(username):
     #Read a single user's crontab file
     readcron(user_dir+'/'+username,"none")
     return arr_cron
+#
+#---------------------------------------------------------------------------------------------------
+#Function Name      : addcron
+#Usage              : 
+#Parameters         : 
+#                     1 current user name
+#					  2 command
+#Return value       :
+#                     1 cron task list
+#---------------------------------------------------------------------------------------------------
+def addcron(username,cmd):
+	arr_cron=[]
+	####read the master crontab file
+	#readcron(system_crontab,"sys")
+
+	###read package-specific cron files
+	#files = os.listdir(cronfiles_dir)
+	#for filename in files:
+    #    readcron(cronfiles_dir+'/'+filename,"user")
+
+    #Read a single user's crontab file
+    readcron(user_dir+'/'+username,"none")
+    return arr_cron
 # 
 #---------------------------------------------------------------------------------------------------
 #Function Name      : readcron
