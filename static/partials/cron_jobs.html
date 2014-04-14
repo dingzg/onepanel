@@ -179,8 +179,37 @@ function addCronJob(){
 	var day=$("#day_options").val();
 	var month=$("#month_options").val();
 	var weekday=$("#weekday_options").val(); 
+	
+	var sendData = {"action":'',"minute":minute,"hour":hour,"day":day,"month":month,"weekday":weekday}
+	$.ajax({
+	url:'/xsrf',
+	type:"get",
+	async:false,
+	success:function(data){
+		$.postJSON('/operation/task',sendData,function(data){
+			$("#currentCronJobsResult").append("<table>")
+			$("#currentCronJobsResult").append(data.data);
+			$("#currentCronJobsResult").append("</table>")
+		});
+	}
+});
 
 }
+
+function getCookie(name) {
+    var r = document.cookie.match("\\b" + name + "=([^;]*)\\b");
+    return r ? r[1] : undefined;
+}
+
+jQuery.postJSON = function(url, args, callback) {
+    args._xsrf = getCookie("XSRF-TOKEN");
+   // alert(getCookie("XSRF-TOKEN"));
+    $.ajax({url: url, data: $.param(args), type: "POST",
+        success: function(response) {
+        callback(response);
+    }});
+};
+
 
 function clear(){
 	alert("a");
@@ -436,6 +465,8 @@ you could set a cron job to delete temporary files every week to free up disk sp
 </div>
 <div class="subject"><span class="subfontstyle">Current Cron Jobs</span></div>
 <div class="content3"></div>
+<div id = "currentCronJobsResult">
+</div>
 </div>
 
 </div>
