@@ -296,7 +296,8 @@ class LoginHandler(RequestHandler):
         except:
                 rc_ssh='Error'
         if rc_ssh==None:
-                print ('Authentication Successful!')                
+                #print ('Authentication Successful!')  
+                self.config.set('auth', 'username', username)              
                 if loginfails > 0:
                     self.config.set('runtime', 'loginfails', 0)
                 self.set_secure_cookie('authed', 'yes', None)
@@ -306,7 +307,7 @@ class LoginHandler(RequestHandler):
                 else:
                     self.write({'code': 0, 'msg': u'%s，您已登录成功！' % username})
         else:
-                print ('Authentication Fail!')
+                #print ('Authentication Fail!')
                 if self.config.get('runtime', 'mode') == 'demo':
                     self.write({'code': -1, 'msg': u'用户名或密码错误！'})
                     return
@@ -1961,6 +1962,30 @@ class OperationHandler(RequestHandler):
         action = self.get_argument('action', '')
         pw_cmd = self.get_argument('cmd', '')
         self.write({'code': 0, 'msg': u'命令执行成功', 'data': shell.executeshell(_u(pw_cmd))})
+        return
+
+    def task(self):
+        action = self.get_argument('action', '')
+        #get user name from config.ini
+        username = self.config.get('auth', 'username')
+
+        if action == 'list':
+            self.write({'code': 0, 'msg': 'Excute Successful', 'data': task.listcron(username)}) 
+        elif action in ('add', 'mod'):
+            t_minute = self.get_argument('minute', '')
+            t_hour = self.get_argument('minute', '')
+            t_day = self.get_argument('day', '')
+            t_month = self.get_argument('month', '')
+            t_weekday = self.get_argument('weekday', '')
+            t_cmd = self.get_argument('cmd', '')
+            if action == 'add':
+                self.write({'code': 0, 'msg': 'Excute Successful', 'data': task.addcron(username,t_minute,t_hour,t_day,t_month,t_weekday,t_cmd)}) 
+            elif action == 'mod':
+                t_id = self.get_argument('id', '')
+                self.write({'code': 0, 'msg': 'Excute Successful', 'data': task.modcron(username,t_id,t_minute,t_hour,t_day,t_month,t_weekday,t_cmd)})   
+        elif action == 'del':
+            t_id = self.get_argument('id', '')
+            self.write({'code': 0, 'msg': 'Excute Successful', 'data': task.delcron(username,t_id)}) 
         return
 
 
