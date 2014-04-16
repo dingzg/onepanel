@@ -180,19 +180,22 @@ function addCronJob(){
 	var month=$("#month_options").val();
 	var weekday=$("#weekday_options").val(); 
 	
-	var sendData = {"action":'',"minute":minute,"hour":hour,"day":day,"month":month,"weekday":weekday}
+	var command=$("#command").val(); 
+	
+	var sendData = {"action":'add',"minute":minute,"hour":hour,"day":day,"month":month,"weekday":weekday,"command":command}
 	$.ajax({
-	url:'/xsrf',
-	type:"get",
-	async:false,
-	success:function(data){
-		$.postJSON('/operation/task',sendData,function(data){
-			$("#currentCronJobsResult").append("<table>")
-			$("#currentCronJobsResult").append(data.data);
-			$("#currentCronJobsResult").append("</table>")
-		});
-	}
-});
+		url:'/xsrf',
+		type:"get",
+		async:false,
+		success:function(data){
+			$.postJSON('/operation/task',sendData,function(data){
+				$("#currentCronJobsResult").append("<table>")
+				$("#currentCronJobsResult").append("<table>")
+				$("#currentCronJobsResult").append(data.data);
+				$("#currentCronJobsResult").append("</table>")
+			});
+		}
+	});
 
 }
 
@@ -209,6 +212,41 @@ jQuery.postJSON = function(url, args, callback) {
         callback(response);
     }});
 };
+
+function deleteJob(){
+	var id=$("#jobId").val();
+	var sendData = {"action":'del',"id":id}
+	$.ajax({
+		url:'/xsrf',
+		type:"get",
+		async:false,
+		success:function(data){
+			$.postJSON('/operation/task',sendData,function(data){
+				$("#currentCronJobsResult").append("<table>")
+				$("#currentCronJobsResult").append(data.data);
+				$("#currentCronJobsResult").append("</table>")
+			});
+		}
+	});
+}
+
+function getJob(){
+	var id=$("#jobId").val();
+	var sendData = {"action":'list',"id":id}
+	$.ajax({
+		url:'/xsrf',
+		type:"get",
+		async:false,
+		success:function(data){
+			$.postJSON('/operation/task',sendData,function(data){
+				$("#currentCronJobsResult").append("<table>")
+				$("#currentCronJobsResult").append(data.data);
+				$("#currentCronJobsResult").append("</table>")
+			});
+		}
+	});
+}
+
 
 
 function clear(){
@@ -454,7 +492,7 @@ you could set a cron job to delete temporary files every week to free up disk sp
 			</div>
 			<div class="errorinfo">error</div>
 		    <div class="addle"><span class="addfont">Command:</span></div>
-		    <div class="addrt"><input type="text" size="40" maxlength="20" />&nbsp;&nbsp; </div>
+		    <div class="addrt"><input type="text" size="40" maxlength="20" id="command"/>&nbsp;&nbsp; </div>
 		    <div class="errorinfo">error</div>
       </form>
 	<div class="addle"></div> 
@@ -465,8 +503,31 @@ you could set a cron job to delete temporary files every week to free up disk sp
 </div>
 <div class="subject"><span class="subfontstyle">Current Cron Jobs</span></div>
 <div class="content3"></div>
-<div id = "currentCronJobsResult">
-</div>
+	<div id = "currentCronJobsResult">
+	<table>
+	<tr>
+		<td><span>MINUTE<span></td>
+		<td><span>HOUR<span></td>
+		<td><span>DAY<span></td>
+		<td><span>DAY<span></td>
+		<td><span>MONTH<span></td>
+		<td><span>WEEKDAY<span></td>
+		<td><span>COMMAND<span></td>
+		<td><span>ACTION<span></td>
+	</tr>
+		<tr>
+		<td>0</td>
+		<td>0</td>
+		<td>1</td>
+		<td>*</td>
+		<td>*</td>
+		<td>*</td>
+		<td>ls</td>
+		<td><a href="javascript:void(0);" onclick="deleteJob();">DELETE</a></td>
+		<input type="hidden" value="" id="jobId">
+	</tr>
+	</table>
+	</div>
 </div>
 
 </div>
