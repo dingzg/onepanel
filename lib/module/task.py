@@ -6,7 +6,7 @@
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     http://www.apache.org/licenses/LICENSE-2.0
+#	 http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,22 +15,20 @@
 # limitations under the License.
 #
 ####################################################################################################
-# Script Name       : task.py
-# Function Summary  : read cron
-#                     1.listcron
-#                     2.readcron
-# Parameters        : None
-# Return Code       : None
-# Note              : None
+# Script Name	    : task.py
+# Function Summary  : 1 readcron
+#					  2 listcron
+#					  3 addcron
+#					  4 modcron
+#					  5 delcron
+# Parameters		: None
+# Return Code	    : None
+# Note			    : None
 ####################################################################################################
 # Update History
-# Date              Author             Reason
+# Date			  Author			 Reason
 # ________________  _________________ ______________________________________________________________
-# 2014/04/09        Chen DengYue       Create
-import os
-import sys
-import pexpect
-import subprocess
+# 2014/04/09		Chen DengYue	   Create
 import re
 
 system_crontab='/etc/crontab'
@@ -52,55 +50,144 @@ user_dir='/var/spool/cron'
 #onepanel@oyyw.com [~]#
 # 
 #---------------------------------------------------------------------------------------------------
-#Function Name      : listcron
-#Usage              : 
-#Parameters         : 
-#                     1 current user name
-#Return value       :
-#                     1 cron task list
+#Function Name	  : listcron
+#Usage			  : 
+#Parameters		  : 
+#					 1 user name
+#Return value	  :
+#					 1 cron task list
 #---------------------------------------------------------------------------------------------------
 def listcron(username):
-	arr_cron=[]
+
+	cronlist=readcron(user_dir+'/'+username,'other')
+
 	####read the master crontab file
 	#readcron(system_crontab,"sys")
 
 	###read package-specific cron files
 	#files = os.listdir(cronfiles_dir)
 	#for filename in files:
-    #    readcron(cronfiles_dir+'/'+filename,"user")
+	#	readcron(cronfiles_dir+'/'+filename,"user")
 
-    #Read a single user's crontab file
-    readcron(user_dir+'/'+username,"none")
-    return arr_cron
+	#Read a single user's crontab file
+	#readcron(user_dir+'/'+username,"none")
+	return cronlist
 # 
 #---------------------------------------------------------------------------------------------------
-#Function Name      : readcron
-#Usage              : 
-#Parameters         : 
-#                     1 file name with path
-#                     2 cron type:has USER in file or not   
-#Return value       : None  
+#Function Name	  : readcron
+#Usage			  : 
+#Parameters		  : 
+#					 1 file name with path
+#					 2 cron type:has USER in file or not .user:with USER;other:without USER
+#Return value	  : None  
 #---------------------------------------------------------------------------------------------------
 def readcron(filename,option):
-    with open(filename) as f:
-        for line in f:
-            line=line.replace('\r','')
-            line=line.replace('\n','')
-            if re.findall("^\d|^\*|^\-",line):
-            	if option <> "user":
-            		text= re.split("\s+",line,5)
-                	t_cmd=text[5]
-                	#t_user="None"
-                else:
-                	text= re.split("\s+",line,6)
-                	t_user=text[5]
-                	t_cmd=text[6]
-                t_min=text[0]
-                t_hour=text[1]
-                t_dayofmon=text[2]
-                t_month=text[3]
-                t_dayofweek=text[4]
-                arr_cron.append(text)
-        ####for multiple cron file
-        #        arr_cron.append([filename,arr])
-        #print 'arr:',arr_cron
+	cronlist=[]
+	with open(filename) as f:
+		i=0
+		for line in f:
+			line=line.replace('\r','')
+			line=line.replace('\n','')
+			if re.findall("^\d|^\*|^\-",line):
+				if option == "other":
+					text= re.split("\s+",line,5)
+					t_cmd=text[5]
+					#t_user="None"
+				else:
+					text= re.split("\s+",line,6)
+					t_user=text[5]
+					t_cmd=text[6]
+				t_min=text[0]
+				t_hour=text[1]
+				t_dayofmon=text[2]
+				t_month=text[3]
+				t_dayofweek=text[4]
+				i=i+1
+				cronlist.append(i,text)
+		####for multiple cron file
+		#		arr_cron.append([filename,arr])
+		#print 'arr:',arr_cron
+	return cronlist
+#
+#---------------------------------------------------------------------------------------------------
+#Function Name	  : addcron
+#Usage			  : 
+#Parameters		  : 
+#					 1 user name
+#					 2 minute
+#					 3 hour
+#					 4 day
+#					 5 month
+#					 6 weekday
+#					 7 command
+#Return value	  :
+#					 1 message
+#---------------------------------------------------------------------------------------------------
+def addcron(username,t_minute,t_hour,t_day,t_month,t_weekday,t_cmd):
+	t_content=t_minute+' '+t_hour+' '+t_day+' '+t_month+' '+t_weekday+' '+t_cmd+"\n"
+	with open(user_dir+'/'+username,'a+') as f:
+		f.write(t_content)
+	return "Add Cron Successfully"
+#
+#---------------------------------------------------------------------------------------------------
+#Function Name	  : modcron
+#Usage			  : 
+#Parameters		  : 
+#					 1 user name
+#					 2 id
+#					 3 minute
+#					 4 hour
+#					 5 day
+#					 6 month
+#					 7 weekday
+#					 8 command
+#Return value	  :
+#					 1 message
+#---------------------------------------------------------------------------------------------------
+def modcron(username,t_id,t_minute,t_hour,t_day,t_month,t_weekday,t_cmd):
+	t_content=t_minute+' '+t_hour+' '+t_day+' '+t_month+' '+t_weekday+' '+t_cmd+"\n"
+	with open(user_dir+'/'+username,'r') as f:
+		lines=f.readlines()
+
+	i=0
+	j=0
+	for line in lines:
+		j=j+1
+		if re.findall("^\d|^\*|^\-",line):
+			i=i+1
+			if i == t_id:
+				break
+	lines[j-1]=t_content
+
+	with open(user_dir+'/'+username,'w+') as f:
+		f.writelines(lines)
+
+	return "Modify Cron Successfully"
+#
+#---------------------------------------------------------------------------------------------------
+#Function Name	  : delcron
+#Usage			  : 
+#Parameters		  : 
+#					 1 user name
+#					 2 id
+#Return value	  :
+#					 1 message
+#---------------------------------------------------------------------------------------------------
+def delcron(username,t_id):
+	with open(user_dir+'/'+username,'r') as f:
+		lines=f.readlines()
+
+	i=0
+	j=0
+	for line in lines:
+		j=j+1
+		if re.findall("^\d|^\*|^\-",line):
+			i=i+1
+			if i == t_id:
+				break
+	del lines[j-1]
+
+	with open(user_dir+'/'+username,'w+') as f:
+		f.writelines(lines)
+
+	return "Delete Cron Successfully"
