@@ -17,7 +17,9 @@
 
 import os
 import sys
-sys.path.append(os.path.join(os.path.split(os.path.dirname(__file__))[0], r'../lib'))
+#sys.path.append(os.path.join(os.path.split(os.path.dirname(__file__))[0], r'../lib'))
+root_path =  os.path.split(os.path.dirname(__file__))[0]
+sys.path.insert(0, os.path.join(root_path, 'lib'))
 
 import socket
 import hashlib

@@ -35,7 +35,7 @@ class Install(object):
             self.dist = platform.dist()
         self.arch = platform.machine()
         if self.arch != 'x86_64': self.arch = 'i386'
-        self.installpath = '/usr/local/onepanel'
+        self.installpath = '/usr/local/OnePanel'
         self.distname = self.dist[0].lower()
         self.version = self.dist[1]
         
@@ -97,16 +97,20 @@ class Install(object):
         else:
             # or else install online
             print '* Downloading install package from www.onepanel.org'
-            f = urllib2.urlopen('http://www.onepanel.org/api/latest')
-            data = f.read()
-            f.close()
-            downloadurl = re.search('"download":"([^"]+)"', data).group(1).replace('\/', '/')
-            self._run('wget -nv -c "%s" -O onepanel.tar.gz' % downloadurl)
+            #f = urllib2.urlopen('http://www.onepanel.org/api/latest')
+            #data = f.read()
+            #f.close()
+            #https://github.com/dingzg/onepanel/archive/master.zip
+            #onepanel-master.zip
+            #downloadurl = re.search('"download":"([^"]+)"', data).group(1).replace('\/', '/')
+            downloadurl = 'https://github.com/dingzg/onepanel/archive/master.zip'
+            self._run('wget -nv -c "%s" -O onepanel.zip' % downloadurl)
             
         # uncompress and install it
-        self._run('mkdir onepanel')
-        self._run('tar zxmf onepanel.tar.gz -C onepanel')
-        if not localpkg_found: os.remove('onepanel.tar.gz')
+        #self._run('mkdir onepanel')
+        #self._run('tar zxmf onepanel.tar.gz -C onepanel')
+        self._run('unzip onepanel.zip')
+        if not localpkg_found: os.remove('onepanel.zip')
         
         # stop service
         print
@@ -115,21 +119,21 @@ class Install(object):
 
         # backup data and remove old code
         if os.path.exists('%s/data/' % self.installpath):
-            self._run('cp -r %s/data/* onepanel/data/' % self.installpath, True)
+            self._run('cp -r %s/data/* onepanel-master/data/' % self.installpath, True)
         self._run('rm -rf %s' % self.installpath)
         
         # install new code
-        self._run('mv onepanel %s' % self.installpath)
-        self._run('chmod +x %s/install_config.py %s/start_server.py' % (self.installpath, self.installpath))
+        self._run('mv onepanel-master %s' % self.installpath)
+        self._run('chmod +x %s/bin/install_config.py %s/bin/start_server.py' % (self.installpath, self.installpath))
         
         # install service
-        initscript = '%s/tools/init.d/%s/onepanel' % (self.installpath, self.distname)
+        initscript = '%s/bin/init.d/%s/onepanel' % (self.installpath, self.distname)
         self._run('cp %s /etc/init.d/onepanel' % initscript)
         self._run('chmod +x /etc/init.d/onepanel')
         
         # start service
         if self.distname in ('centos', 'redhat'):
-            self._run('chkconfig onepanel on')
+            #self._run('chkconfig onepanel on')
             self._run('service onepanel start')
         elif self.distname == 'ubuntu':
             pass
@@ -137,8 +141,8 @@ class Install(object):
             pass
 
     def config(self, username, password):
-        self._run('%s/install_config.py username "%s"' % (self.installpath, username))
-        self._run('%s/install_config.py password "%s"' % (self.installpath, password))
+        self._run('%s/bin/install_config.py username "%s"' % (self.installpath, username))
+        self._run('%s/bin/install_config.py password "%s"' % (self.installpath, password))
         
     def detect_ip(self):
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -184,16 +188,10 @@ class Install(object):
         print '*    INSTALL COMPLETED!    *'
         print '============================'
         print 
-        username = raw_input('Admin username [default: admin]: ').strip()
-        password = raw_input('Admin password [default: admin]: ').strip()
-        if len(username) == 0:
-            username = 'admin'
-        if len(password) == 0:
-            password = 'admin'
+        username = 'onepanel'
+        password = 'onepanel'
         self.config(username, password)
-        
-        print
-        print '* Username and password set successfully!'
+
         print 
         print '* The URL of your OnePanel is:',
         print 'http://%s:8888/' % self.detect_ip()
@@ -203,8 +201,16 @@ class Install(object):
 
 
 def main():
-    install = Install()
-    install.install()
+    print('==============================Warning==============================')
+    print('If you want to update OnePanel,please copy install.py to other path and run it!')
+    print('')
+
+    continueflg = raw_input('Press "Y" to Continue or press "N" to Quit: ').strip()
+    if continueflg in ('Y','y'):
+        install = Install()
+        install.install()
+    else:
+        exit
     
 
 if __name__ == "__main__":
