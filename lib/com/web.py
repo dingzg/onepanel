@@ -1970,7 +1970,7 @@ class OperationHandler(RequestHandler):
         username = self.config.get('auth', 'username')
 
         if action == 'list':
-            self.write({'code': 0, 'msg': 'Excute Successful', 'data': task.listcron(username)}) 
+            self.write({'code': 0, 'msg': 'Excute Successfully', 'data': task.listcron(username)}) 
         elif action in ('add', 'mod'):
             t_minute = self.get_argument('minute', '')
             t_hour = self.get_argument('minute', '')
@@ -1979,13 +1979,13 @@ class OperationHandler(RequestHandler):
             t_weekday = self.get_argument('weekday', '')
             t_cmd = self.get_argument('cmd', '')
             if action == 'add':
-                self.write({'code': 0, 'msg': 'Excute Successful', 'data': task.addcron(username,t_minute,t_hour,t_day,t_month,t_weekday,t_cmd)}) 
+                self.write({'code': 0, 'msg': 'Excute Successfully', 'data': task.addcron(username,t_minute,t_hour,t_day,t_month,t_weekday,t_cmd)}) 
             elif action == 'mod':
                 t_id = self.get_argument('id', '')
-                self.write({'code': 0, 'msg': 'Excute Successful', 'data': task.modcron(username,t_id,t_minute,t_hour,t_day,t_month,t_weekday,t_cmd)})   
+                self.write({'code': 0, 'msg': 'Excute Successfully', 'data': task.modcron(username,t_id,t_minute,t_hour,t_day,t_month,t_weekday,t_cmd)})   
         elif action == 'del':
             t_id = self.get_argument('id', '')
-            self.write({'code': 0, 'msg': 'Excute Successful', 'data': task.delcron(username,t_id)}) 
+            self.write({'code': 0, 'msg': 'Excute Successfully', 'data': task.delcron(username,t_id)}) 
         return
 
 
