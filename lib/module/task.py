@@ -124,9 +124,9 @@ def readcron(filename,option):
 #					 1 message
 #---------------------------------------------------------------------------------------------------
 def addcron(username,t_minute,t_hour,t_day,t_month,t_weekday,t_cmd):
-	t_content=t_minute+' '+t_hour+' '+t_day+' '+t_month+' '+t_weekday+' '+t_cmd
+	t_content=t_minute+' '+t_hour+' '+t_day+' '+t_month+' '+t_weekday+' '+t_cmd+"\n"
 	with open(user_dir+'/'+username,'a+') as f:
-		f.write(t_content+"\n")
+		f.write(t_content)
 	return "Add Cron Successfully"
 #
 #---------------------------------------------------------------------------------------------------
@@ -145,7 +145,7 @@ def addcron(username,t_minute,t_hour,t_day,t_month,t_weekday,t_cmd):
 #					 1 message
 #---------------------------------------------------------------------------------------------------
 def modcron(username,t_id,t_minute,t_hour,t_day,t_month,t_weekday,t_cmd):
-	t_content=t_minute+' '+t_hour+' '+t_day+' '+t_month+' '+t_weekday+' '+t_cmd
+	t_content=t_minute+' '+t_hour+' '+t_day+' '+t_month+' '+t_weekday+' '+t_cmd+"\n"
 	with open(user_dir+'/'+username,'r') as f:
 		lines=f.readlines()
 
@@ -157,7 +157,7 @@ def modcron(username,t_id,t_minute,t_hour,t_day,t_month,t_weekday,t_cmd):
 			i=i+1
 			if i == t_id:
 				break
-	lines[j-1]=line
+	lines[j-1]=t_content
 
 	with open(user_dir+'/'+username,'w+') as f:
 		f.writelines(lines)
