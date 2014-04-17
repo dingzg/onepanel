@@ -35,7 +35,7 @@ class Install(object):
             self.dist = platform.dist()
         self.arch = platform.machine()
         if self.arch != 'x86_64': self.arch = 'i386'
-        self.installpath = '/usr/local/OnePanel'
+        self.installpath = '/usr/local/onepanel'
         self.distname = self.dist[0].lower()
         self.version = self.dist[1]
         
@@ -129,6 +129,8 @@ class Install(object):
         # install service
         initscript = '%s/bin/init.d/%s/onepanel' % (self.installpath, self.distname)
         self._run('cp %s /etc/init.d/onepanel' % initscript)
+        if !os.path.exists('%s/data/' % self.installpath):
+            self._run('mkdir  %s/data/' % self.installpath)
         self._run('chmod +x /etc/init.d/onepanel')
         
         # start service
