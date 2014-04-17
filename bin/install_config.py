@@ -46,7 +46,7 @@ accesskeyenable: set the remote access switch. value: on or off
 ''' % sys.argv[0]
         sys.exit()
     
-    data_path = os.path.join(os.path.split(os.path.dirname(__file__))[0], r'../data')
+    data_path = os.path.join(os.path.split(os.path.dirname(__file__))[0], r'data')
     config = Config(data_path + '/config.ini')
 
     option, value = sys.argv[1:]

@@ -129,7 +129,7 @@ class Install(object):
         # install service
         initscript = '%s/bin/init.d/%s/onepanel' % (self.installpath, self.distname)
         self._run('cp %s /etc/init.d/onepanel' % initscript)
-        if !os.path.exists('%s/data/' % self.installpath):
+        if os.path.exists('%s/data/' % self.installpath)==False:
             self._run('mkdir  %s/data/' % self.installpath)
         self._run('chmod +x /etc/init.d/onepanel')
         
