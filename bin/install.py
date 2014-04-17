@@ -119,7 +119,7 @@ class Install(object):
 
         # backup data and remove old code
         if os.path.exists('%s/data/' % self.installpath):
-            self._run('cp -r %s/data/* onepanel-master/data/' % self.installpath, True)
+            self._run('cp -r %s/data/ onepanel-master/data/' % self.installpath, True)
         self._run('rm -rf %s' % self.installpath)
         
         # install new code
