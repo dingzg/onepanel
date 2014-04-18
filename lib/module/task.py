@@ -103,7 +103,7 @@ def readcron(filename,option):
 				t_month=text[3]
 				t_dayofweek=text[4]
 				i=i+1
-				cronlist.append(i,text)
+				cronlist.append([i,text])
 		####for multiple cron file
 		#		arr_cron.append([filename,arr])
 		#print 'arr:',arr_cron
