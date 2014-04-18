@@ -213,10 +213,28 @@ function getJobList(){
 		url:'/xsrf',
 		type:"get",
 		async:false,
+		datatype:"json",
 		success:function(data){
 			$.postJSON('/operation/task',sendData,function(data){
 				if (data.code== 0){
-					alert(data.data);
+					var output='';
+					var taskList = data.data;
+					
+					for(var i = 0; i < taskList.length; i++){
+						var valList = taskList[i];
+
+						output+='<tr>';
+						output+='<input type="hidden" value="'+valList[0]+'" id="jobId">';
+						for(var j = 1; j < valList.length - 1; j++){
+							output+='<td>' + valList[j]+ '</td>';
+						}
+						output+='<td><a href="javascript:void(0);" onclick="deleteJob();">DELETE</a></td>';
+						output+='</tr>';
+					}
+					
+					alert(output);
+					$("#cronJobsListResult").html(output);
+
 				} else {
 					alert("Get the cron job list fail!");
 				}
@@ -543,10 +561,11 @@ you could set a cron job to delete temporary files every week to free up disk sp
 		    <div class="errorinfo">error</div>
       </form>
 	<div class="addle"></div> 
-  	<div class="addrt">
+  	<div class="addrt" style="width:500px; ">
   		<input type="button" name="addCronJob" value="Add New Cron Job" onclick="addCronJob();"/>
   		<input type="button" name="clear"  value="Clear" onclick="clear();"/>
-  </div>
+  		<input type="button" name="listCronJob"  value="Select Cron Job" onclick="getJobList();"/>
+  	</div>
 </div>
 <div class="subject"><span class="subfontstyle">Current Cron Jobs</span></div>
 <div class="content3">
@@ -562,7 +581,7 @@ you could set a cron job to delete temporary files every week to free up disk sp
 			<td class="job_td"><span>COMMAND<span></td>
 			<td class="job_td"><span>ACTION<span></td>
 		</tr>
-			<tr>
+		<tr>
 			<td>0</td>
 			<td>0</td>
 			<td>1</td>
@@ -573,6 +592,7 @@ you could set a cron job to delete temporary files every week to free up disk sp
 			<td><a href="javascript:void(0);" onclick="deleteJob();">DELETE</a></td>
 			<input type="hidden" value="" id="jobId">
 		</tr>
+		<div id="cronJobsListResult"></div>
 		</table>
 	</div>
 </div>
