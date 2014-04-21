@@ -1973,7 +1973,7 @@ class OperationHandler(RequestHandler):
             self.write({'code': 0, 'msg': 'Excute Successfully', 'data': task.listcron(username)}) 
         elif action in ('add', 'mod'):
             t_minute = self.get_argument('minute', '')
-            t_hour = self.get_argument('minute', '')
+            t_hour = self.get_argument('hour', '')
             t_day = self.get_argument('day', '')
             t_month = self.get_argument('month', '')
             t_weekday = self.get_argument('weekday', '')
