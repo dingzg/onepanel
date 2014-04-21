@@ -164,17 +164,21 @@ body{
 	width:320px; 
 	float:right;
 	height:35px;
-	border:solid #E7E7E7 1px; 
+	border:solid #E7E7E7 1px;
+} 
+.job_td{
+	width:100px;
+	font-size: 12px; 
+	font-family: Arial;
+	font-weight: 900;
 }
+
 -->
 </style>
 <script>
 // add cron job
 function addCronJob(){
-	alert("a");
-	var minute = $("#minute_options").val();
-	alert(minute);
-	
+	var minute = $("#minute_options").val();;
 	var hour = $("#hour_options").val();
 	var day=$("#day_options").val();
 	var month=$("#month_options").val();
@@ -182,17 +186,58 @@ function addCronJob(){
 	
 	var command=$("#command").val(); 
 	
-	var sendData = {"action":'add',"minute":minute,"hour":hour,"day":day,"month":month,"weekday":weekday,"command":command}
+	var sendData = {"action":'add',"minute":minute,"hour":hour,"day":day,"month":month,"weekday":weekday,"cmd":command}
+	
 	$.ajax({
 		url:'/xsrf',
 		type:"get",
 		async:false,
 		success:function(data){
 			$.postJSON('/operation/task',sendData,function(data){
-				$("#currentCronJobsResult").append("<table>")
-				$("#currentCronJobsResult").append("<table>")
-				$("#currentCronJobsResult").append(data.data);
-				$("#currentCronJobsResult").append("</table>")
+				if (data.code== 0){
+					alert(data.data);
+					getJobList();
+				} else {
+					alert("Add the cron job fail!");
+				}
+
+			});
+		}
+	});
+}
+
+function getJobList(){
+	var sendData = {"action":'list'}
+	
+	$.ajax({
+		url:'/xsrf',
+		type:"get",
+		async:false,
+		datatype:"json",
+		success:function(data){
+			$.postJSON('/operation/task',sendData,function(data){
+				if (data.code== 0){
+					var output='';
+					var taskList = data.data;
+					
+					for(var i = 0; i < taskList.length; i++){
+						var valList = taskList[i];
+
+						output+='<tr>';
+						output+='<input type="hidden" value="'+valList[0]+'" id="jobId">';
+						for(var j = 1; j < valList.length - 1; j++){
+							output+='<td>' + valList[j]+ '</td>';
+						}
+						output+='<td><a href="javascript:void(0);" onclick="deleteJob();">DELETE</a></td>';
+						output+='</tr>';
+					}
+					
+					alert(output);
+					$("#cronJobsListResult").html(output);
+
+				} else {
+					alert("Get the cron job list fail!");
+				}
 			});
 		}
 	});
@@ -251,6 +296,26 @@ function getJob(){
 
 function clear(){
 	alert("a");
+}
+
+function select_single_option(val){
+	if (val = 'minute'){
+		$("#minute").val($("#minute_options").val());
+	} else if (val = 'hour'){
+		$("#hour").val($("#hour_options").val());
+	} else if (val = 'day'){
+		$("#day").val($("#day_options").val());
+	} else if (val ='month') {
+		$("#month").val($("#month_options").val());
+	} else if (val = 'weekday'){
+		$("#weekday").val($("#weekday_options").val());
+	}
+}
+
+function select_common_option(){
+	var commonVal = $("common_options").val();
+	$("#minute_options").val("*/5");
+	
 }
 </script>
 <body>
@@ -496,40 +561,43 @@ you could set a cron job to delete temporary files every week to free up disk sp
 		    <div class="errorinfo">error</div>
       </form>
 	<div class="addle"></div> 
-  	<div class="addrt">
+  	<div class="addrt" style="width:500px; ">
   		<input type="button" name="addCronJob" value="Add New Cron Job" onclick="addCronJob();"/>
   		<input type="button" name="clear"  value="Clear" onclick="clear();"/>
-  </div>
+  		<input type="button" name="listCronJob"  value="Select Cron Job" onclick="getJobList();"/>
+  	</div>
 </div>
 <div class="subject"><span class="subfontstyle">Current Cron Jobs</span></div>
-<div class="content3"></div>
+<div class="content3">
 	<div id = "currentCronJobsResult">
-	<table>
-	<tr>
-		<td><span>MINUTE<span></td>
-		<td><span>HOUR<span></td>
-		<td><span>DAY<span></td>
-		<td><span>DAY<span></td>
-		<td><span>MONTH<span></td>
-		<td><span>WEEKDAY<span></td>
-		<td><span>COMMAND<span></td>
-		<td><span>ACTION<span></td>
-	</tr>
+		<table>
 		<tr>
-		<td>0</td>
-		<td>0</td>
-		<td>1</td>
-		<td>*</td>
-		<td>*</td>
-		<td>*</td>
-		<td>ls</td>
-		<td><a href="javascript:void(0);" onclick="deleteJob();">DELETE</a></td>
-		<input type="hidden" value="" id="jobId">
-	</tr>
-	</table>
+			<td class="job_td"><span>MINUTE<span></td>
+			<td class="job_td"><span>HOUR<span></td>
+			<td class="job_td"><span>DAY<span></td>
+			<td class="job_td"><span>DAY<span></td>
+			<td class="job_td"><span>MONTH<span></td>
+			<td class="job_td"><span>WEEKDAY<span></td>
+			<td class="job_td"><span>COMMAND<span></td>
+			<td class="job_td"><span>ACTION<span></td>
+		</tr>
+		<tr>
+			<td>0</td>
+			<td>0</td>
+			<td>1</td>
+			<td>*</td>
+			<td>*</td>
+			<td>*</td>
+			<td>ls</td>
+			<td><a href="javascript:void(0);" onclick="deleteJob();">DELETE</a></td>
+			<input type="hidden" value="" id="jobId">
+		</tr>
+		<div id="cronJobsListResult"></div>
+		</table>
 	</div>
 </div>
 
+</div>
 </div>
 </div>
 
