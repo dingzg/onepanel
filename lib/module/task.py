@@ -103,7 +103,7 @@ def readcron(filename,option):
 				t_month=text[3]
 				t_dayofweek=text[4]
 				i=i+1
-				cronlist.append(i,text)
+				cronlist.append([i,text])
 		####for multiple cron file
 		#		arr_cron.append([filename,arr])
 		#print 'arr:',arr_cron
@@ -155,9 +155,9 @@ def modcron(username,t_id,t_minute,t_hour,t_day,t_month,t_weekday,t_cmd):
 		j=j+1
 		if re.findall("^\d|^\*|^\-",line):
 			i=i+1
-			if i == t_id:
+			if str(i) == str(t_id):
+				lines[j-1]=t_content
 				break
-	lines[j-1]=t_content
 
 	with open(user_dir+'/'+username,'w+') as f:
 		f.writelines(lines)
@@ -183,9 +183,9 @@ def delcron(username,t_id):
 		j=j+1
 		if re.findall("^\d|^\*|^\-",line):
 			i=i+1
-			if i == t_id:
+			if str(i) == str(t_id):
+				del lines[j-1]
 				break
-	del lines[j-1]
 
 	with open(user_dir+'/'+username,'w+') as f:
 		f.writelines(lines)

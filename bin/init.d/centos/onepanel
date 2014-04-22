@@ -23,7 +23,7 @@
 # Check that networking is up.
 [ "$NETWORKING" = "no" ] && exit 0
 
-exec="/usr/local/OnePanel/bin/start_server.py"
+exec="/usr/local/onepanel/bin/start_server.py"
 pidfile="/var/run/onepanel.pid"
 
 lockfile=/var/lock/subsys/onepanel
