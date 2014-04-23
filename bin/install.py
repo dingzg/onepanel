@@ -26,6 +26,9 @@ import urllib2
 import re
 import socket
 
+onepanel_downloadurl = 'https://github.com/dingzg/onepanel/archive/master.zip'
+paramiko_downloadurl = 'https://github.com/paramiko/paramiko/archive/release-1.7.5.zip'
+
 class Install(object):
 
     def __init__(self):
@@ -89,9 +92,19 @@ class Install(object):
         elif self.distname == 'debian':
             pass
 
+    def install_paramiko(self):
+        localpkg_found = False
+        if os.path.exists(os.path.join(os.path.dirname(__file__), 'paramiko.zip')):
+            localpkg_found = True
+        else:
+            self._run('wget -nv -c "%s" -O paramiko.zip' % paramiko_downloadurl)
+        self._run('unzip -o paramiko.zip')
+        if not localpkg_found: os.remove('paramiko.zip')
+        self._run('cd paramiko-release-1.7.5;python setup.py install;cd ..', True)
+        
     def install_onepanel(self):
         localpkg_found = False
-        if os.path.exists(os.path.join(os.path.dirname(__file__), 'onepanel.tar.gz')):
+        if os.path.exists(os.path.join(os.path.dirname(__file__), 'onepanel.zip')):
             # local install package found
             localpkg_found = True
         else:
@@ -103,8 +116,7 @@ class Install(object):
             #https://github.com/dingzg/onepanel/archive/master.zip
             #onepanel-master.zip
             #downloadurl = re.search('"download":"([^"]+)"', data).group(1).replace('\/', '/')
-            downloadurl = 'https://github.com/dingzg/onepanel/archive/master.zip'
-            self._run('wget -nv -c "%s" -O onepanel.zip' % downloadurl)
+            self._run('wget -nv -c "%s" -O onepanel.zip' % onepanel_downloadurl)
             
         # uncompress and install it
         #self._run('mkdir onepanel')
@@ -175,6 +187,19 @@ class Install(object):
             # install the right version
             print '* Installing python 2.6 ...'
             self.install_python()
+
+        # check paramiko
+        print '* Checking paramiko ...',
+        try:
+            import paramiko
+            print 'OK'
+        except:
+            print 'FAILED'
+
+            # install the right version
+            print '* Installing paramiko ...'
+            self.install_paramiko()
+
 
         # stop firewall
         if os.path.exists('/etc/init.d/iptables'):
