@@ -5,7 +5,6 @@ angular.module('vpsmate', ['vpsmate.services', 'vpsmate.directives', 'vpsmate.fi
 config(['$routeProvider', function($routeProvider) {
 	var _r = function(t, c, a){
 		var r = {templateUrl: template_path+'/partials/'+t+'.html?_v='+_v, controller: c, reloadOnSearch: false};
-		
 		if (!a) r.resolve = Auth;
 		return r;
 	};

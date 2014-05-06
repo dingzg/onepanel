@@ -3,7 +3,7 @@ var LoginCtrl = [
 function($scope, $rootScope, $location, Module, Message, Request){
 	var module = 'login';
 	Module.init(module, '登录');
-	$scope.loginText = 'Login';
+	$scope.loginText = '登录';
 	$scope.showForgetPwdMsg = false;
 	$scope.showLoginForm = true;
 	$scope.username = '';
@@ -25,7 +25,6 @@ function($scope, $rootScope, $location, Module, Message, Request){
 	};
 
 	$scope.login = function(rawpwd) {
-		alert("======" + Request);
 		$scope.loginText = '登录中...';
 		Request.post('/login', {
 			username: $scope.username,
@@ -35,10 +34,10 @@ function($scope, $rootScope, $location, Module, Message, Request){
 				$scope.showLoginForm = false;
 				var path = $rootScope.loginto ? $rootScope.loginto : '/main';
 				var section = $rootScope.loginto_section;
-				//if (data.code == 0) {
+				if (data.code == 0) {
 					$location.path(path);
 					if (section) $location.search('s', section);
-				/*} else {
+				} else {
 					// need to check the password strength
 					$scope.pwdStrength = password_strength($scope.password);
 					if ($scope.pwdStrength != '高') {
@@ -51,9 +50,9 @@ function($scope, $rootScope, $location, Module, Message, Request){
 						$location.path(path);
 						if (section) $location.search('s', section);
 					}
-				}*/
+				}
 			} else {
-				$scope.loginText = 'Login';
+				$scope.loginText = '登录';
 			}
 		});
 	};
@@ -91,17 +90,14 @@ var MainCtrl = [
 '$scope', '$routeParams', '$location', 'Module', 'Timeout', 'Request', 'version',
 function($scope, $routeParams, $location, Module, Timeout, Request, version){
 	var module = 'main';
-	//Module.init(module, '首页');
-	//Module.initSection('server');
+	Module.init(module, '首页');
+	Module.initSection('server');
 	$scope.version = version;
 	$scope.info = null;
 	$scope.loaded = false;
 
 	$scope.detectVer = true;
 	$scope.hasNewver = false;
-	
-	$scope.loadMain = null;
-
 	Request.get('/setting/upver', function(data){
 		if (data.code == -1) {
 			$scope.upverMessage = data.msg;
@@ -116,14 +112,12 @@ function($scope, $routeParams, $location, Module, Timeout, Request, version){
 		}
 	});
 
-	//$scope.checkUpdate = function(){
-		//$location.path('/setting');
-		//$location.search('s', 'upversion');
-//}
-	alert("a");
+	$scope.checkUpdate = function(){
+		$location.path('/setting');
+		$location.search('s', 'upversion');
+	}
 	$scope.loadInfo = function(items){
 		if (!items) items = '*';
-		alert(items);
 		Request.get('/query/'+items, function(data){
 			if ($scope.info == null) {
 				$scope.info = data;

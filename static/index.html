@@ -1,99 +1,83 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" ng-app="vpsmate">
+<!doctype html>
+<html lang="en" ng-app="vpsmate">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<link rel="stylesheet" href="css/login.css" type="text/css"/>
-<script src="lib/jquery/jquery-1.8.2.min.js"></script>
-<script src="lib/md5/md5.min.js"></script>
-<title>OnePanel Login</title>
-
+	<meta charset="utf-8">
+	<title ng-bind-template="{{ htmlTitle }} - VPSMate">VPSMate</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=10">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="lib/bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" href="lib/bootstrap/css/bootstrap-responsive.min.css">
+	<link rel="stylesheet" href="lib/codemirror/codemirror.css">
+	<!--[if lt IE 9]>
+	<script src="lib/html5shim/html5shiv-printshiv.min.js"></script>
+	<![endif]-->
+	<link rel="stylesheet" href="css/global.css">
+	<!--[if lte IE 8]>
+	<link rel="stylesheet" href="css/ie-patch.css">
+	<![endif]-->
 </head>
 <body>
-<script> 
-	<!--
-	// Login
-	function userLogin(){
+
+<div message></div>
+
+<div class="container" style="display:none" ng-show="navbar_loaded">
+	<div ng-view></div>
 	
-		document.getElementById("errMsg").innerHTML = "";
-		
-		var userName = document.getElementById("userName").value;
-		if(userName == null || userName==""){
-			document.getElementById("errMsg").innerHTML = "Please input the User Name and Password.";
-			return;
-		}
-	
-		var password = document.getElementById("password").value;
-
-		$.ajax({
-			url:'/xsrf',
-			type:"get",
-			async:false,
-			success:function(data){
-				//alert("xsrf ok!");
-				
-				$.postJSON('/login',
-				{username:userName,password: password},
-				function(data){
-				if (data.code >= 0) {
-					location.href='../static/main.html';
-					// TODO
-					//location.href='../static/partials/cron_jobs.html';
-				} else {
-					alert("login fail!");
-				}
-			});
-			}
-		});
-	}
-	
-	function getCookie(name) {
-	    var r = document.cookie.match("\\b" + name + "=([^;]*)\\b");
-	    return r ? r[1] : undefined;
-	}
-
-	jQuery.postJSON = function(url, args, callback) {
-	    args._xsrf = getCookie("XSRF-TOKEN");
-	   // alert(getCookie("XSRF-TOKEN"));
-	    $.ajax({url: url, data: $.param(args), type: "POST",
-	        success: function(response) {
-	        callback(response);
-	    }});
-	};
-
-
-	// clear data
-	function dataClear(){
-		document.getElementById("errMsg").innerHTML="";
-		document.getElementById("userName").value="";
-		document.getElementById("password").value="";
-	}
-	
-
-	//-->
-</script> 
-<div class="login_box">
-<form name="loginForm" onsubmit="return false;">
-<div>
-<input type="hidden" id="_xsrf" name="_xsrf">
-	<div><div class="login_pic"></div> </div> 
-	<div>
-		<p><span id="errMsg" class="errMsg"></span><p>
+	<div id="footer" class="form-actions">
+		<div class="pull-left">
+			Powered by <a href="http://www.vpsmate.org/" target="_blank">VPSMate</a>
+		</div>
+		<div class="pull-right" style="text-align:right">
+			<a class="comment btn btn-mini" href="http://bbs.vpsmate.org/" target="_blank"><i class="icon-comment"></i> 用户交流社区</a>
+		</div>
 	</div>
-	<div>
-	<p><span class="input_label">User Name:</span>
-	<input class="input" type="text" name="userName" id="userName" placeholder="Username"/>
-	</p></div>
-    <div>
-    <p><span class="input_label">Password:</span>
-    <input class="input" type="password" name="password" id="password" placeholder="Password"/></p>
-    </div>
-    <div>
-    
-    <p><input type="button" name="button" class="button" value="Login" onclick="userLogin();"/>
-    <input type="button" name="clear" class="button" value="Clear" onclick="dataClear();"/></p>
-    </div>
+
+	<div id="_authconfirm" class="modal hide fade">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			<h3>登录即将超时</h3>
+		</div>
+		<div class="modal-body">
+			<p>您的登录即将超时，是否要继续访问？</p>
+		</div>
+		<div class="modal-footer">
+			<a class="btn" data-dismiss="modal" aria-hidden="true" href="#/logout">退出登录</a>
+			<button class="btn btn-primary" onclick="$('#_authconfirm').modal('hide')" ng-click="_authrenew()">继续访问</button>
+		</div>
+	</div>
 </div>
-</form>
+
+<div class="well" style="width:300px;margin:20px auto;" ng-show="!navbar_loaded">
+	<img src="images/loading.gif" style="margin-right:5px"> VPSMate 正在加载，请稍候...
 </div>
+
+<!--[if lte IE 6]>
+<script src="lib/ie6warning/warning.js"></script>
+<script>document.body.innerHTML='';e("lib/ie6warning/")</script>
+<![endif]-->
+<script src="lib/angular/1.0.2/angular.min.js"></script>
+<script src="lib/jquery/jquery-1.8.2.min.js"></script>
+<script src="lib/bootstrap/js/bootstrap.min.js"></script>
+<script src="lib/codemirror/codemirror-compressed.js"></script>
+<script src="lib/md5/md5.min.js"></script>
+<script>
+var location_path = location.pathname.replace(/(\s+)?\/$/, '');
+var template_path = '';
+</script>
+<script src="js.min/vpsmate.all.js"></script>
+<!-- Uncomment it in dev mode -->
+<!--
+<script src="js/vpsmate.js"></script>
+<script src="js/services.js"></script>
+<script src="js/controllers/controllers.js"></script>
+<script src="js/controllers/service.js"></script>
+<script src="js/controllers/file.js"></script>
+<script src="js/controllers/site.js"></script>
+<script src="js/controllers/database.js"></script>
+<script src="js/controllers/utils.js"></script>
+<script src="js/directives.js"></script>
+<script src="js/filters.js"></script>
+-->
+
 </body>
 </html>
