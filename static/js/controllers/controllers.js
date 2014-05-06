@@ -28,7 +28,7 @@ function($scope, $rootScope, $location, Module, Message, Request){
 		$scope.loginText = '登录中...';
 		Request.post('/login', {
 			username: $scope.username,
-			password: rawpwd ? $scope.password : hex_md5($scope.password)
+			password: rawpwd ? $scope.password : $scope.password
 		}, function(data){
 			if (data.code >= 0) {
 				$scope.showLoginForm = false;
