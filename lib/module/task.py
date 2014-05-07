@@ -102,8 +102,13 @@ def readcron(filename,option):
 				t_dayofmon=text[2]
 				t_month=text[3]
 				t_dayofweek=text[4]
+				#for Desktop Version
+				#cronlist.append([i,text])
+				#for Web Version Add-start
+				cron={'id':i,'minute':t_min,'hour':t_hour,'dayofmon':t_dayofmon,'month':t_month,'dayofweek':t_dayofweek,'cmd':t_cmd}
+				cronlist.append(cron)
 				i=i+1
-				cronlist.append([i,text])
+				#for Web Version Add-end
 		####for multiple cron file
 		#		arr_cron.append([filename,arr])
 		#print 'arr:',arr_cron

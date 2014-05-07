@@ -1976,7 +1976,7 @@ class OperationHandler(RequestHandler):
             t_hour = self.get_argument('hour', '')
             t_day = self.get_argument('day', '')
             t_month = self.get_argument('month', '')
-            t_weekday = self.get_argument('weekday', '')
+            t_weekday = self.get_argument('dayofweek', '')
             t_cmd = self.get_argument('cmd', '')
             if action == 'add':
                 self.write({'code': 0, 'msg': 'Excute Successfully', 'data': task.addcron(username,t_minute,t_hour,t_day,t_month,t_weekday,t_cmd)}) 

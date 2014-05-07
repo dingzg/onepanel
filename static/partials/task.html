@@ -5,7 +5,168 @@
 	<div class="module-header">
 		<h3>计划任务</h3>
 	</div>
-	
-	<p>计划任务管理功能即将推出，敬请留意 VPSMate 的版本更新。<a href="#/setting?s=upversion">检测新版本</a></p>
-	<p>使用计划任务，可以帮助您定期执行某些重复性任务，如网站及数据库备份。</p>
+		<div id="task" ng-init="loadTasks()">
+			<div class="widget widget-table">
+				<div class="widget-header">
+					<i class="icon-list-alt"></i><h3>计划任务管理</h3>
+					<div class="pull-right" style="margin-right:10px">
+						<button class="btn btn-small" ng-click="taskaddconfirm()"><i class="icon-plus"></i> 添加新任务</button>
+					</div>
+				</div>
+				<div class="widget-content">
+					<table class="table table-striped table-hover table-bordered">
+						<thead>
+							<tr>
+								<th style="width:50px" class="td-right">ID</th>
+								<th style="width:100px">分钟(0-59)</th>
+								<th style="width:100px">小时(0-23)</th>
+								<th style="width:100px">日期(1-31)</th>
+								<th style="width:100px">月份(1-12)</th>
+								<th style="width:100px">星期(0-6)</th>
+								<th style="width:200px">命令</th>
+								<th style="width:100px">操作</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="task in tasks">
+								<td class="td-right">{{task.id}}</td>
+								<td>{{task.minute}}</td>
+								<td>{{task.hour}}</td>
+								<td>{{task.dayofmon}}</td>
+								<td>{{task.month}}</td>
+								<td>{{task.dayofweek}}</td>
+								<td>{{task.cmd}}</td>
+								<td>
+									<button class="btn btn-mini" ng-click="taskmodconfirm($index)">修改</button>
+									<button class="btn btn-mini" ng-click="taskdelconfirm($index)">删除</button>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="taskaddconfirm" class="modal hide fade">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h3>添加新任务</h3>
+  </div>
+  <div class="modal-body">
+	<form class="form-horizontal" onsubmit="return false">
+		<div class="control-group">
+			<label class="control-label">分钟(0-59)：</label>
+			<div class="controls">
+				<input style="width:100px" type="text" ng-model="curtask.minute">
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">小时(0-23)：</label>
+			<div class="controls">
+				<input style="width:100px" type="text" ng-model="curtask.hour">
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">日期(1-31)：</label>
+			<div class="controls">
+				<input style="width:100px" type="text" ng-model="curtask.dayofmon">
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">月份(1-12)：</label>
+			<div class="controls">
+				<input style="width:100px" type="text" ng-model="curtask.month">
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">星期(0-6)：</label>
+			<div class="controls">
+				<input style="width:100px" type="text" ng-model="curtask.dayofweek">
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">命令：</label>
+			<div class="controls">
+				<input type="text" ng-model="curtask.cmd">
+			</div>
+		</div>
+	</form>
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+    <button class="btn btn-primary" onclick="$('#taskaddconfirm').modal('hide')" ng-click="addTask()">添加</button>
+  </div>
+</div>
+
+<div id="usermodconfirm" class="modal hide fade">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h3>修改用户 {{curtask.id}}</h3>
+  </div>
+  <div class="modal-body">
+	<form class="form-horizontal" onsubmit="return false">
+		<div class="control-group">
+			<label class="control-label">备注：</label>
+			<div class="controls">
+				<input type="text" ng-model="curtask.pw_gecos">
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">用户组：</label>
+			<div class="controls">
+				<select style="width:150px" ng-model="curtask.pw_gname" ng-options="group.gr_name as group.gr_name for group in groups"></select>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">主目录：</label>
+			<div class="controls">
+				<input type="text" ng-model="curtask.pw_dir">
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">SHELL路径：</label>
+			<div class="controls">
+				<input type="text" ng-model="curtask.pw_shell">
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">锁定帐户：</label>
+			<div class="controls">
+				<label class="checkbox"><input type="checkbox" ng-model="curtask.lock">是否锁定该帐户？</label>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">修改密码：</label>
+			<div class="controls">
+				<input type="password" ng-model="curtask.pw_passwd" placeholder="如不想修改密码，请留空">
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">确认密码：</label>
+			<div class="controls">
+				<input type="password" ng-model="curtask.pw_passwdc" placeholder="如不想修改密码，请留空">
+			</div>
+		</div>
+	</form>
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+    <button class="btn btn-primary" onclick="$('#usermodconfirm').modal('hide')" ng-click="usermod()">确定</button>
+  </div>
+</div>
+
+<div id="taskdelconfirm" class="modal hide fade">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h3>删除任务 {{curtask.id}}</h3>
+  </div>
+  <div class="modal-body">
+	<p>确定要删除任务 {{curtask.id}} 吗？</p>
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+    <button class="btn btn-primary" onclick="$('#taskdelconfirm').modal('hide')" ng-click="taskDel()">确认删除</button>
+  </div>
 </div>

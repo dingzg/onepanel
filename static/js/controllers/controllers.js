@@ -166,11 +166,82 @@ function($scope, Module){
 }];
 
 var TaskCtrl = [
-'$scope', 'Module',
-function($scope, Module){
+'$scope', '$routeParams', 'Module', 'Timeout', 'Request',
+function($scope, $routeParams, Module, Timeout, Request){
 	var module = 'task';
 	Module.init(module, '计划任务');
 	$scope.loaded = true;
+
+	$scope.loadTasks = function(){
+		Request.post('/operation/task', {
+			'action': 'list'
+		}, function(data){
+			if (data.code == 0) {
+				$scope.tasks = data.data;
+			}
+		}, false, true);
+	};
+
+	$scope.taskaddconfirm = function(){
+		$scope.curtask = {
+			'minute': '',
+			'hour': '',
+			'day': '',
+			'month': '',
+			'dayofweek': '',
+			'cmd': ''
+		};
+		$('#taskaddconfirm').modal();
+	};
+	$scope.addTask = function(){
+		var taskdata = $scope.curtask;
+		taskdata['action'] = 'add';
+		Request.post('/operation/task', taskdata, function(data){
+			if (data.code == 0) {
+				$scope.loadTasks();
+			}
+		});
+	};
+	$scope.usermodconfirm = function(i){
+		var curuser = $scope.users[i];
+		$scope.curuser = {
+			'pw_name': curuser.pw_name,
+			'pw_gecos': curuser.pw_gecos,
+			'pw_gname': curuser.pw_gname,
+			'pw_dir': curuser.pw_dir,
+			'pw_shell': curuser.pw_shell,
+			'pw_passwd': '',
+			'pw_passwdc': '',
+			'lock': curuser.lock
+		};
+		$('#usermodconfirm').modal();
+	};
+	$scope.usermod = function(){
+		var userdata = $scope.curuser;
+		userdata['action'] = 'usermod';
+		Request.post('/operation/user', userdata, function(data){
+			if (data.code == 0) {
+				$scope.loadTasks();
+			}
+		});
+	};
+	$scope.userdelconfirm = function(i){
+		var curuser = $scope.users[i];
+		$scope.curuser = {
+			'pw_name': curuser.pw_name
+		};
+		$('#userdelconfirm').modal();
+	};
+	$scope.taskDel = function(){
+		Request.post('/operation/task', {
+			'action': 'del',
+			'id': $scope.curtask['id']
+		}, function(data){
+			if (data.code == 0) {
+				$scope.loadTasks();
+			}
+		});
+	};
 }];
 
 var SettingCtrl = [
