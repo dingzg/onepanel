@@ -1,4 +1,4 @@
-angular.module('vpsmate.filters', []).
+angular.module('onepanel.filters', []).
 filter('iftrue', function(){
 	return function(input, cond) {
 		return cond ? input : '';

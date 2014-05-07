@@ -8,7 +8,7 @@ function($scope, $rootScope, $location, Module, Message, Request){
 	$scope.showLoginForm = true;
 	$scope.username = '';
 	$scope.password = '';
-
+/*
 	var password_strength = function(pwd) {
 		var strongRegex = new RegExp("^(?=.{8,})(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*\\W).*$", "g");
 		var mediumRegex = new RegExp("^(?=.{7,})(((?=.*[A-Z])(?=.*[a-z]))|((?=.*[A-Z])(?=.*[0-9]))|((?=.*[a-z])(?=.*[0-9]))).*$", "g");
@@ -23,7 +23,7 @@ function($scope, $rootScope, $location, Module, Message, Request){
 			return '低';
 		}
 	};
-
+*/
 	$scope.login = function(rawpwd) {
 		$scope.loginText = '登录中...';
 		Request.post('/login', {
@@ -38,6 +38,7 @@ function($scope, $rootScope, $location, Module, Message, Request){
 					$location.path(path);
 					if (section) $location.search('s', section);
 				} else {
+					/*
 					// need to check the password strength
 					$scope.pwdStrength = password_strength($scope.password);
 					if ($scope.pwdStrength != '高') {
@@ -50,6 +51,9 @@ function($scope, $rootScope, $location, Module, Message, Request){
 						$location.path(path);
 						if (section) $location.search('s', section);
 					}
+					*/
+					$location.path(path);
+					if (section) $location.search('s', section);
 				}
 			} else {
 				$scope.loginText = '登录';
@@ -186,7 +190,7 @@ function($scope, $routeParams, Module, Timeout, Request){
 		$scope.curtask = {
 			'minute': '',
 			'hour': '',
-			'day': '',
+			'dayofmon': '',
 			'month': '',
 			'dayofweek': '',
 			'cmd': ''
@@ -202,40 +206,40 @@ function($scope, $routeParams, Module, Timeout, Request){
 			}
 		});
 	};
-	$scope.usermodconfirm = function(i){
-		var curuser = $scope.users[i];
-		$scope.curuser = {
-			'pw_name': curuser.pw_name,
-			'pw_gecos': curuser.pw_gecos,
-			'pw_gname': curuser.pw_gname,
-			'pw_dir': curuser.pw_dir,
-			'pw_shell': curuser.pw_shell,
-			'pw_passwd': '',
-			'pw_passwdc': '',
-			'lock': curuser.lock
+	$scope.taskmodconfirm = function(i){
+		var curtask = $scope.tasks[i];
+		$scope.curtask = {
+			'id': curtask.id,
+			'minute': curtask.minute,
+			'hour': curtask.hour,
+			'dayofmon': curtask.dayofmon,
+			'month': curtask.month,
+			'dayofweek': curtask.dayofweek,
+			'cmd': curtask.cmd
 		};
-		$('#usermodconfirm').modal();
+		$('#taskmodconfirm').modal();
 	};
-	$scope.usermod = function(){
-		var userdata = $scope.curuser;
-		userdata['action'] = 'usermod';
-		Request.post('/operation/user', userdata, function(data){
+	$scope.taskMod = function(){
+		var taskdata = $scope.curtask;
+		taskdata['action'] = 'mod';
+		taskdata['id'] =String($scope.curtask['id'])
+		Request.post('/operation/task', taskdata, function(data){
 			if (data.code == 0) {
 				$scope.loadTasks();
 			}
 		});
 	};
-	$scope.userdelconfirm = function(i){
-		var curuser = $scope.users[i];
-		$scope.curuser = {
-			'pw_name': curuser.pw_name
+	$scope.taskdelconfirm = function(i){
+		var curtask = $scope.tasks[i];
+		$scope.curtask = {
+			'id': curtask.id
 		};
-		$('#userdelconfirm').modal();
+		$('#taskdelconfirm').modal();
 	};
 	$scope.taskDel = function(){
 		Request.post('/operation/task', {
 			'action': 'del',
-			'id': $scope.curtask['id']
+			'id': String($scope.curtask['id'])
 		}, function(data){
 			if (data.code == 0) {
 				$scope.loadTasks();
@@ -334,13 +338,13 @@ function($scope, $routeParams, Module, Timeout, Message, Request, version){
 					if (data.msg) $scope.upverMessage = data.msg;
 					if (data.status == 'finish' && data.code == 0) {
 						// restart service
-						$scope.upverMessage = '正在重启 VPSMate...';
+						$scope.upverMessage = '正在重启 onepanel...';
 						Timeout(function(){
 							Request.post('/backend/service_restart', {
-								service: 'vpsmate'
+								service: 'onepanel'
 							}, function(data){
 								var getRestartStatus = function(){
-									Request.get('backend/service_restart_vpsmate', function(data){
+									Request.get('backend/service_restart_onepanel', function(data){
 										Message.setInfo('')
 										if (data.msg) $scope.upverMessage = data.msg;
 										Timeout(getRestartStatus, 500, module);
@@ -363,16 +367,16 @@ function($scope, $routeParams, Module, Timeout, Message, Request, version){
 			Timeout(getUpdateStatus, 500, module);
 		});
 	};
-	$scope.restartMessage = '是否要重启 VPSMate？';
+	$scope.restartMessage = '是否要重启 onepanel？';
 	$scope.restart = function(){
 		$scope.restartMessage = '正在重启，请稍候...'
 		$scope.showRestartBtn = false;
 		Timeout(function(){
 			Request.post('/backend/service_restart', {
-				service: 'vpsmate'
+				service: 'onepanel'
 			}, function(data){
 				var getRestartStatus = function(){
-					Request.get('backend/service_restart_vpsmate', function(data){
+					Request.get('backend/service_restart_onepanel', function(data){
 						if (data.msg) $scope.restartMessage = data.msg;
 						Timeout(getRestartStatus, 500, module);
 					}, function(data, status) {	// error occur because server is terminate

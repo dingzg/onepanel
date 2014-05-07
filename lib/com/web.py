@@ -1974,7 +1974,7 @@ class OperationHandler(RequestHandler):
         elif action in ('add', 'mod'):
             t_minute = self.get_argument('minute', '')
             t_hour = self.get_argument('hour', '')
-            t_day = self.get_argument('day', '')
+            t_day = self.get_argument('dayofmon', '')
             t_month = self.get_argument('month', '')
             t_weekday = self.get_argument('dayofweek', '')
             t_cmd = self.get_argument('cmd', '')

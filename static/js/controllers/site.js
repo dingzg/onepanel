@@ -380,7 +380,7 @@ function($scope, Module, $routeParams, $location, Request, Backend, Timeout){
 		time_unit: 'h'
 	};
 	$scope.setting = angular.copy(server_tmpl);
-	$scope.gen_by_vpsmate = action == 'new' ? true : false;
+	$scope.gen_by_onepanel = action == 'new' ? true : false;
 
 	var global_rewrite_templates = {
 		'301_1': 'rewrite ^ http://example.com$request_uri? permanent',
@@ -455,7 +455,7 @@ function($scope, Module, $routeParams, $location, Request, Backend, Timeout){
 				var d = data.data;
 				// init setting
 				var s = $scope.setting;
-				$scope.gen_by_vpsmate = d._vpsmate;
+				$scope.gen_by_onepanel = d._onepanel;
 				for (i in d.server_names) {
 					var name = d.server_names[i];
 					s.server_names.push({'name': name, 'default_name': name=='_'});

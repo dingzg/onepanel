@@ -1,4 +1,4 @@
-angular.module('vpsmate.directives', []).
+angular.module('onepanel.directives', []).
 directive('navbar', function(){
 	return {
 		restrict: 'A',
@@ -15,7 +15,7 @@ directive('navbar', function(){
 							<span class="icon-bar"></span>\
 							<span class="icon-bar"></span>\
 						</button>\
-						<a class="brand" href="#/main">VPSMate</a>\
+						<a class="brand" href="#/main">OnePanel</a>\
 						<div class="nav-collapse collapse">\
 							<ul class="nav">\
 								<li ng-class="\'active\' | ifmatch:[currentItem,\'main\']"><a href="#/main">首页</a></li>\
