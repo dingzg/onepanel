@@ -12,6 +12,32 @@ function($scope, Module, Request){
 	};
 }];
 
+var UtilsCmdCtrl = [
+'$scope', '$routeParams', 'Module', 'Timeout', 'Request',
+function($scope, $routeParams, Module, Timeout, Request){
+	var module = 'utils.cmd';
+	Module.init(module, '命令行');
+	Module.initSection('cmd');
+	$scope.loaded = true;
+	$scope.cmdVal = '';
+	$scope.cmdContent='';
+		
+	$scope.loadCmd = function(){
+		Request.post('/operation/shell', {
+			'action': '',
+			'cmd':'ls'
+		}, function(data){
+				alert(data.code);
+			if (data.code == 0) {
+			
+				$scope.cmdResult = (data.data).replace(/\n/g,'<br>');
+				alert($scope.cmdResult);
+			//	$scope.users = data.data;
+			}
+		}, false, true);
+	};
+}];
+
 var UtilsUserCtrl = [
 '$scope', '$routeParams', 'Module', 'Timeout', 'Request',
 function($scope, $routeParams, Module, Timeout, Request){
