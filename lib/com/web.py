@@ -396,7 +396,7 @@ class SitePackageHandler(RequestHandler):
         # fetch from api
         if not packages:
             http = tornado.httpclient.AsyncHTTPClient()
-            response = yield tornado.gen.Task(http.fetch, 'http://www.vpsmate.org/api/site_packages')
+            response = yield tornado.gen.Task(http.fetch, 'http://www.onepanel.org/api/site_packages')
             if response.error:
                 self.write({'code': -1, 'msg': u'获取网站系统列表失败！'})
                 self.finish()
@@ -449,7 +449,7 @@ class SitePackageHandler(RequestHandler):
         filepath = os.path.join(self.settings['package_path'], filenameext)
 
         self.write({'code': 0, 'msg': '', 'data': {
-            'url': 'http://www.vpsmate.org/api/site_packages/download?name=%s&version=%s' % (name, version),
+            'url': 'http://www.onepanel.org/api/site_packages/download?name=%s&version=%s' % (name, version),
             'path': filepath,
             'temp': workpath,
         }})
@@ -700,7 +700,7 @@ class SettingHandler(RequestHandler):
             # detect new version daily
             if force or time.time() > lastcheck + 86400:
                 http = tornado.httpclient.AsyncHTTPClient()
-                response = yield tornado.gen.Task(http.fetch, 'http://www.vpsmate.org/api/latest')
+                response = yield tornado.gen.Task(http.fetch, 'http://www.onepanel.org/api/latest')
                 if response.error:
                     self.write({'code': -1, 'msg': u'获取新版本信息失败！'})
                 else:
@@ -2460,7 +2460,7 @@ class BackendHandler(RequestHandler):
         
         # install the latest version
         http = tornado.httpclient.AsyncHTTPClient()
-        response = yield tornado.gen.Task(http.fetch, 'http://www.vpsmate.org/api/latest')
+        response = yield tornado.gen.Task(http.fetch, 'http://www.onepanel.org/api/latest')
         if response.error:
             self._update_job('update', -1, u'获取版本信息失败！')
             return
@@ -2469,23 +2469,23 @@ class BackendHandler(RequestHandler):
         initscript = u'%s/tools/init.d/%s/onepanel' % (root_path, distname)
         steps = [
             {'desc': u'正在下载安装包...',
-                'cmd': u'wget -q "%s" -O %s/vpsmate.tar.gz' % (downloadurl, data_path),
+                'cmd': u'wget -q "%s" -O %s/onepanel.tar.gz' % (downloadurl, data_path),
             }, {'desc': u'正在创建解压目录...',
-                'cmd': u'mkdir %s/vpsmate' % data_path,
+                'cmd': u'mkdir %s/onepanel' % data_path,
             }, {'desc': u'正在解压安装包...',
-                'cmd': u'tar zxmf %s/vpsmate.tar.gz -C %s/vpsmate' % (data_path, data_path),
+                'cmd': u'tar zxmf %s/onepanel.tar.gz -C %s/onepanel' % (data_path, data_path),
             }, {'desc': u'正在删除旧版本...',
                 'cmd': u'find %s -mindepth 1 -maxdepth 1 -path %s -prune -o -exec rm -rf {} \;' % (root_path, data_path),
             }, {'desc': u'正在复制新版本...',
-                'cmd': u'find %s/vpsmate -mindepth 1 -maxdepth 1 -exec cp -r {} %s \;' % (data_path, root_path),
+                'cmd': u'find %s/onepanel -mindepth 1 -maxdepth 1 -exec cp -r {} %s \;' % (data_path, root_path),
             }, {'desc': u'正在删除旧的服务脚本...',
-                'cmd': u'rm -f /etc/init.d/vpsmate',
+                'cmd': u'rm -f /etc/init.d/onepanel',
             }, {'desc': u'正在安装新的服务脚本...',
-                'cmd': u'cp %s /etc/init.d/vpsmate' % initscript,
+                'cmd': u'cp %s /etc/init.d/onepanel' % initscript,
             }, {'desc': u'正在更改脚本权限...',
-                'cmd': u'chmod +x /etc/init.d/vpsmate %s/config.py %s/start_server.py' % (root_path, root_path),
+                'cmd': u'chmod +x /etc/init.d/onepanel %s/config.py %s/start_server.py' % (root_path, root_path),
             }, {'desc': u'正在删除安装临时文件...',
-                'cmd': u'rm -rf %s/vpsmate %s/vpsmate.tar.gz' % (data_path, data_path),
+                'cmd': u'rm -rf %s/onepanel %s/onepanel.tar.gz' % (data_path, data_path),
             },
         ]
         for step in steps:
@@ -2737,16 +2737,16 @@ class BackendHandler(RequestHandler):
             if dist_verint == 5:
                 if self.settings['dist_name'] == 'redhat':
                     # backup system version info
-                    cmds.append('cp -f /etc/redhat-release /etc/redhat-release.vpsmate')
-                    cmds.append('cp -f /etc/issue /etc/issue.vpsmate')
+                    cmds.append('cp -f /etc/redhat-release /etc/redhat-release.onepanel')
+                    cmds.append('cp -f /etc/issue /etc/issue.onepanel')
                     #cmds.append('rpm -e redhat-release-notes-5Server --nodeps')
                     cmds.append('rpm -e redhat-release-5Server --nodeps')
 
             for rpm in yum.yum_reporpms[repo][dist_verint][arch]:
                 cmds.append('rpm -U %s' % rpm)
 
-            cmds.append('cp -f /etc/issue.vpsmate /etc/issue')
-            cmds.append('cp -f /etc/redhat-release.vpsmate /etc/redhat-release')
+            cmds.append('cp -f /etc/issue.onepanel /etc/issue')
+            cmds.append('cp -f /etc/redhat-release.onepanel /etc/redhat-release')
 
         elif repo in ('epel', 'CentALT', 'ius'):
             # CentALT and ius depends on epel
@@ -2787,7 +2787,7 @@ class BackendHandler(RequestHandler):
                             line = '#%s' % line
                             lines.append(line)
                             # add a mirrorlist line
-                            metalink = 'http://www.vpsmate.org/mirrorlist?'\
+                            metalink = 'http://www.onepanel.org/mirrorlist?'\
                                 'repo=centalt-%s&arch=$basearch' % self.settings['dist_verint']
                             line = 'mirrorlist=%s\n' % metalink
                         lines.append(line)
