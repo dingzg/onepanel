@@ -11,6 +11,7 @@
 	<div class="tabbable" ng-show="installed">
 		<ul class="nav nav-tabs">
 			<li ng-class="'active' | iftrue:activeTabName=='base'"><a href="#base" ng-click="sec('base')" data-toggle="tab">基本信息</a></li>
+			<li ng-class="'active' | iftrue:activeTabName=='baseconfig'"><a href="#baseconfig" ng-click="sec('configfile')" data-toggle="tab">基本配置</a></li>
 			<li ng-class="'active' | iftrue:activeTabName=='configfile'"><a href="#configfile" ng-click="sec('configfile')" data-toggle="tab">配置文件</a></li>
 			<li ng-class="'active' | iftrue:activeTabName=='logfile'"><a href="#logfile" ng-click="sec('logfile')" data-toggle="tab">日志</a></li>
 			<li ng-class="'active' | iftrue:activeTabName=='update'"><a href="#update" ng-click="sec('update')" data-toggle="tab">升级</a></li>
@@ -19,6 +20,21 @@
 		<div class="tab-content">
 			<div class="tab-pane" ng-class="'active' | iftrue:activeTabName=='base'" id="base">
 				<div srvbase ng-init="name='Apache';pkg='apache';service='httpd';"></div>
+			</div>
+			<div class="tab-pane" ng-class="'active' | iftrue:activeTabName=='baseconfig'" id="baseconfig">
+				<form class="form-horizontal form-horizontal-small" ng-submit="saveApacheConfig()" onsubmit="return false">
+					<div class="control-group">
+						<label class="control-label" for="ip">项目1</label>
+						<div class="controls">
+							<input ng-model="ip" ng-disabled="processing" type="text" id="ip" placeholder="项目1">
+						</div>
+					</div>
+					<div class="control-group">
+						<div class="controls">
+							<button type="submit" class="btn" ng-disabled="processing">提交修改</button>
+						</div>
+					</div>
+				</form>
 			</div>
 			<div class="tab-pane" ng-class="'active' | iftrue:activeTabName=='configfile'" id="configfile">
 				<div srvfile ng-init="items=[{name:'主目录', path:'/etc/httpd', isdir:true}];"></div>

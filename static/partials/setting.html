@@ -10,13 +10,14 @@
 
 	<div class="tabbable">
 		<ul class="nav nav-tabs">
-			<li ng-class="'active' | iftrue:activeTabName=='authinfo'"><a href="#authinfo" ng-click="sec('authinfo')" data-toggle="tab">登录设置</a></li>
+			<!--<li ng-class="'active' | iftrue:activeTabName=='authinfo'"><a href="#authinfo" ng-click="sec('authinfo')" data-toggle="tab">登录设置</a></li>-->
 			<li ng-class="'active' | iftrue:activeTabName=='serverinfo'"><a href="#serverinfo" ng-click="sec('serverinfo')" data-toggle="tab">服务设置</a></li>
 			<li ng-class="'active' | iftrue:activeTabName=='accesskey'"><a href="#accesskey" ng-click="sec('accesskey')" data-toggle="tab">远程控制</a></li>
 			<li ng-class="'active' | iftrue:activeTabName=='upversion'"><a href="#upversion" ng-click="sec('upversion')" data-toggle="tab">版本升级</a></li>
 			<li ng-class="'active' | iftrue:activeTabName=='restart'"><a href="#restart" ng-click="sec('restart')" data-toggle="tab">重启服务</a></li>
 		</ul>
 		<div class="tab-content">
+			<!--
 			<div class="tab-pane" ng-class="'active' | iftrue:activeTabName=='authinfo'" id="authinfo" ng-init="loadAuthInfo()">
 				<form class="form-horizontal form-horizontal-small" ng-submit="updateAuthInfo()" onsubmit="return false">
 					<div class="control-group">
@@ -52,6 +53,7 @@
 					</div>
 				</form>
 			</div>
+			-->
 			<div class="tab-pane" ng-class="'active' | iftrue:activeTabName=='serverinfo'" id="serverinfo" ng-init="loadServerInfo()">
 				<form class="form-horizontal form-horizontal-small" ng-submit="updateServerInfo()" onsubmit="return false">
 					<div class="control-group">

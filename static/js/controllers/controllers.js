@@ -253,7 +253,7 @@ var SettingCtrl = [
 function($scope, $routeParams, Module, Timeout, Message, Request, version){
 	var module = 'setting';
 	Module.init(module, '系统设置');
-	Module.initSection('authinfo');
+	Module.initSection('serverinfo');
 	$scope.version = version;
 	$scope.showUpdateBtn = false;
 	$scope.showRestartBtn = true;
