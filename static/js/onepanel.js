@@ -1,4 +1,4 @@
-var releasetime = '2013-01-18 18:32:57 CST';
+var releasetime = '2014-05-13 19:57:57 CST';
 var _v = new Date(releasetime.replace(/-/g, '/')).getTime()/1000;
 //if (1) _v += Math.random();	// ie test mode
 angular.module('onepanel', ['onepanel.services', 'onepanel.directives', 'onepanel.filters']).
