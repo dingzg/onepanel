@@ -54,20 +54,14 @@ yum_reporpms = {
     },
     'CentALT': {
         5: {
-            #'x86_64': ('http://centos.alt.ru/repository/centos/5/x86_64/centalt-release-5-3.noarch.rpm', ),
-            #'i386':   ('http://centos.alt.ru/repository/centos/5/i386/centalt-release-5-3.noarch.rpm', ),
-            #'i686':   ('http://centos.alt.ru/repository/centos/5/i386/centalt-release-5-3.noarch.rpm', ),
-            'x86_64': ('http://mirrors.vpsmate.org/CentALT/repository/centos/5/x86_64/centalt-release-5-3.noarch.rpm', ),
-            'i386':   ('http://mirrors.vpsmate.org/CentALT/repository/centos/5/i386/centalt-release-5-3.noarch.rpm', ),
-            'i686':   ('http://mirrors.vpsmate.org/CentALT/repository/centos/5/i386/centalt-release-5-3.noarch.rpm', ),
+            'x86_64': ('http://centos.alt.ru/repository/centos/5/x86_64/centalt-release-5-3.noarch.rpm', ),
+            'i386':   ('http://centos.alt.ru/repository/centos/5/i386/centalt-release-5-3.noarch.rpm', ),
+            'i686':   ('http://centos.alt.ru/repository/centos/5/i386/centalt-release-5-3.noarch.rpm', ),
         },
         6: {
-            #'x86_64': ('http://centos.alt.ru/pub/repository/centos/6/x86_64/centalt-release-6-1.noarch.rpm', ),
-            #'i386':   ('http://centos.alt.ru/pub/repository/centos/6/i386/centalt-release-6-1.noarch.rpm', ),
-            #'i686':   ('http://centos.alt.ru/pub/repository/centos/6/i386/centalt-release-6-1.noarch.rpm', ),
-            'x86_64': ('http://mirrors.vpsmate.org/CentALT/repository/centos/6/x86_64/centalt-release-6-1.noarch.rpm', ),
-            'i386':   ('http://mirrors.vpsmate.org/CentALT/repository/centos/6/i386/centalt-release-6-1.noarch.rpm', ),
-            'i686':   ('http://mirrors.vpsmate.org/CentALT/repository/centos/6/i386/centalt-release-6-1.noarch.rpm', ),
+            'x86_64': ('http://centos.alt.ru/pub/repository/centos/6/x86_64/centalt-release-6-1.noarch.rpm', ),
+            'i386':   ('http://centos.alt.ru/pub/repository/centos/6/i386/centalt-release-6-1.noarch.rpm', ),
+            'i686':   ('http://centos.alt.ru/pub/repository/centos/6/i386/centalt-release-6-1.noarch.rpm', ),
         },
     },
     'ius': {
