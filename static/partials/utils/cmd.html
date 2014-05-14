@@ -4,12 +4,18 @@
 	<div class="module-header">
 		<h3>命令行</h3>
 	</div>
-	<div class="tab-pane" ng-class="'active'" id="cmd" ng-init="loadCmd()">
-	<div id="cmdContent">{{cmdResult}}<div>
+	<div class="tab-pane" ng-class="'active'" id="cmd">
+			<div style="height:50px;">
+				<div class="pull-left">
+					<div class="input-prepend input-append">
+						<form onsubmit="return false;" ng-submit="getCmdResult()">
+							<span class="add-on" style="padding-left:15px">命令：</span>
+							<input class="input-xxlarge" type="text" ng-model="cmdVal" id="cmdVal">
+							<button class="btn" type="submit">执行 <i class="icon-arrow-right"></i></button>
+						</form>
+					</div>
+				</div>
+			</div>
+			<div class="breadcrumb" id="cmdContent" ></div>
 	</div>
 </div>
-<script>
-function init(){
-	alert("a");
-}
-</script>
