@@ -19,23 +19,22 @@ function($scope, $routeParams, Module, Timeout, Request){
 	Module.init(module, '命令行');
 	Module.initSection('cmd');
 	$scope.loaded = true;
-	$scope.cmdVal = '';
-	$scope.cmdContent='';
-		
-	$scope.loadCmd = function(){
-		Request.post('/operation/shell', {
-			'action': '',
-			'cmd':'ls'
-		}, function(data){
-				alert(data.code);
-			if (data.code == 0) {
-			
-				$scope.cmdResult = (data.data).replace(/\n/g,'<br>');
-				alert($scope.cmdResult);
-			//	$scope.users = data.data;
-			}
-		}, false, true);
-	};
+//$scope.loadCmd = function(){};
+
+	$scope.getCmdResult = function(){
+	var oldVal = $("#cmdContent").html();
+	Request.post('/operation/shell', {
+		'action': '',
+		'cmd':$scope.cmdVal
+	}, function(data){
+		if (data.code == 0) {
+			$("#cmdContent").html(oldVal + '<br />' + (data.data).replace(/\n/g,'<br />'));
+		//	$scope.cmdResult = oldVal + '\r\n' + (data.data).replace(/\n/g,'<br />');
+		//	$scope.users = data.data;
+		}
+	});
+};
+	
 }];
 
 var UtilsUserCtrl = [
