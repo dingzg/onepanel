@@ -66,14 +66,14 @@ yum_reporpms = {
     },
     'ius': {
         5: {
-            'x86_64': ('http://dl.iuscommunity.org/pub/ius/stable/Redhat/5/x86_64/ius-release-1.0-10.ius.el5.noarch.rpm', ),
-            'i386':   ('http://dl.iuscommunity.org/pub/ius/stable/Redhat/5/i386/ius-release-1.0-10.ius.el5.noarch.rpm', ),
-            'i686':   ('http://dl.iuscommunity.org/pub/ius/stable/Redhat/5/i386/ius-release-1.0-10.ius.el5.noarch.rpm', ),
+            'x86_64': ('http://dl.iuscommunity.org/pub/ius/stable/Redhat/5/x86_64/ius-release-1.0-11.ius.el5.noarch.rpm', ),
+			'i386':   ('http://dl.iuscommunity.org/pub/ius/stable/Redhat/5/i386/ius-release-1.0-11.ius.el5.noarch.rpm', ),
+            'i686':   ('http://dl.iuscommunity.org/pub/ius/stable/Redhat/5/i386/ius-release-1.0-11.ius.el5.noarch.rpm', ),
         },
         6: {
-            'x86_64': ('http://dl.iuscommunity.org/pub/ius/stable/Redhat/6/x86_64/ius-release-1.0-10.ius.el6.noarch.rpm', ),
-            'i386':   ('http://dl.iuscommunity.org/pub/ius/stable/Redhat/6/i386/ius-release-1.0-10.ius.el6.noarch.rpm', ),
-            'i686':   ('http://dl.iuscommunity.org/pub/ius/stable/Redhat/6/i386/ius-release-1.0-10.ius.el6.noarch.rpm', ),
+            'x86_64': ('http://dl.iuscommunity.org/pub/ius/stable/Redhat/6/x86_64/ius-release-1.0-11.ius.el6.noarch.rpm', ),
+            'i386':   ('http://dl.iuscommunity.org/pub/ius/stable/Redhat/6/i386/ius-release-1.0-11.ius.el6.noarch.rpm', ),
+            'i686':   ('http://dl.iuscommunity.org/pub/ius/stable/Redhat/6/i386/ius-release-1.0-11.ius.el6.noarch.rpm', ),
         },
     },
 }
