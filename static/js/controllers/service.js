@@ -231,6 +231,48 @@ function($scope, $routeParams, Module, Request){
 			$scope.checking = false;
 		});
 	};
+
+	$scope.loadApacheBaseConfig = function(){
+		Request.post('/operation/apache', {
+			'action': 'getsettings'
+		}, function(data){
+			if (data.code == 0) {
+				$scope.ServerRoot = data.data.ServerRoot;
+				$scope.PidFile = data.data.PidFile;
+				$scope.ServerName = data.data.ServerName;
+				$scope.AddDefaultCharset = data.data.AddDefaultCharset;
+				$scope.Timeout = data.data.Timeout;
+				$scope.KeepAlive = data.data.KeepAlive;
+				$scope.MaxKeepAliveRequests = data.data.MaxKeepAliveRequests;
+				$scope.KeepAliveTimeout = data.data.KeepAliveTimeout;
+				$scope.Listen = data.data.Listen;
+				$scope.ServerAdmin = data.data.ServerAdmin;
+			}
+		});
+	};
+
+	$scope.saveApacheBaseConfig = function(){
+		$scope.processing = true;
+		Request.post('/operation/apache', {
+			'action': 'mod',
+			'ServerRoot': $scope.ServerRoot,
+			'PidFile': $scope.PidFile,
+			'ServerName': $scope.ServerName,
+			'AddDefaultCharset': $scope.AddDefaultCharset,
+			'Timeout': $scope.Timeout,
+			'KeepAlive': $scope.KeepAlive,
+			'MaxKeepAliveRequests': $scope.MaxKeepAliveRequests,
+			'KeepAliveTimeout': $scope.KeepAliveTimeout,
+			'Listen': $scope.Listen,
+			'ServerAdmin': $scope.ServerAdmin
+		}, function(data){
+			if (data.code == 0) {
+				$scope.loadApacheBaseConfig();
+				}
+			$scope.processing = false;
+		});
+	};
+
 }];
 
 var ServiceVsftpdCtrl = [
