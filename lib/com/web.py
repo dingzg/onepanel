@@ -1988,6 +1988,56 @@ class OperationHandler(RequestHandler):
             self.write({'code': 0, 'msg': 'Excute Successfully', 'data': task.delcron(username,t_id)}) 
         return
 
+    def apache(self):
+        action = self.get_argument('action', '')
+        if action == 'getsettings':
+            a_ServerRoot = apache.cfg_get('ServerRoot')
+            a_PidFile = apache.cfg_get('PidFile')
+            a_ServerName = apache.cfg_get('ServerName')
+            a_AddDefaultCharset = apache.cfg_get('AddDefaultCharset')
+            a_Timeout = apache.cfg_get('Timeout')
+            a_KeepAlive = apache.cfg_get('KeepAlive')
+            a_MaxKeepAliveRequests = apache.cfg_get('MaxKeepAliveRequests')
+            a_KeepAliveTimeout = apache.cfg_get('KeepAliveTimeout')
+            a_Listen = apache.cfg_get('Listen')
+            a_ServerAdmin = apache.cfg_get('ServerAdmin')
+            self.write({'code': 0, 'msg': '获取 Apache配置信息成功！', 'data': {
+               'ServerRoot': a_ServerRoot,
+               'PidFile': a_PidFile,
+               'ServerName': a_ServerName,
+               'AddDefaultCharset': a_AddDefaultCharset,
+               'Timeout': a_Timeout,
+               'KeepAlive': a_KeepAlive,
+               'MaxKeepAliveRequests': a_MaxKeepAliveRequests,
+               'KeepAliveTimeout': a_KeepAliveTimeout,
+               'Listen': a_Listen,
+               'ServerAdmin': a_ServerAdmin,
+            }})
+        elif action == 'mod':
+            a_ServerRoot = self.get_argument('ServerRoot', '')
+            a_PidFile = self.get_argument('PidFile', '')
+            a_ServerName = self.get_argument('ServerName', '')
+            a_AddDefaultCharset = self.get_argument('AddDefaultCharset', '')
+            a_Timeout = self.get_argument('Timeout', '')
+            a_KeepAlive = self.get_argument('KeepAlive', '')
+            a_MaxKeepAliveRequests = self.get_argument('MaxKeepAliveRequests', '')
+            a_KeepAliveTimeout = self.get_argument('KeepAliveTimeout', '')
+            a_Listen = self.get_argument('Listen', '')
+            a_ServerAdmin = self.get_argument('ServerAdmin', '')
+
+            if a_ServerRoot: apache.cfg_set('ServerRoot', a_ServerRoot)
+            if a_PidFile: apache.cfg_set('PidFile', a_PidFile)
+            if a_ServerName: apache.cfg_set('ServerName', a_ServerName)
+            if a_AddDefaultCharset: apache.cfg_set('AddDefaultCharset', a_AddDefaultCharset)
+            if a_Timeout: apache.cfg_set('Timeout', a_Timeout)
+            if a_KeepAlive: apache.cfg_set('KeepAlive', a_KeepAlive)
+            if a_MaxKeepAliveRequests: apache.cfg_set('MaxKeepAliveRequests', a_MaxKeepAliveRequests)
+            if a_KeepAliveTimeout: apache.cfg_set('KeepAliveTimeout', a_KeepAliveTimeout)
+            if a_Listen: apache.cfg_set('Listen', a_Listen)
+            if a_ServerAdmin: apache.cfg_set('ServerAdmin', a_ServerAdmin)
+
+            self.write({'code': 0, 'msg': 'SSH 服务配置保存成功！'})
+        return
 
 class PageHandler(RequestHandler):
     """Return some page.
