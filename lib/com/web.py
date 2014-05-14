@@ -2516,7 +2516,7 @@ class BackendHandler(RequestHandler):
             return
         versioninfo = tornado.escape.json_decode(response.body)
         downloadurl = versioninfo['download']
-        initscript = u'%s/tools/init.d/%s/onepanel' % (root_path, distname)
+        initscript = u'%s/bin/init.d/%s/onepanel' % (root_path, distname)
         steps = [
             {'desc': u'正在下载安装包...',
                 'cmd': u'wget -q "%s" -O %s/onepanel.tar.gz' % (downloadurl, data_path),
