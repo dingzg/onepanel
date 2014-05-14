@@ -221,7 +221,7 @@ class Install(object):
 
         print 
         print '* The URL of your OnePanel is:',
-        print 'http://%s:8888/' % self.detect_ip()
+        print 'http://%s:6666/' % self.detect_ip()
         print 
 
         pass

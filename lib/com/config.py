@@ -39,7 +39,7 @@ class Config(object):
             default_configs = {
                 'server': {
                     'ip': '*',
-                    'port': '8888',
+                    'port': '6666',
                     'lastcheckupdate': 0,
                     'updateinfo': ''
                 },

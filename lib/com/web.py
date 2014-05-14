@@ -755,7 +755,7 @@ class SettingHandler(RequestHandler):
                 return
 
             ip = self.get_argument('ip', '*')
-            port = self.get_argument('port', '8888')
+            port = self.get_argument('port', '6666')
 
             if ip != '*' and ip != '':
                 if not utils.is_valid_ip(_u(ip)):
