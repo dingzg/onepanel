@@ -396,7 +396,7 @@ class SitePackageHandler(RequestHandler):
         # fetch from api
         if not packages:
             http = tornado.httpclient.AsyncHTTPClient()
-            response = yield tornado.gen.Task(http.fetch, 'http://www.onepanel.org/api/site_packages')
+            response = yield tornado.gen.Task(http.fetch, 'http://api.onepanel.org/site_packages')
             if response.error:
                 self.write({'code': -1, 'msg': u'获取网站系统列表失败！'})
                 self.finish()
@@ -449,7 +449,7 @@ class SitePackageHandler(RequestHandler):
         filepath = os.path.join(self.settings['package_path'], filenameext)
 
         self.write({'code': 0, 'msg': '', 'data': {
-            'url': 'http://www.onepanel.org/api/site_packages/download?name=%s&version=%s' % (name, version),
+            'url': 'http://api.onepanel.org/site_packages/download?name=%s&version=%s' % (name, version),
             'path': filepath,
             'temp': workpath,
         }})
@@ -700,7 +700,7 @@ class SettingHandler(RequestHandler):
             # detect new version daily
             if force or time.time() > lastcheck + 86400:
                 http = tornado.httpclient.AsyncHTTPClient()
-                response = yield tornado.gen.Task(http.fetch, 'http://www.onepanel.org/api/latest')
+                response = yield tornado.gen.Task(http.fetch, 'http://api.onepanel.org/latest')
                 if response.error:
                     self.write({'code': -1, 'msg': u'获取新版本信息失败！'})
                 else:
@@ -2460,7 +2460,7 @@ class BackendHandler(RequestHandler):
         
         # install the latest version
         http = tornado.httpclient.AsyncHTTPClient()
-        response = yield tornado.gen.Task(http.fetch, 'http://www.onepanel.org/api/latest')
+        response = yield tornado.gen.Task(http.fetch, 'http://api.onepanel.org/latest')
         if response.error:
             self._update_job('update', -1, u'获取版本信息失败！')
             return
