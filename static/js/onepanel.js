@@ -74,7 +74,7 @@ value('version', {
 	'version': '1.0',
 	'build': '10',
 	'releasetime': releasetime,
-	'changelog': 'http://www.onepanel.org/changelog'
+	'changelog': 'http://onepanel.org/download/'
 });
 
 var Auth = {
