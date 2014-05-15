@@ -128,7 +128,7 @@ def callbackable(func):
             return result
     return wrapper
 
-def loadconfig(cfgfile, detail=False):
+def loadconfig(cfgfile, delimiter,detail=False):
     """Read config file and parse config item to dict.
     """
     #if not cfgfile: cfgfile = SSHCFG
@@ -147,7 +147,7 @@ def loadconfig(cfgfile, detail=False):
             else:
                 commented = False
 
-            fs = re.split('\s+', line, 1)
+            fs = re.split(delimiter, line, 1)
             if len(fs) != 2: continue
 
             item = fs[0].strip()
@@ -174,21 +174,21 @@ def loadconfig(cfgfile, detail=False):
             
     return settings
 
-def cfg_get(cfgfile,item,detail=False, config=None):
+def cfg_get(cfgfile,item,delimiter,detail=False, config=None):
     """Get value of a config item.
     """
-    if not config: config = loadconfig(cfgfile,detail=detail)      
+    if not config: config = loadconfig(cfgfile,delimiter,detail=detail)      
     if config.has_key(item):
         return config[item]
     else:
         return None
 
-def cfg_set(cfgfile,item, value, commented=False, config=None):
+def cfg_set(cfgfile,item, value,delimiter, commented=False, config=None):
     """Set value of a config item.
     """
     #cfgfile = SSHCFG
-    v = cfg_get(cfgfile,item, detail=True, config=config)
-
+    v = cfg_get(cfgfile,item,delimiter,detail=True, config=config)
+    if delimiter=='\s+':delimiter=' '
     if v:
         # detect if value change
         if v['commented'] == commented and v['value'] == value: return True
@@ -208,9 +208,9 @@ def cfg_set(cfgfile,item, value, commented=False, config=None):
                                 pass
                             else:
                                 # comment this line
-                                lines.append('#%s %s\n' % (item, value))
+                                lines.append('#%s%s%s\n' % (item, delimiter, value))
                         else:
-                            lines.append('%s %s\n' % (item, value))
+                            lines.append('%s%s%s\n' % (item, delimiter, value))
                     else:
                         if commented:
                             # do not allow change comment value
@@ -219,27 +219,27 @@ def cfg_set(cfgfile,item, value, commented=False, config=None):
                         else:
                             # append a new line after comment line
                             lines.append(line)
-                            lines.append('%s %s\n' % (item, value))
+                            lines.append('%s%s%s\n' % (item, delimiter, value))
                 else:
                     lines.append(line)
         with open(v['file'], 'w') as f: f.write(''.join(lines))
     else:
         # append to the end of file
-        with open(inifile, 'a') as f:
-            f.write('\n%s%s = %s\n' % (commented and '#' or '', item, value))
+        with open(cfgfile, 'a') as f:
+            f.write('\n%s%s%s\n' % (item, delimiter, value))
     
     return True
 
-def cfg_get_array(cfgfile,configs_array):
+def cfg_get_array(cfgfile,configs_array,delimiter):
     q_keys=configs_array.keys()
     for  key in q_keys:
-        q_value=cfg_get(cfgfile,key)
+        q_value=cfg_get(cfgfile,key,delimiter)
         configs_array[key]=q_value
     return configs_array
 
-def cfg_set_array(self,cfgfile,configs_array): 
+def cfg_set_array(self,cfgfile,configs_array,delimiter): 
     q_keys=configs_array.keys()
     for  key in q_keys:
         q_value = self.get_argument(key, '')
-        if q_value: cfg_set(cfgfile,key, q_value)
+        if q_value: cfg_set(cfgfile, key, q_value, delimiter)
     return True

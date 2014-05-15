@@ -28,7 +28,7 @@ if __name__ == '__main__':
 import re
 import pexpect
 import shlex
-
+from utils import cfg_get, cfg_set
 
 SSHCFG = '/etc/ssh/sshd_config'
 

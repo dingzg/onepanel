@@ -26,9 +26,9 @@
 # Date			  Author			 Reason
 # ________________  _________________ ______________________________________________________________
 # 2014/05/14		Chen DengYue	   Create
-#from utils import cfg_get, cfg_set,loadconfig
 from utils import cfg_get_array, cfg_set_array
 config_file='/etc/httpd/conf/httpd.conf'
+delimiter='\s+'
 
 base_configs = {
 	'ServerRoot': '',
@@ -52,7 +52,7 @@ base_configs = {
 #					 1  array_configs
 #---------------------------------------------------------------------------------------------------
 def loadApacheConfigs():
-	array_configs=cfg_get_array(config_file,base_configs)
+	array_configs=cfg_get_array(config_file,base_configs,delimiter)
 	return array_configs
 # 
 #---------------------------------------------------------------------------------------------------
@@ -64,5 +64,5 @@ def loadApacheConfigs():
 #					 1 
 #---------------------------------------------------------------------------------------------------
 def modApacheConfigs(self):
-	result=cfg_set_array(self,config_file,base_configs)
+	result=cfg_set_array(self,config_file,base_configs,delimiter)
 	return result
