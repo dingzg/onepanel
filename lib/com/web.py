@@ -700,7 +700,7 @@ class SettingHandler(RequestHandler):
             # detect new version daily
             if force or time.time() > lastcheck + 86400:
                 http = tornado.httpclient.AsyncHTTPClient()
-                response = yield tornado.gen.Task(http.fetch, 'http://api.onepanel.org/latest')
+                response = yield tornado.gen.Task(http.fetch, 'https://github.com/dingzg/onepanel/raw/master/version')
                 if response.error:
                     self.write({'code': -1, 'msg': u'获取新版本信息失败！'})
                 else:
