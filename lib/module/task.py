@@ -86,8 +86,7 @@ def readcron(filename,option):
 	with open(filename) as f:
 		i=0
 		for line in f:
-			line=line.replace('\r','')
-			line=line.replace('\n','')
+			line = line.strip()
 			if re.findall("^\d|^\*|^\-",line):
 				if option == "other":
 					text= re.split("\s+",line,5)

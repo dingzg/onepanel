@@ -128,10 +128,10 @@ def callbackable(func):
             return result
     return wrapper
 
-def loadconfig(cfgfile=None, detail=False):
+def loadconfig(cfgfile, detail=False):
     """Read config file and parse config item to dict.
     """
-    if not cfgfile: cfgfile = SSHCFG
+    #if not cfgfile: cfgfile = SSHCFG
 
     settings = {}
     with open(cfgfile) as f:
@@ -174,20 +174,20 @@ def loadconfig(cfgfile=None, detail=False):
             
     return settings
 
-def cfg_get(item, detail=False, config=None):
+def cfg_get(cfgfile,item, detail=False, config=None):
     """Get value of a config item.
     """
-    if not config: config = loadconfig(detail=detail)
+    if not config: config = loadconfig(cfgfile,detail=detail)
     if config.has_key(item):
         return config[item]
     else:
         return None
 
-def cfg_set(item, value, commented=False, config=None):
+def cfg_set(cfgfile,item, value, commented=False, config=None):
     """Set value of a config item.
     """
-    cfgfile = SSHCFG
-    v = cfg_get(item, detail=True, config=config)
+    #cfgfile = SSHCFG
+    v = cfg_get(cfgfile,item, detail=True, config=config)
 
     if v:
         # detect if value change
