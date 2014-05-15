@@ -27,20 +27,14 @@
 # ________________  _________________ ______________________________________________________________
 # 2014/05/14		Chen DengYue	   Create
 from utils import cfg_get_array, cfg_set_array
-config_file='/etc/httpd/conf/httpd.conf'
+config_file='/etc/httpd/conf/my.conf'
 delimiter='\s+'
 
 base_configs = {
-	'ServerRoot': '',
-	'PidFile': '',
-	'ServerName': '',
-	'AddDefaultCharset': '',
-	'Timeout': '',
-	'KeepAlive': '',
-	'MaxKeepAliveRequests': '',
-	'KeepAliveTimeout': '',
-	'Listen': '',
-	'ServerAdmin': '',
+	'basedir': '',
+	'character-sets-dir': '',
+	'datadir': '',
+	'lanuage': '',
 }
 
 # 
