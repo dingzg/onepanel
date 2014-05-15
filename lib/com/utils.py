@@ -174,10 +174,10 @@ def loadconfig(cfgfile, detail=False):
             
     return settings
 
-def cfg_get(cfgfile,item, detail=False, config=None):
+def cfg_get(cfgfile,item,detail=False, config=None):
     """Get value of a config item.
     """
-    if not config: config = loadconfig(cfgfile,detail=detail)
+    if not config: config = loadconfig(cfgfile,detail=detail)      
     if config.has_key(item):
         return config[item]
     else:
@@ -228,4 +228,18 @@ def cfg_set(cfgfile,item, value, commented=False, config=None):
         with open(inifile, 'a') as f:
             f.write('\n%s%s = %s\n' % (commented and '#' or '', item, value))
     
+    return True
+
+def cfg_get_array(cfgfile,configs_array):
+    q_keys=configs_array.keys()
+    for  key in q_keys:
+        q_value=cfg_get(cfgfile,key)
+        configs_array[key]=q_value
+    return configs_array
+
+def cfg_set_array(self,cfgfile,configs_array): 
+    q_keys=configs_array.keys()
+    for  key in q_keys:
+        q_value = self.get_argument(key, '')
+        if q_value: cfg_set(cfgfile,key, q_value)
     return True

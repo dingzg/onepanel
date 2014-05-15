@@ -26,8 +26,8 @@
 # Date			  Author			 Reason
 # ________________  _________________ ______________________________________________________________
 # 2014/05/14		Chen DengYue	   Create
-from utils import cfg_get, cfg_set,loadconfig
-
+#from utils import cfg_get, cfg_set,loadconfig
+from utils import cfg_get_array, cfg_set_array
 config_file='/etc/httpd/conf/httpd.conf'
 
 base_configs = {
@@ -49,14 +49,11 @@ base_configs = {
 #Parameters		  : None
 #					 
 #Return value	  :
-#					 1  base_configs
+#					 1  array_configs
 #---------------------------------------------------------------------------------------------------
 def loadApacheConfigs():
-	q_keys=base_configs.keys()
-	for  key in q_keys:
-		q_value=cfg_get(config_file,key)
-		base_configs[key]=q_value
-	return base_configs
+	array_configs=cfg_get_array(config_file,base_configs)
+	return array_configs
 # 
 #---------------------------------------------------------------------------------------------------
 #Function Name	  : modApacheConfigs
@@ -67,8 +64,5 @@ def loadApacheConfigs():
 #					 1 
 #---------------------------------------------------------------------------------------------------
 def modApacheConfigs(self):
-	q_keys=base_configs.keys()
-	for  key in q_keys:
-		q_value = self.get_argument(key, '')
-		if q_value: cfg_set(config_file,key, q_value)
-	return True
+	result=cfg_set_array(self,config_file,base_configs)
+	return result
