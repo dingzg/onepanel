@@ -11,6 +11,7 @@
 	<div class="tabbable" ng-show="installed">
 		<ul class="nav nav-tabs">
 			<li ng-class="'active' | iftrue:activeTabName=='base'"><a href="#base" ng-click="sec('base')" data-toggle="tab">基本信息</a></li>
+			<li ng-class="'active' | iftrue:activeTabName=='baseconfig'"><a href="#baseconfig" ng-click="sec('configfile')" data-toggle="tab">基本配置</a></li>
 			<li ng-class="'active' | iftrue:activeTabName=='configfile'"><a href="#configfile" ng-click="sec('configfile')" data-toggle="tab">配置文件</a></li>
 			<li ng-class="'active' | iftrue:activeTabName=='update'"><a href="#update" ng-click="sec('update')" data-toggle="tab">升级</a></li>
 			<li ng-class="'active' | iftrue:activeTabName=='uninstall'"><a href="#uninstall" ng-click="sec('uninstall')" data-toggle="tab">卸载</a></li>
@@ -18,6 +19,75 @@
 		<div class="tab-content">
 			<div class="tab-pane" ng-class="'active' | iftrue:activeTabName=='base'" id="base">
 				<div srvbase ng-init="name='vsftpd';pkg='vsftpd';service='vsftpd';"></div>
+			</div>
+			<div class="tab-pane" ng-class="'active' | iftrue:activeTabName=='baseconfig'" id="baseconfig"  ng-init="loadApacheBaseConfig()">
+				<form class="form-horizontal form-horizontal-small" ng-submit="saveApacheBaseConfig()" onsubmit="return false">
+					<div class="control-group">
+						<label class="control-label" for="ServerRoot">ServerRoot</label>
+						<div class="controls" style="margin-left: 160px">
+							<input ng-model="ServerRoot" ng-disabled="processing" type="text" id="ServerRoot" placeholder="ServerRoot" value="{{ServerRoot}}">
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label" for="PidFile">PidFile</label>
+						<div class="controls" style="margin-left: 160px">
+							<input ng-model="PidFile" ng-disabled="processing" type="text" id="PidFile" placeholder="PidFile" value="{{PidFile}}">
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label" for="ServerName">ServerName</label>
+						<div class="controls" style="margin-left: 160px">
+							<input ng-model="ServerName" ng-disabled="processing" type="text" id="ServerName" placeholder="ServerName" value="{{ServerName}}">
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label" for="AddDefaultCharset">AddDefaultCharset</label>
+						<div class="controls" style="margin-left: 160px">
+							<input ng-model="AddDefaultCharset" ng-disabled="processing" type="text" id="AddDefaultCharset" placeholder="AddDefaultCharset" value="{{AddDefaultCharset}}">
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label" for="Timeout">Timeout</label>
+						<div class="controls" style="margin-left: 160px">
+							<input ng-model="Timeout" ng-disabled="processing" type="text" id="Timeout" placeholder="Timeout" value="{{Timeout}}">
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label" for="KeepAlive">KeepAlive</label>
+						<div class="controls" style="margin-left: 160px">
+							<input ng-model="KeepAlive" ng-disabled="processing" type="text" id="KeepAlive" placeholder="KeepAlive" value="{{KeepAlive}}">
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label" for="MaxKeepAliveRequests">MaxKeepAliveRequests</label>
+						<div class="controls" style="margin-left: 160px">
+							<input ng-model="MaxKeepAliveRequests" ng-disabled="processing" type="text" id="MaxKeepAliveRequests" placeholder="MaxKeepAliveRequests" value="{{MaxKeepAliveRequests}}">
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label" for="KeepAliveTimeout">KeepAliveTimeout</label>
+						<div class="controls" style="margin-left: 160px">
+							<input ng-model="KeepAliveTimeout" ng-disabled="processing" type="text" id="KeepAliveTimeout" placeholder="KeepAliveTimeout" value="{{KeepAliveTimeout}}">
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label" for="Listen">Listen</label>
+						<div class="controls" style="margin-left: 160px">
+							<input ng-model="Listen" ng-disabled="processing" type="text" id="Listen" placeholder="Listen" value="{{Listen}}">
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label" for="ServerAdmin">ServerAdmin</label>
+						<div class="controls" style="margin-left: 160px">
+							<input ng-model="ServerAdmin" ng-disabled="processing" type="text" id="ServerAdmin" placeholder="ServerAdmin" value="{{ServerAdmin}}">
+						</div>
+					</div>
+					<div class="control-group">
+						<div class="controls" style="margin-left: 160px">
+							<button type="submit" class="btn" ng-disabled="processing">提交修改</button>
+						</div>
+					</div>
+				</form>
 			</div>
 			<div class="tab-pane" ng-class="'active' | iftrue:activeTabName=='configfile'" id="configfile">
 				<div srvfile ng-init="items=[{name:'主目录', path:'/etc/vsftpd', isdir:true}];"></div>
