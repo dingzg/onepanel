@@ -107,9 +107,17 @@ function($scope, $routeParams, $location, Module, Timeout, Request, version){
 			$scope.upverMessage = data.msg;
 		} else if (data.code == 0) {
 			var v = data.data;
-			if (parseFloat(v.version) > parseFloat(version.version)
-				|| (parseFloat(v.version) == parseFloat(version.version)
-					&& parseInt(v.build) > parseInt(version.build))) {
+			var newv=new Array();
+			var oldv=new Array();
+			newv=v.version.split(".");
+			oldv=version.version.split(".");
+			if (parseFloat(newv[0]) > parseFloat(oldv[0]) 
+				|| (parseFloat(newv[0]) == parseFloat(oldv[0]) 
+					&& parseFloat(newv[1]) > parseFloat(oldv[1])) 
+				|| (parseFloat(newv[0]) == parseFloat(oldv[0]) 
+					&& parseFloat(newv[1]) == parseFloat(oldv[1])
+					&& parseFloat(newv[2]) > parseFloat(oldv[2]))
+					) {
 				$scope.detectVer = false;
 				$scope.hasNewver = true;
 			}
@@ -311,12 +319,20 @@ function($scope, $routeParams, Module, Timeout, Message, Request, version){
 				$scope.upverMessage = data.msg;
 			} else if (data.code == 0) {
 				var v = data.data;
-				if (parseFloat(v.version) > parseFloat(version.version)
-					|| (parseFloat(v.version) == parseFloat(version.version)
-						&& parseInt(v.build) > parseInt(version.build))) {
+				var newv=new Array();
+				var oldv=new Array();
+				newv=v.version.split(".");
+				oldv=version.version.split(".");
+				if (parseFloat(newv[0]) > parseFloat(oldv[0]) 
+					|| (parseFloat(newv[0]) == parseFloat(oldv[0]) 
+						&& parseFloat(newv[1]) > parseFloat(oldv[1])) 
+					|| (parseFloat(newv[0]) == parseFloat(oldv[0]) 
+						&& parseFloat(newv[1]) == parseFloat(oldv[1])
+						&& parseFloat(newv[2]) > parseFloat(oldv[2]))
+					) {
 					$scope.upverMessage = '<table class="table table-condensed">'
 						+ '<thead><tr><th colspan="2">有可用的新版本</th></tr></thead>'
-						+ '<tbody><tr><td>版本信息：</td><td>v'+v.version+' b'+v.build+'</td></tr>'
+						+ '<tbody><tr><td>版本信息：</td><td>'+v.version+'</td></tr>'
 						+ '<tr><td>发布时间：</td><td>'+v.releasetime+'</td></tr>'
 						+ '<tr><td>变更记录：</td><td><a href="'+v.changelog+'" target="_blank">'
 						+ '查看版本变更记录</a></td></tr></tbody></table>';

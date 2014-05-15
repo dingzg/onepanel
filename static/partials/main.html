@@ -5,7 +5,7 @@
 	<div class="module-header">
 		<h3>欢迎使用 OnePanel！</h3>
 		<p>
-			当前版本：v{{version.version}} b{{version.build}}&nbsp;&nbsp;
+			当前版本：{{version.version}}&nbsp;&nbsp;
 			<button class="btn btn-mini" ng-click="checkUpdate()" style="display:none" ng-show="!detectVer">
 				{{ '有新的可用版本，点此更新' | iftrue:hasNewver }}
 				{{ '检测新版本' | iftrue:!hasNewver }}

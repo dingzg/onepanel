@@ -71,8 +71,8 @@ run(['$rootScope', '$location', 'Request', function($rootScope, $location, Reque
 	$rootScope.$proxyroot = location_path;
 }]).
 value('version', {
-	'version': '1.0',
-	'build': '10',
+	'version': '0.0.1',
+	'build': '0',
 	'releasetime': releasetime,
 	'changelog': 'http://onepanel.org/download/'
 });
