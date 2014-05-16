@@ -2482,20 +2482,26 @@ class BackendHandler(RequestHandler):
         
         # install the latest version
         http = tornado.httpclient.AsyncHTTPClient()
-        response = yield tornado.gen.Task(http.fetch, 'http://api.onepanel.org/latest')
+        response = yield tornado.gen.Task(http.fetch, 'https://github.com/dingzg/onepanel/raw/master/version')
         if response.error:
             self._update_job('update', -1, u'获取版本信息失败！')
             return
         versioninfo = tornado.escape.json_decode(response.body)
         downloadurl = versioninfo['download']
         initscript = u'%s/bin/init.d/%s/onepanel' % (root_path, distname)
+
+        print 'root_path=' + root_path
+        print 'data_path=' + data_path
+        print 'distname=' + distname
+        print 'downloadurl=' + downloadurl
+
         steps = [
             {'desc': u'正在下载安装包...',
                 'cmd': u'wget -q "%s" -O %s/onepanel.tar.gz' % (downloadurl, data_path),
             }, {'desc': u'正在创建解压目录...',
                 'cmd': u'mkdir %s/onepanel' % data_path,
             }, {'desc': u'正在解压安装包...',
-                'cmd': u'tar zxmf %s/onepanel.tar.gz -C %s/onepanel' % (data_path, data_path),
+                'cmd': u'tar zxmf %s/onepanel.tar.gz -C %s' % (data_path, data_path),
             }, {'desc': u'正在删除旧版本...',
                 'cmd': u'find %s -mindepth 1 -maxdepth 1 -path %s -prune -o -exec rm -rf {} \;' % (root_path, data_path),
             }, {'desc': u'正在复制新版本...',
@@ -2513,6 +2519,7 @@ class BackendHandler(RequestHandler):
         for step in steps:
             desc = _u(step['desc'])
             cmd = _u(step['cmd'])
+            print 'cmd='+cmd
             self._update_job('update', 2, desc)
             result, output = yield tornado.gen.Task(call_subprocess, self, cmd)
             if result != 0:
