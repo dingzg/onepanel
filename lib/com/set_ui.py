@@ -33,7 +33,7 @@ def SetUI(settings):
         (r'/backend/(.+)', web.BackendHandler),
         (r'/sitepackage/(.+)', web.SitePackageHandler),
         (r'/client/(.+)', web.ClientHandler),
-        (r'/((?:css|js|js.min|lib|partials|images|favicon\.ico|robots\.txt)(?:\/.*)?)',
+        (r'/((?:css|js|js.min|lang|lib|partials|images|favicon\.ico|robots\.txt)(?:\/.*)?)',
             web.StaticFileHandler, {'path': settings['static_path']}),
         (r'/($)', web.StaticFileHandler,
             {'path': settings['static_path'] + '/index.html'}),

@@ -27,7 +27,7 @@
 # ________________  _________________ ______________________________________________________________
 # 2014/05/14		Chen DengYue	   Create
 from utils import cfg_get_array, cfg_set_array
-config_file='/etc/vsftp/vsftpd.conf'
+config_file='/etc/vsftpd/vsftpd.conf'
 delimiter='='
 
 base_configs = {
