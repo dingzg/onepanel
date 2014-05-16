@@ -699,7 +699,7 @@ class SettingHandler(RequestHandler):
             # detect new version daily
             if force or time.time() > lastcheck + 86400:
                 http = tornado.httpclient.AsyncHTTPClient()
-                response = yield tornado.gen.Task(http.fetch, 'http://api.onepanel.org/latest')
+                response = yield tornado.gen.Task(http.fetch, 'https://github.com/dingzg/onepanel/raw/master/version')
                 if response.error:
                     self.write({'code': -1, 'msg': u'获取新版本信息失败！'})
                 else:
@@ -1990,11 +1990,11 @@ class OperationHandler(RequestHandler):
     def apache(self):
         action = self.get_argument('action', '')
         if action == 'getsettings':
-            self.write({'code': 0, 'msg': '获取 Apache配置信息成功！', 'data': apache.loadApacheConfigs()})
+            self.write({'code': 0, 'msg': '获取 Apache 配置信息成功！', 'data': apache.loadApacheConfigs()})
         elif action == 'mod':
             self.write({'code': 0, 'msg': 'Apache 服务配置保存成功！','data': apache.modApacheConfigs(self)})
         return
-        
+
     def modifymysql(self):
         action = self.get_argument('action', '')
         if action == 'getsettings':
@@ -2002,7 +2002,15 @@ class OperationHandler(RequestHandler):
         elif action == 'mod':
             self.write({'code': 0, 'msg': 'MySQL 服务配置保存成功！','data': modifymysql.modMySQLConfigs(self)})
         return
-        
+
+    def vsftp(self):
+        action = self.get_argument('action', '')
+        if action == 'getsettings':
+            self.write({'code': 0, 'msg': '获取 vsftp 配置信息成功！', 'data': vsftp.loadVsftpConfigs()})
+        elif action == 'mod':
+            self.write({'code': 0, 'msg': 'vsftp 服务配置保存成功！','data': vsftp.modVsftpConfigs(self)})
+        return
+
 class PageHandler(RequestHandler):
     """Return some page.
     """
