@@ -237,16 +237,7 @@ function($scope, $routeParams, Module, Request){
 			'action': 'getsettings'
 		}, function(data){
 			if (data.code == 0) {
-				$scope.ServerRoot = data.data.ServerRoot;
-				$scope.PidFile = data.data.PidFile;
-				$scope.ServerName = data.data.ServerName;
-				$scope.AddDefaultCharset = data.data.AddDefaultCharset;
-				$scope.Timeout = data.data.Timeout;
-				$scope.KeepAlive = data.data.KeepAlive;
-				$scope.MaxKeepAliveRequests = data.data.MaxKeepAliveRequests;
-				$scope.KeepAliveTimeout = data.data.KeepAliveTimeout;
-				$scope.Listen = data.data.Listen;
-				$scope.ServerAdmin = data.data.ServerAdmin;
+				$scope.baseconfigs = data.data;
 			}
 		});
 	};
@@ -255,16 +246,16 @@ function($scope, $routeParams, Module, Request){
 		$scope.processing = true;
 		Request.post('/operation/apache', {
 			'action': 'mod',
-			'ServerRoot': $scope.ServerRoot,
-			'PidFile': $scope.PidFile,
-			'ServerName': $scope.ServerName,
-			'AddDefaultCharset': $scope.AddDefaultCharset,
-			'Timeout': $scope.Timeout,
-			'KeepAlive': $scope.KeepAlive,
-			'MaxKeepAliveRequests': $scope.MaxKeepAliveRequests,
-			'KeepAliveTimeout': $scope.KeepAliveTimeout,
-			'Listen': $scope.Listen,
-			'ServerAdmin': $scope.ServerAdmin
+			'ServerRoot':           $scope.baseconfigs.ServerRoot,
+			'PidFile':              $scope.baseconfigs.PidFile,
+			'ServerName':           $scope.baseconfigs.ServerName,
+			'AddDefaultCharset':    $scope.baseconfigs.AddDefaultCharset,
+			'Timeout':              $scope.baseconfigs.Timeout,
+			'KeepAlive':            $scope.baseconfigs.KeepAlive,
+			'MaxKeepAliveRequests': $scope.baseconfigs.MaxKeepAliveRequests,
+			'KeepAliveTimeout':     $scope.baseconfigs.KeepAliveTimeout,
+			'Listen':               $scope.baseconfigs.Listen,
+			'ServerAdmin':          $scope.baseconfigs.ServerAdmin
 		}, function(data){
 			if (data.code == 0) {
 				$scope.loadApacheBaseConfig();
@@ -304,6 +295,53 @@ function($scope, $routeParams, Module, Request){
 			$scope.loaded = true;
 			$scope.waiting = false;
 			$scope.checking = false;
+		});
+	};
+
+	$scope.loadVsftpBaseConfig = function(){
+		Request.post('/operation/vsftp', {
+			'action': 'getsettings'
+		}, function(data){
+			if (data.code == 0) {
+				$scope.baseconfigs = data.data;
+			}
+		});
+	};
+
+	$scope.saveVsftpBaseConfig = function(){
+		$scope.processing = true;
+		Request.post('/operation/vsftp', {
+			'action': 'mod',
+			'anonymous_enable':        $scope.baseconfigs.anonymous_enable,
+			'local_enable':            $scope.baseconfigs.local_enable,
+			'local_umask':             $scope.baseconfigs.local_umask,
+			'anon_upload_enable':      $scope.baseconfigs.anon_upload_enable,
+			'anon_mkdir_write_enable': $scope.baseconfigs.anon_mkdir_write_enable,
+			'dirmessage_enable':       $scope.baseconfigs.dirmessage_enable,
+			'xferlog_enable':          $scope.baseconfigs.xferlog_enable,
+			'connect_from_port_20':    $scope.baseconfigs.connect_from_port_20,
+			'chown_upload':            $scope.baseconfigs.chown_upload,
+			'chown_username':          $scope.baseconfigs.chown_username,
+			'xferlog_file':            $scope.baseconfigs.xferlog_file,
+			'xferlog_std_format':      $scope.baseconfigs.xferlog_std_format,
+			'idle_session_timeout':    $scope.baseconfigs.idle_session_timeout,
+			'data_connection_timeout': $scope.baseconfigs.data_connection_timeout,
+			'nopriv_user':             $scope.baseconfigs.nopriv_user,
+			'async_abor_enable':       $scope.baseconfigs.async_abor_enable,
+			'ascii_upload_enable':     $scope.baseconfigs.ascii_upload_enable,
+			'ascii_download_enable':   $scope.baseconfigs.ascii_download_enable,
+			'ftpd_banner':             $scope.baseconfigs.ftpd_banner,
+			'deny_email_enable':       $scope.baseconfigs.deny_email_enable,
+			'banned_email_file':       $scope.baseconfigs.banned_email_file,
+			'chroot_list_enable':      $scope.baseconfigs.chroot_list_enable,
+			'chroot_list_file':        $scope.baseconfigs.chroot_list_file,
+			'max_clients':             $scope.baseconfigs.max_clients,
+			'message_file':            $scope.baseconfigs.message_file
+		}, function(data){
+			if (data.code == 0) {
+				$scope.loadVsftpBaseConfig();
+				}
+			$scope.processing = false;
 		});
 	};
 }];
