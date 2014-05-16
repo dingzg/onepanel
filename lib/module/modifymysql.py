@@ -27,14 +27,14 @@
 # ________________  _________________ ______________________________________________________________
 # 2014/05/14		Chen DengYue	   Create
 from utils import cfg_get_array, cfg_set_array
-config_file='/etc/httpd/conf/my.conf'
-delimiter='\s+'
+
+config_file='/etc/my.cnf'
+delimiter='='
 
 base_configs = {
-	'basedir': '',
-	'character-sets-dir': '',
+	'user': '',
 	'datadir': '',
-	'lanuage': '',
+	'socket': '',
 }
 
 # 
@@ -46,7 +46,7 @@ base_configs = {
 #Return value	  :
 #					 1  array_configs
 #---------------------------------------------------------------------------------------------------
-def loadApacheConfigs():
+def loadMySQLConfigs():
 	array_configs=cfg_get_array(config_file,base_configs,delimiter)
 	return array_configs
 # 
@@ -58,6 +58,6 @@ def loadApacheConfigs():
 #Return value	  :
 #					 1 
 #---------------------------------------------------------------------------------------------------
-def modApacheConfigs(self):
+def modMySQLConfigs(self):
 	result=cfg_set_array(self,config_file,base_configs,delimiter)
 	return result

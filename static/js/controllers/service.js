@@ -392,6 +392,33 @@ function($scope, $rootScope, $routeParams, Module, Message, Request, Backend){
 			}
 		);
 	};
+	
+	$scope.loadedParam = function(){		
+		Request.post('/operation/modifymysql', {
+			'action': 'getsettings'
+		}, function(data){
+			if (data.code == 0) {
+				$scope.user = data.data.user;
+				$scope.datadir = data.data.datadir;
+				$scope.socket = data.data.socket;
+			}
+		});
+	};
+	
+	$scope.saveIfConfig = function(){
+		$scope.processing = true;
+		Request.post('/operation/modifymysql', {
+			'action': 'mod',
+			'user': $scope.user,
+			'datadir': $scope.datadir,
+			'socket': $scope.socket,
+		}, function(data){
+			if (data.code == 0) {
+				$scope.loadedParam();
+				}
+			$scope.processing = false;
+		});
+	};
 }];
 
 var ServiceRedisCtrl = [

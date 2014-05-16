@@ -578,7 +578,6 @@ class QueryHandler(RequestHandler):
 
         self.write(result)
 
-
 class UtilsNetworkHandler(RequestHandler):
     """Handler for network ifconfig.
     """
@@ -1995,7 +1994,15 @@ class OperationHandler(RequestHandler):
         elif action == 'mod':
             self.write({'code': 0, 'msg': 'Apache 服务配置保存成功！','data': apache.modApacheConfigs(self)})
         return
-
+        
+    def modifymysql(self):
+        action = self.get_argument('action', '')
+        if action == 'getsettings':
+            self.write({'code': 0, 'msg': '获取 MySQL配置信息成功！', 'data': modifymysql.loadMySQLConfigs()})
+        elif action == 'mod':
+            self.write({'code': 0, 'msg': 'MySQL 服务配置保存成功！','data': modifymysql.modMySQLConfigs(self)})
+        return
+        
 class PageHandler(RequestHandler):
     """Return some page.
     """
