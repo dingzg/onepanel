@@ -1991,9 +1991,17 @@ class OperationHandler(RequestHandler):
     def apache(self):
         action = self.get_argument('action', '')
         if action == 'getsettings':
-            self.write({'code': 0, 'msg': '获取 Apache配置信息成功！', 'data': apache.loadApacheConfigs()})
+            self.write({'code': 0, 'msg': '获取 Apache 配置信息成功！', 'data': apache.loadApacheConfigs()})
         elif action == 'mod':
             self.write({'code': 0, 'msg': 'Apache 服务配置保存成功！','data': apache.modApacheConfigs(self)})
+        return
+
+    def vsftp(self):
+        action = self.get_argument('action', '')
+        if action == 'getsettings':
+            self.write({'code': 0, 'msg': '获取 vsftp 配置信息成功！', 'data': vsftp.loadVsftpConfigs()})
+        elif action == 'mod':
+            self.write({'code': 0, 'msg': 'vsftp 服务配置保存成功！','data': vsftp.modVsftpConfigs(self)})
         return
 
 class PageHandler(RequestHandler):

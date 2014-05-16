@@ -15,9 +15,9 @@
 # limitations under the License.
 #
 ####################################################################################################
-# Script Name		: apache.py
-# Function Summary  : 1 loadApacheConfigs
-#					  2 modApacheConfigs
+# Script Name		: vsftp.py
+# Function Summary  : 1 loadVsftpConfigs
+#					  2 modVsftpConfigs
 # Parameters		: None
 # Return Code		: None
 # Note				: None
@@ -27,42 +27,57 @@
 # ________________  _________________ ______________________________________________________________
 # 2014/05/14		Chen DengYue	   Create
 from utils import cfg_get_array, cfg_set_array
-config_file='/etc/httpd/conf/httpd.conf'
-delimiter='\s+'
+config_file='/etc/vsftpd/vsftpd.conf'
+delimiter='='
 
 base_configs = {
-	'ServerRoot': '',
-	'PidFile': '',
-	'ServerName': '',
-	'AddDefaultCharset': '',
-	'Timeout': '',
-	'KeepAlive': '',
-	'MaxKeepAliveRequests': '',
-	'KeepAliveTimeout': '',
-	'Listen': '',
-	'ServerAdmin': '',
+	'anonymous_enable': '',
+	'local_enable': '',
+	'local_umask': '',
+	'anon_upload_enable': '',
+	'anon_mkdir_write_enable': '',
+	'dirmessage_enable': '',
+	'xferlog_enable': '',
+	'connect_from_port_20': '',
+	'chown_upload': '',
+	'chown_username': '',
+	'xferlog_file': '',
+	'xferlog_std_format': '',
+	'idle_session_timeout': '',
+	'data_connection_timeout': '',
+	'nopriv_user': '',
+	'async_abor_enable': '',
+	'ascii_upload_enable': '',
+	'ascii_download_enable': '',
+	'ftpd_banner': '',
+	'deny_email_enable': '',
+	'banned_email_file': '',
+	'chroot_list_enable': '',
+	'chroot_list_file': '',
+	'max_clients': '',
+	'message_file': '',
 }
 # 
 #---------------------------------------------------------------------------------------------------
-#Function Name	  : loadApacheConfigs
+#Function Name	  : loadVsftpConfigs
 #Usage			  : 
 #Parameters		  : None
 #					 
 #Return value	  :
 #					 1  array_configs
 #---------------------------------------------------------------------------------------------------
-def loadApacheConfigs():
+def loadVsftpConfigs():
 	array_configs=cfg_get_array(config_file,base_configs,delimiter)
 	return array_configs
 # 
 #---------------------------------------------------------------------------------------------------
-#Function Name	  : modApacheConfigs
+#Function Name	  : modVsftpConfigs
 #Usage			  : 
 #Parameters		  : None
 #					 
 #Return value	  :
 #					 1 
 #---------------------------------------------------------------------------------------------------
-def modApacheConfigs(self):
+def modVsftpConfigs(self):
 	result=cfg_set_array(self,config_file,base_configs,delimiter)
 	return result
