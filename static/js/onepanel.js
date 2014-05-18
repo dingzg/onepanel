@@ -1,4 +1,4 @@
-var releasetime = '2014-05-13 19:57:57 CST';
+var releasetime = '2014-05-15 20:55:30 CST';
 var _v = new Date(releasetime.replace(/-/g, '/')).getTime()/1000;
 //if (1) _v += Math.random();	// ie test mode
 angular.module('onepanel', ['onepanel.services', 'onepanel.directives', 'onepanel.filters']).
@@ -71,8 +71,8 @@ run(['$rootScope', '$location', 'Request', function($rootScope, $location, Reque
 	$rootScope.$proxyroot = location_path;
 }]).
 value('version', {
-	'version': '0.0.1',
-	'build': '0',
+	'version': '0.0.2',
+	'build': '1',
 	'releasetime': releasetime,
 	'changelog': 'http://onepanel.org/download/'
 });
