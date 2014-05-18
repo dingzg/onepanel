@@ -1,6 +1,6 @@
 #OnePanel
 
-* Version: 0.0.1
+* Version: 0.0.2
 * [Website](http://onepanel.org/)
 * [Documentation](http://codex.onepanel.org/)
 * [Forums](http://forum.onepanel.org/) for comments, discussion and community support

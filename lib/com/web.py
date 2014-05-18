@@ -54,9 +54,9 @@ from config import Config
 from async_process import call_subprocess, callbackable
 import paramiko
 
-SERVER_NAME = 'OnePanel'
-OnePanel_VERSION = '1.0'
-OnePanel_BUILD = '10'
+SERVER_NAME = 'onepanel'
+OnePanel_VERSION = '0.0.2'
+OnePanel_BUILD = '1'
 
  
 class Application(tornado.web.Application):
@@ -2488,38 +2488,33 @@ class BackendHandler(RequestHandler):
             return
         versioninfo = tornado.escape.json_decode(response.body)
         downloadurl = versioninfo['download']
+        version = versioninfo['version']
         initscript = u'%s/bin/init.d/%s/onepanel' % (root_path, distname)
-
-        print 'root_path=' + root_path
-        print 'data_path=' + data_path
-        print 'distname=' + distname
-        print 'downloadurl=' + downloadurl
 
         steps = [
             {'desc': u'正在下载安装包...',
-                'cmd': u'wget -q "%s" -O %s/onepanel.tar.gz' % (downloadurl, data_path),
+                'cmd': u'wget -q "%s" -O %s/v%s.tar.gz' % (downloadurl, data_path, version),
             }, {'desc': u'正在创建解压目录...',
                 'cmd': u'mkdir %s/onepanel' % data_path,
             }, {'desc': u'正在解压安装包...',
-                'cmd': u'tar zxmf %s/onepanel.tar.gz -C %s' % (data_path, data_path),
+                'cmd': u'tar zxmf %s/v%s.tar.gz -C %s/onepanel' % (data_path, version, data_path),
             }, {'desc': u'正在删除旧版本...',
                 'cmd': u'find %s -mindepth 1 -maxdepth 1 -path %s -prune -o -exec rm -rf {} \;' % (root_path, data_path),
             }, {'desc': u'正在复制新版本...',
-                'cmd': u'find %s/onepanel -mindepth 1 -maxdepth 1 -exec cp -r {} %s \;' % (data_path, root_path),
+                'cmd': u'find %s/onepanel/onepanel-%s -mindepth 1 -maxdepth 1 -exec cp -r {} %s \;' % (data_path, version, root_path),
             }, {'desc': u'正在删除旧的服务脚本...',
                 'cmd': u'rm -f /etc/init.d/onepanel',
             }, {'desc': u'正在安装新的服务脚本...',
                 'cmd': u'cp %s /etc/init.d/onepanel' % initscript,
             }, {'desc': u'正在更改脚本权限...',
-                'cmd': u'chmod +x /etc/init.d/onepanel %s/config.py %s/start_server.py' % (root_path, root_path),
+                'cmd': u'chmod +x /etc/init.d/onepanel %s/bin/install_config.py %s/bin/start_server.py' % (root_path, root_path),
             }, {'desc': u'正在删除安装临时文件...',
-                'cmd': u'rm -rf %s/onepanel %s/onepanel.tar.gz' % (data_path, data_path),
+                'cmd': u'rm -rf %s/onepanel %s/v%s.tar.gz %s/version' % (data_path, data_path, version, root_path),
             },
         ]
         for step in steps:
             desc = _u(step['desc'])
             cmd = _u(step['cmd'])
-            print 'cmd='+cmd
             self._update_job('update', 2, desc)
             result, output = yield tornado.gen.Task(call_subprocess, self, cmd)
             if result != 0:
