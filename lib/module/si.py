@@ -31,7 +31,6 @@ import subprocess
 import multiprocessing
 from xml.dom.minidom import parseString
 
-
 def strfdelta(tdelta, fmt):
     d = {'days': tdelta.days}
     d['hours'], rem = divmod(tdelta.seconds, 3600)

@@ -22,7 +22,6 @@ import os
 import shlex
 import subprocess
 
-
 def set(service, autostart=True):
 	"""Add or remove service to autostart list.
 	"""

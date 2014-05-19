@@ -38,7 +38,6 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), r'../com'))
 from utils import b2h, ftime
 from si import Server
 
-
 charsets = ('utf-8', 'gb2312', 'gbk', 'gb18030', 'big5', 'euc-jp', 'euc-kr', 'iso-8859-2', 'shift_jis')
 
 
