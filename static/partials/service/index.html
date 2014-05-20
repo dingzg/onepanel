@@ -183,6 +183,14 @@
 								<div srvminiop ng-init="name='NTP';service='ntpd';urlname='ntp'"></div>
 							</td>
 						</tr>
+						<tr>
+							<td style="width:100px">DNS</td>
+							<td style="width:60px" ng-bind-html-unsafe="info['service.sshd']['status'] | service.status"></td>
+							<td class="muted">域名服务器</td>
+							<td style="width:100px">
+								<div srvminiop ng-init="name='SSH';service='sshd';urlname='ssh'"></div>
+							</td>
+						</tr>
 					</tbody>
 				</table>
 			</div>
