@@ -185,10 +185,10 @@
 						</tr>
 						<tr>
 							<td style="width:100px">DNS</td>
-							<td style="width:60px" ng-bind-html-unsafe="info['service.sshd']['status'] | service.status"></td>
+							<td style="width:60px" ng-bind-html-unsafe="info['service.dnsd']['status'] | service.status"></td>
 							<td class="muted">域名服务器</td>
 							<td style="width:100px">
-								<div srvminiop ng-init="name='SSH';service='sshd';urlname='ssh'"></div>
+								<div srvminiop ng-init="name='DNS';service='dnsd';urlname='dns'"></div>
 							</td>
 						</tr>
 					</tbody>
