@@ -28,7 +28,6 @@ if __name__ == '__main__':
 import pexpect
 import shlex
 
-
 def add(disk, size=''):
     """Add a new partition on a disk.
 

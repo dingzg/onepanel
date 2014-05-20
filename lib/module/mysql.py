@@ -31,7 +31,6 @@ import re
 import time
 import utils
 
-
 def updatepwd(pwd, oldpwd):
     """Update password of root.
     """

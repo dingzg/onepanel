@@ -53,6 +53,7 @@ from tornado.escape import to_unicode as _d
 from config import Config
 from async_process import call_subprocess, callbackable
 import paramiko
+import log
 
 SERVER_NAME = 'onepanel'
 OnePanel_VERSION = '0.0.2'

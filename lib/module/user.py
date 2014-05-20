@@ -32,7 +32,6 @@ import grp
 import subprocess
 from utils import b2h, ftime
 
-
 def listuser(fullinfo=True):
     if fullinfo:
         # get lock status from /etc/shadow
