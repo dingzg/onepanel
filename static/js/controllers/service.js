@@ -54,6 +54,7 @@ function($scope, $routeParams, Module, Timeout, Request, Backend){
 	$scope.restart = serviceop('restart');
 }];
 
+
 var ServiceNginxCtrl = [
 '$scope', '$routeParams', 'Module', 'Request',
 function($scope, $routeParams, Module, Request){

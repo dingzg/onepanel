@@ -377,7 +377,7 @@ directive('srvinstall', function(){
 						},
 						'error': function(data){
 							$scope.installMsg = data.msg;
-							Timeout(function(){$scope.installing = false;}, 3000, $rootScope.module);
+							Timeout(function(){$scope.installing = false;}, 30000, $rootScope.module);
 						}
 					},
 					true
