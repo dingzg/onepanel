@@ -810,8 +810,8 @@ function($scope, Module, $routeParams, $location, Request, Backend, Timeout){
 		}
 	}
 
-	var module = 'site.nginx';
-	Module.init(module, action == 'new' ? '新建站点（Nginx）' : '编辑站点（Nginx）');
+	var module = 'site.apache';
+	Module.init(module, action == 'new' ? '新建站点（Apache）' : '编辑站点（Apache）');
 	$scope.loaded = false;
 	$scope.showglobaladv = false;
 	$scope.curloc = -1;
@@ -928,7 +928,7 @@ function($scope, Module, $routeParams, $location, Request, Backend, Timeout){
 	
 	// check nginx version
 	$scope.load = function(){
-		// nginx version check may take too long time, so we don't want to wait for it
+		// apache version check may take too long time, so we don't want to wait for it
 		if (action == 'new')
 			$scope.loaded = true;
 		else
@@ -938,16 +938,16 @@ function($scope, Module, $routeParams, $location, Request, Backend, Timeout){
 			$scope,
 			module,
 			'/backend/yum_info',
-			'/backend/yum_info_nginx',
+			'/backend/yum_info_apache',
 			{
-				'pkg': 'nginx',
+				'pkg': 'apache',
 				'repo': 'installed'
 			}, {
 				'success': function(data){
-					$scope.nginx_version = data.data[0].version;
+					$scope.apache_version = data.data[0].version;
 				},
 				'error': function(data){
-					$scope.nginx_version = '';
+					$scope.apache_version = '';
 					//$scope.loaded = true;
 				}
 			},
@@ -960,7 +960,7 @@ function($scope, Module, $routeParams, $location, Request, Backend, Timeout){
 	// load proxy cache list
 	$scope.proxy_caches = [];
 	$scope.loadproxycaches = function() {
-		Request.post('/operation/nginx', {
+		Request.post('/operation/apache', {
 			'action': 'gethttpsettings',
 			'items': 'proxy_cache_path[]'
 		}, function(data){
@@ -979,7 +979,7 @@ function($scope, Module, $routeParams, $location, Request, Backend, Timeout){
 
 	// get server info (in edit mode)
 	$scope.getserver = function(quiet){
-		Request.post('/operation/nginx', {
+		Request.post('/operation/apache', {
 			'action': 'getserver',
 			'ip': server_ip,
 			'port': server_port,
@@ -1131,34 +1131,7 @@ function($scope, Module, $routeParams, $location, Request, Backend, Timeout){
 		}, false, quiet);
 	};
 	
-	// server name operation
-	$scope.deleteservername = function(i){
-		$scope.setting.server_names.splice(i, 1);
-	};
-	$scope.addservername = function(){
-		$scope.setting.server_names.push(angular.copy(server_name_tmpl));
-	};
-	
-	// listen operation
-	$scope.deletelisten = function(i){
-		$scope.setting.listens.splice(i, 1);
-	};
-	$scope.addlisten = function(){
-		$scope.setting.listens.push(angular.copy(listen_tmpl));
-	};
-	
-	// location operation
-	$scope.deletelocation = function(i){
-		$scope.setting.locations.splice(i, 1);
-		$scope.curloc--;
-		if ($scope.curloc<0&&$scope.setting.locations.length>0) $scope.curloc = 0;
-	};
-	$scope.addlocation = function(){
-		var locs = $scope.setting.locations;
-		locs.splice($scope.curloc+1, 0, angular.copy(location_tmpl));
-		$scope.proxy_addbackend($scope.curloc+1);
-		$scope.curloc++;
-	};
+
 	
 	// proxy operation
 	$scope.proxy_deletebackend = function(loc_i, i){
@@ -1272,9 +1245,9 @@ function($scope, Module, $routeParams, $location, Request, Backend, Timeout){
 	
 	// submit
 	$scope.addserver = function(){
-		Request.post('/operation/nginx', {
+		Request.post('/operation/apache', {
 			'action': 'addserver',
-			'version': $scope.nginx_version,
+			'version': $scope.apache_version,
 			'setting': angular.toJson($scope.setting)
 		}, function(data){
 			if (data.code == 0) {
@@ -1282,18 +1255,18 @@ function($scope, Module, $routeParams, $location, Request, Backend, Timeout){
 				$scope.loaded = false;
 				var name = (s.listens[0].ip?s.listens[0].ip:'*')+'_'+s.listens[0].port+'_'+s.server_names[0].name;
 				Timeout(function(){
-					$location.path('/site/nginx/edit_'+encodeURIComponent(name));
+					$location.path('/site/apache/edit_'+encodeURIComponent(name));
 				}, 1000, module);
 			}
 		});
 	};
 	$scope.updateserver = function(){
-		Request.post('/operation/nginx', {
+		Request.post('/operation/apache', {
 			'action': 'updateserver',
 			'ip': server_ip,
 			'port': server_port,
 			'server_name': server_name,
-			'version': $scope.nginx_version,
+			'version': $scope.apache_version,
 			'setting': angular.toJson($scope.setting)
 		}, function(data){
 			if (data.code == 0) {
@@ -1301,7 +1274,7 @@ function($scope, Module, $routeParams, $location, Request, Backend, Timeout){
 				$scope.loaded = false;
 				var name = (s.listens[0].ip?s.listens[0].ip:'*')+'_'+s.listens[0].port+'_'+s.server_names[0].name;
 				Timeout(function(){
-					var new_path = '/site/nginx/edit_'+encodeURIComponent(name);
+					var new_path = '/site/apache/edit_'+encodeURIComponent(name);
 					if (new_path != $location.path()) $location.path(new_path);
 					else $scope.restore();
 				}, 1000, module);
@@ -1314,9 +1287,7 @@ function($scope, Module, $routeParams, $location, Request, Backend, Timeout){
 	};
 	
 	// initially add
-	if (section == 'new') {
-		$scope.addservername();
-		$scope.addlisten();
-		$scope.addlocation();
-	}
+	//if (section == 'new') {
+	//	$scope.addlocation();
+	//}
 }];
