@@ -30,6 +30,60 @@ import shlex
 import re
 import time
 import utils
+from utils import cfg_get_array, cfg_set_array
+
+config_file='/etc/my.cnf'
+delimiter='='
+
+base_configs = {
+    'user': '',
+    'datadir': '',
+    'socket': '',
+}
+#---------------------------------------------------------------------------------------------------
+#Function Name    : main_process
+#Usage            : 
+#Parameters       : None
+#                    
+#Return value     :
+#                    1  
+#---------------------------------------------------------------------------------------------------
+def main_process(self):
+    action = self.get_argument('action', '')
+    password = self.get_argument('password', '')
+
+    if action == 'updatepwd':
+        newpassword = self.get_argument('newpassword', '')
+        newpasswordc = self.get_argument('newpasswordc', '')
+        
+        if newpassword != newpasswordc:
+            self.write({'code': -1, 'msg': u'两次密码输入不一致！'})
+            return
+
+        if updatepwd(_u(newpassword), _u(password)):
+            self.write({'code': 0, 'msg': u'密码设置成功！'})
+        else:
+            self.write({'code': -1, 'msg': u'密码设置失败！'})
+    
+    elif action == 'checkpwd':
+        if checkpwd(_u(password)):
+            self.write({'code': 0, 'msg': u'密码验证成功！'})
+        else:
+            self.write({'code': -1, 'msg': u'密码验证失败！（密码不正确，或 MySQL 服务未启动）'})
+    
+    elif action == 'alter_database':
+        dbname = self.get_argument('dbname', '')
+        collation = self.get_argument('collation', '')
+        rt = alter_database(_u(password), _u(dbname), collation=_u(collation))
+        if rt:
+            self.write({'code': 0, 'msg': u'数据库编码保存成功！'})
+        else:
+            self.write({'code': -1, 'msg': u'数据库编码保存失败！'})
+    elif action == 'getsettings':
+        self.write({'code': 0, 'msg': '获取 MySQL配置信息成功！', 'data': loadMySQLConfigs()})
+    elif action == 'mod':
+        self.write({'code': 0, 'msg': 'MySQL 服务配置保存成功！','data': modMySQLConfigs(self)})
+    return
 
 def updatepwd(pwd, oldpwd):
     """Update password of root.
@@ -551,3 +605,26 @@ if __name__ == '__main__':
     #pp.pprint(create_user('admin', 'hilyjiang', '%'))
     #pp.pprint(drop_user('admin', 'hilyjiang', 'localhost'))
     #pp.pprint(set_user_password('admin', 'ddyh', 'localhost', 'ddyh'))
+#---------------------------------------------------------------------------------------------------
+#Function Name    : loadMySQLConfigs
+#Usage            : 
+#Parameters       : None
+#                    
+#Return value     :
+#                    1  array_configs
+#---------------------------------------------------------------------------------------------------
+def loadMySQLConfigs():
+    array_configs=cfg_get_array(config_file,base_configs,delimiter)
+    return array_configs
+# 
+#---------------------------------------------------------------------------------------------------
+#Function Name    : modMySQLConfigs
+#Usage            : 
+#Parameters       : None
+#                    
+#Return value     :
+#                    1 
+#---------------------------------------------------------------------------------------------------
+def modMySQLConfigs(self):
+    result=cfg_set_array(self,config_file,base_configs,delimiter)
+    return result

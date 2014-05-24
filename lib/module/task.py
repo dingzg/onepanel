@@ -34,21 +34,38 @@ import re
 system_crontab='/etc/crontab'
 cronfiles_dir='/etc/cron.d'
 user_dir='/var/spool/cron'
-#onepanel@oyyw.com [~]# crontab -l
-#0 0 1 * * /.t
-#onepanel@oyyw.com [~]# cat /etc/crontab
-#SHELL=/bin/bash
-#PATH=/sbin:/bin:/usr/sbin:/usr/bin
-#MAILTO=root
-#HOME=/
-#
-## run-parts
-#49 * * * * root run-parts /etc/cron.hourly
-#3 0 * * * root run-parts /etc/cron.daily
-#24 2 * * 0 root run-parts /etc/cron.weekly
-#20 0 27 * * root run-parts /etc/cron.monthly
-#onepanel@oyyw.com [~]#
-# 
+
+#---------------------------------------------------------------------------------------------------
+#Function Name	  : main_cron
+#Usage			  : 
+#Parameters		  : 
+#					 1 
+#Return value	  :
+#					 1 
+#---------------------------------------------------------------------------------------------------
+def main_process(self):
+    action = self.get_argument('action', '')
+    #get user name from config.ini
+    username = self.config.get('auth', 'username')
+
+    if action == 'list':
+        self.write({'code': 0, 'msg': 'Excute Successfully', 'data': listcron(username)}) 
+    elif action in ('add', 'mod'):
+        t_minute = self.get_argument('minute', '')
+        t_hour = self.get_argument('hour', '')
+        t_day = self.get_argument('dayofmon', '')
+        t_month = self.get_argument('month', '')
+        t_weekday = self.get_argument('dayofweek', '')
+        t_cmd = self.get_argument('cmd', '')
+        if action == 'add':
+            self.write({'code': 0, 'msg': 'Excute Successfully', 'data': addcron(username,t_minute,t_hour,t_day,t_month,t_weekday,t_cmd)}) 
+        elif action == 'mod':
+            t_id = self.get_argument('id', '')
+            self.write({'code': 0, 'msg': 'Excute Successfully', 'data': modcron(username,t_id,t_minute,t_hour,t_day,t_month,t_weekday,t_cmd)})   
+    elif action == 'del':
+        t_id = self.get_argument('id', '')
+        self.write({'code': 0, 'msg': 'Excute Successfully', 'data': delcron(username,t_id)}) 
+    return
 #---------------------------------------------------------------------------------------------------
 #Function Name	  : listcron
 #Usage			  : 

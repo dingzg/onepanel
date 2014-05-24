@@ -58,6 +58,21 @@ base_configs = {
 			'max_clients':             '',
 			'message_file':            '',
 }
+#---------------------------------------------------------------------------------------------------
+#Function Name	  : main_process
+#Usage			  : 
+#Parameters		  : None
+#					 
+#Return value	  :
+#					 1  
+#---------------------------------------------------------------------------------------------------
+def main_process(self):
+    action = self.get_argument('action', '')
+    if action == 'getsettings':
+        self.write({'code': 0, 'msg': '获取 vsftp 配置信息成功！', 'data': loadVsftpConfigs()})
+    elif action == 'mod':
+        self.write({'code': 0, 'msg': 'vsftp 服务配置保存成功！','data': modVsftpConfigs(self)})
+    return
 
 # 
 #---------------------------------------------------------------------------------------------------

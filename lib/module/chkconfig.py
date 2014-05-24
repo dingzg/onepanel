@@ -21,7 +21,26 @@
 import os
 import shlex
 import subprocess
-
+#---------------------------------------------------------------------------------------------------
+#Function Name    : main_process
+#Usage            : 
+#Parameters       : None
+#                    
+#Return value     :
+#                    1  
+#---------------------------------------------------------------------------------------------------
+def main_process(self):
+    name = self.get_argument('name', '')
+    service = self.get_argument('service', '')
+    autostart = self.get_argument('autostart', '')
+    if not name: name = service
+    
+    autostart_str = {'on': u'启用', 'off': u'禁用'}
+    if set(_u(service), autostart == 'on' and True or False):
+        self.write({'code': 0, 'msg': u'成功%s %s 自动启动！' % (autostart_str[autostart], name)})
+    else:
+        self.write({'code': -1, 'msg': u'%s %s 自动启动失败！' % (autostart_str[autostart], name)})
+    
 def set(service, autostart=True):
 	"""Add or remove service to autostart list.
 	"""

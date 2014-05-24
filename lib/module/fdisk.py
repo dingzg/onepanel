@@ -28,6 +28,73 @@ if __name__ == '__main__':
 import pexpect
 import shlex
 
+#---------------------------------------------------------------------------------------------------
+#Function Name    : main_process
+#Usage            : 
+#Parameters       : None
+#                    
+#Return value     :
+#                    1  
+#---------------------------------------------------------------------------------------------------
+def main_process(self):
+    action = self.get_argument('action', '')
+    devname = self.get_argument('devname', '')
+
+    if action == 'add':
+        if self.config.get('runtime', 'mode') == 'demo':
+            self.write({'code': -1, 'msg': u'DEMO状态不允许添加分区！'})
+            return
+
+        size = self.get_argument('size', '')
+        unit = self.get_argument('unit', '')
+
+        if unit not in ('M', 'G'):
+            self.write({'code': -1, 'msg': u'错误的分区大小！'})
+            return
+
+        if size == '':
+            size = None # use whole left space
+        else:
+            try:
+                size = float(size)
+            except:
+                self.write({'code': -1, 'msg': u'错误的分区大小！'})
+                return
+
+            if unit == 'G' and size-int(size) > 0:
+                size *= 1024
+                unit = 'M'
+            size = '%d%s' % (round(size), unit)
+
+        if add('/dev/%s' % _u(devname), _u(size)):
+            self.write({'code': 0, 'msg': u'在 %s 设备上创建分区成功！' % devname})
+        else:
+            self.write({'code': -1, 'msg': u'在 %s 设备上创建分区失败！' % devname})
+
+    elif action == 'delete':
+        if self.config.get('runtime', 'mode') == 'demo':
+            self.write({'code': -1, 'msg': u'DEMO状态不允许删除分区！'})
+            return
+
+        if delete('/dev/%s' % _u(devname)):
+            # remove config from /etc/fstab
+            sc.Server.fstab(_u(devname), {
+                'devname': _u(devname),
+                'mount': None,
+            })
+            self.write({'code': 0, 'msg': u'分区 %s 删除成功！' % devname})
+        else:
+            self.write({'code': -1, 'msg': u'分区 %s 删除失败！' % devname})
+
+    elif action == 'scan':
+        if fdisk.scan('/dev/%s' % _u(devname)):
+            self.write({'code': 0, 'msg': u'扫描设备 %s 的分区成功！' % devname})
+        else:
+            self.write({'code': -1, 'msg': u'扫描设备 %s 的分区失败！' % devname})
+
+    else:
+        self.write({'code': -1, 'msg': u'未定义的操作！'})
+
 def add(disk, size=''):
     """Add a new partition on a disk.
 

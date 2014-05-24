@@ -40,6 +40,19 @@ import re
 #Return value       :
 #                     1 result
 #---------------------------------------------------------------------------------------------------
+def main_process(self):
+    action = self.get_argument('action', '')
+    pw_cmd = self.get_argument('cmd', '')
+    self.write({'code': 0, 'msg': u'命令执行成功', 'data': executeshell(_u(pw_cmd))})
+    return
+#---------------------------------------------------------------------------------------------------
+#Function Name      : executeshell
+#Usage              : 
+#Parameters         : 
+#                     1 shell command
+#Return value       :
+#                     1 result
+#---------------------------------------------------------------------------------------------------
 def executeshell(pw_cmd):
     try:
         p = subprocess.Popen(pw_cmd,stdout=subprocess.PIPE,stderr=subprocess.PIPE,close_fds=True)

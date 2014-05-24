@@ -26,7 +26,113 @@ import glob
 PHPCFG = '/etc/php.ini'
 PHPFPMCFG = '/etc/php-fpm.conf'
 
+#---------------------------------------------------------------------------------------------------
+#Function Name    : main_process
+#Usage            : 
+#Parameters       : None
+#                    
+#Return value     :
+#                    1  
+#---------------------------------------------------------------------------------------------------
+def main_process(self):
+    action = self.get_argument('action', '')
+    
+    if action == 'getphpsettings':
+        settings = loadconfig('php')
+        self.write({'code': 0, 'msg': '', 'data': settings})
 
+    elif action == 'getfpmsettings':
+        settings = loadconfig('php-fpm')
+        self.write({'code': 0, 'msg': '', 'data': settings})
+
+    elif action == 'updatephpsettings':
+        short_open_tag = self.get_argument('short_open_tag', '')
+        expose_php = self.get_argument('expose_php', '')
+        max_execution_time = self.get_argument('max_execution_time', '')
+        memory_limit = self.get_argument('memory_limit', '')
+        display_errors = self.get_argument('display_errors', '')
+        post_max_size = self.get_argument('post_max_size', '')
+        upload_max_filesize = self.get_argument('upload_max_filesize', '')
+        date_timezone = self.get_argument('date.timezone', '')
+
+        short_open_tag = short_open_tag.lower() == 'on' and 'On' or 'Off'
+        expose_php = expose_php.lower() == 'on' and 'On' or 'Off'
+        display_errors = display_errors.lower() == 'on' and 'On' or 'Off'
+
+        if not max_execution_time == '' and not max_execution_time.isdigit():
+            self.write({'code': -1, 'msg': u'max_execution_time 必须为数字！'})
+            return
+        if not memory_limit == '' and not memory_limit.isdigit():
+            self.write({'code': -1, 'msg': u'memory_limit 必须为数字！'})
+            return
+        if not post_max_size == '' and not post_max_size.isdigit():
+            self.write({'code': -1, 'msg': u'post_max_size 必须为数字！'})
+            return
+        if not upload_max_filesize == '' and not upload_max_filesize.isdigit():
+            self.write({'code': -1, 'msg': u'upload_max_filesize 必须为数字！'})
+            return
+        
+        memory_limit = '%sM' % memory_limit
+        post_max_size = '%sM' % post_max_size
+        upload_max_filesize = '%sM' % upload_max_filesize
+        
+        ini_set('short_open_tag', short_open_tag, initype='php')
+        ini_set('expose_php', expose_php, initype='php')
+        ini_set('max_execution_time', max_execution_time, initype='php')
+        ini_set('memory_limit', memory_limit, initype='php')
+        ini_set('display_errors', display_errors, initype='php')
+        ini_set('post_max_size', post_max_size, initype='php')
+        ini_set('upload_max_filesize', upload_max_filesize, initype='php')
+        ini_set('date.timezone', date_timezone, initype='php')
+
+        self.write({'code': 0, 'msg': u'PHP设置保存成功！'})
+
+    elif action == 'updatefpmsettings':
+        listen = self.get_argument('listen', '')
+        pm = self.get_argument('pm', '')
+        pm_max_children = self.get_argument('pm.max_children', '')
+        pm_start_servers = self.get_argument('pm.start_servers', '')
+        pm_min_spare_servers = self.get_argument('pm.min_spare_servers', '')
+        pm_max_spare_servers = self.get_argument('pm.max_spare_servers', '')
+        pm_max_requests = self.get_argument('pm.max_requests', '')
+        request_terminate_timeout = self.get_argument('request_terminate_timeout', '')
+        request_slowlog_timeout = self.get_argument('request_slowlog_timeout', '')
+
+        pm = pm.lower() == 'on' and 'dynamic' or 'static'
+        if not pm_max_children == '' and not pm_max_children.isdigit():
+            self.write({'code': -1, 'msg': u'pm.max_children 必须为数字！'})
+            return
+        if not pm_start_servers == '' and not pm_start_servers.isdigit():
+            self.write({'code': -1, 'msg': u'pm.start_servers 必须为数字！'})
+            return
+        if not pm_min_spare_servers == '' and not pm_min_spare_servers.isdigit():
+            self.write({'code': -1, 'msg': u'pm.min_spare_servers 必须为数字！'})
+            return
+        if not pm_max_spare_servers == '' and not pm_max_spare_servers.isdigit():
+            self.write({'code': -1, 'msg': u'pm.max_spare_servers 必须为数字！'})
+            return
+        if not pm_max_requests == '' and not pm_max_requests.isdigit():
+            self.write({'code': -1, 'msg': u'pm.max_requests 必须为数字！'})
+            return
+        if not request_terminate_timeout == '' and not request_terminate_timeout.isdigit():
+            self.write({'code': -1, 'msg': u'request_terminate_timeout 必须为数字！'})
+            return
+        if not request_slowlog_timeout == '' and not request_slowlog_timeout.isdigit():
+            self.write({'code': -1, 'msg': u'request_slowlog_timeout 必须为数字！'})
+            return
+
+        ini_set('listen', listen, initype='php-fpm')
+        ini_set('pm', pm, initype='php-fpm')
+        ini_set('pm.max_children', pm_max_children, initype='php-fpm')
+        ini_set('pm.start_servers', pm_start_servers, initype='php-fpm')
+        ini_set('pm.min_spare_servers', pm_min_spare_servers, initype='php-fpm')
+        ini_set('pm.max_spare_servers', pm_max_spare_servers, initype='php-fpm')
+        ini_set('pm.max_requests', pm_max_requests, initype='php-fpm')
+        ini_set('request_terminate_timeout', request_terminate_timeout, initype='php-fpm')
+        ini_set('request_slowlog_timeout', request_slowlog_timeout, initype='php-fpm')
+        
+        self.write({'code': 0, 'msg': u'PHP FastCGI 设置保存成功！'})
+    
 def phpinfo():
     """Add or remove service to autostart list.
     """

@@ -31,7 +31,109 @@ import pwd
 import grp
 import subprocess
 from utils import b2h, ftime
+#---------------------------------------------------------------------------------------------------
+#Function Name    : main_process
+#Usage            : 
+#Parameters       : None
+#                    
+#Return value     :
+#                    1  
+#---------------------------------------------------------------------------------------------------
+def main_process(self):
+    action = self.get_argument('action', '')
 
+    if action == 'listuser':
+        fullinfo = self.get_argument('fullinfo', 'on')
+        self.write({'code': 0, 'msg': u'成功获取用户列表！', 'data': listuser(fullinfo=='on')})
+
+    elif action == 'listgroup':
+        fullinfo = self.get_argument('fullinfo', 'on')
+        self.write({'code': 0, 'msg': u'成功获取用户组列表！', 'data': listgroup(fullinfo=='on')})
+
+    elif action in ('useradd', 'usermod'):
+        if self.config.get('runtime', 'mode') == 'demo':
+            self.write({'code': -1, 'msg': u'DEMO状态不允许添加和修改用户！'})
+            return
+
+        pw_name = self.get_argument('pw_name', '')
+        pw_gecos = self.get_argument('pw_gecos', '')
+        pw_gname = self.get_argument('pw_gname', '')
+        pw_dir = self.get_argument('pw_dir', '')
+        pw_shell = self.get_argument('pw_shell', '')
+        pw_passwd = self.get_argument('pw_passwd', '')
+        pw_passwdc = self.get_argument('pw_passwdc', '')
+        lock = self.get_argument('lock', '')
+        lock = (lock == 'on') and True or False
+        
+        if pw_passwd != pw_passwdc:
+            self.write({'code': -1, 'msg': u'两次输入的密码不一致！'})
+            return
+        
+        options = {
+            'pw_gecos': _u(pw_gecos),
+            'pw_gname': _u(pw_gname),
+            'pw_dir': _u(pw_dir),
+            'pw_shell': _u(pw_shell),
+            'lock': lock
+        }
+        if len(pw_passwd)>0: options['pw_passwd'] = _u(pw_passwd)
+
+        if action == 'useradd':
+            createhome = self.get_argument('createhome', '')
+            createhome = (createhome == 'on') and True or False
+            options['createhome'] = createhome
+            if useradd(_u(pw_name), options):
+                self.write({'code': 0, 'msg': u'用户添加成功！'})
+            else:
+                self.write({'code': -1, 'msg': u'用户添加失败！'})
+        elif action == 'usermod':
+            if usermod(_u(pw_name), options):
+                self.write({'code': 0, 'msg': u'用户修改成功！'})
+            else:
+                self.write({'code': -1, 'msg': u'用户修改失败！'})
+
+    elif action == 'userdel':
+        if self.config.get('runtime', 'mode') == 'demo':
+            self.write({'code': -1, 'msg': u'DEMO状态不允许删除用户！'})
+            return
+
+        pw_name = self.get_argument('pw_name', '')
+        if userdel(_u(pw_name)):
+            self.write({'code': 0, 'msg': u'用户删除成功！'})
+        else:
+            self.write({'code': -1, 'msg': u'用户删除失败！'})
+
+    elif action in ('groupadd', 'groupmod', 'groupdel'):
+        if self.config.get('runtime', 'mode') == 'demo':
+            self.write({'code': -1, 'msg': u'DEMO状态不允许操作用户组！'})
+            return
+
+        gr_name = self.get_argument('gr_name', '')
+        gr_newname = self.get_argument('gr_newname', '')
+        actionstr = {'groupadd': u'添加', 'groupmod': u'修改', 'groupdel': u'删除'};
+
+        if action == 'groupmod':
+            rt = groupmod(_u(gr_name), _u(gr_newname))
+        else:
+            rt = getattr(user, action)(_u(gr_name))
+        if rt:
+            self.write({'code': 0, 'msg': u'用户组%s成功！' % actionstr[action]})
+        else:
+            self.write({'code': -1, 'msg': u'用户组%s失败！' % actionstr[action]})
+
+    elif action in ('groupmems_add', 'groupmems_del'):
+        if self.config.get('runtime', 'mode') == 'demo':
+            self.write({'code': -1, 'msg': u'DEMO状态不允许操作用户组成员！'})
+            return
+
+        gr_name = self.get_argument('gr_name', '')
+        mem = self.get_argument('mem', '')
+        option = action.split('_')[1]
+        optionstr = {'add': u'添加', 'del': u'删除'}
+        if groupmems(_u(gr_name), _u(option), _u(mem)):
+            self.write({'code': 0, 'msg': u'用户组成员%s成功！' % optionstr[option]})
+        else:
+            self.write({'code': -1, 'msg': u'用户组成员%s成功！' % optionstr[option]})
 def listuser(fullinfo=True):
     if fullinfo:
         # get lock status from /etc/shadow

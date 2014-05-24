@@ -40,7 +40,211 @@ from si import Server
 
 charsets = ('utf-8', 'gb2312', 'gbk', 'gb18030', 'big5', 'euc-jp', 'euc-kr', 'iso-8859-2', 'shift_jis')
 
+#---------------------------------------------------------------------------------------------------
+#Function Name    : main_process
+#Usage            : 
+#Parameters       : None
+#                    
+#Return value     :
+#                    1  
+#---------------------------------------------------------------------------------------------------
+def main_process(self):
+    action = self.get_argument('action', '')
 
+    if action == 'last':
+        lastdir = self.config.get('file', 'lastdir')
+        lastfile = self.config.get('file', 'lastfile')
+        self.write({'code': 0, 'msg': '', 'data': {'lastdir': lastdir, 'lastfile': lastfile}})
+        
+    elif action == 'listdir':
+        path = self.get_argument('path', '')
+        showhidden = self.get_argument('showhidden', 'off')
+        remember = self.get_argument('remember', 'on')
+        onlydir = self.get_argument('onlydir', 'off')
+        items = listdir(_u(path), showhidden=='on', onlydir=='on')
+        if items == False:
+            self.write({'code': -1, 'msg': u'目录 %s 不存在！' % path})
+        else:
+            if remember == 'on': self.config.set('file', 'lastdir', path)
+            self.write({'code': 0, 'msg': u'成功获取文件列表！', 'data': items})
+        
+    elif action == 'getitem':
+        path = self.get_argument('path', '')
+        item = getitem(_u(path))
+        if item == False:
+            self.write({'code': -1, 'msg': u'%s 不存在！' % path})
+        else:
+            self.write({'code': 0, 'msg': u'成功获取 %s 的信息！' % path, 'data': item})
+
+    elif action == 'fread':
+        path = self.get_argument('path', '')
+        remember = self.get_argument('remember', 'on')
+        size = fsize(_u(path))
+        if size == None:
+            self.write({'code': -1, 'msg': u'文件 %s 不存在！' % path})
+        elif size > 1024*1024: # support 1MB of file at max
+            self.write({'code': -1, 'msg': u'读取 %s 失败！不允许在线编辑超过1MB的文件！' % path})
+        elif not istext(_u(path)):
+            self.write({'code': -1, 'msg': u'读取 %s 失败！无法识别文件类型！' % path})
+        else:
+            if remember == 'on': self.config.set('file', 'lastfile', path)
+            with open(path) as f: content = f.read()
+            charset, content = decode(content)
+            if not charset:
+                self.write({'code': -1, 'msg': u'不可识别的文件编码！'})
+                return
+            data = {
+                'filename': os.path.basename(path),
+                'filepath': path,
+                'mimetype': mimetype(_u(path)),
+                'charset': charset,
+                'content': content,
+            }
+            self.write({'code': 0, 'msg': u'成功读取文件内容！', 'data': data})
+
+    elif action == 'fclose':
+        self.config.set('file', 'lastfile', '')
+        self.write({'code': 0, 'msg': ''})
+
+    elif action == 'fwrite':
+        path = self.get_argument('path', '')
+        charset = self.get_argument('charset', '')
+        content = self.get_argument('content', '')
+
+        if self.config.get('runtime', 'mode') == 'demo':
+            if not path.startswith('/var/www'):
+                self.write({'code': -1, 'msg': u'DEMO状态不允许修改除 /var/www 以外的目录！'})
+                return
+
+        if not charset in charsets:
+            self.write({'code': -1, 'msg': u'不可识别的文件编码！'})
+            return
+        content = encode(content, charset)
+        if not content:
+            self.write({'code': -1, 'msg': u'文件编码转换出错，保存失败！'})
+            return
+        if fsave(_u(path), content):
+            self.write({'code': 0, 'msg': u'文件保存成功！'})
+        else:
+            self.write({'code': -1, 'msg': u'文件保存失败！'})
+
+    elif action == 'createfolder':
+        path = self.get_argument('path', '')
+        name = self.get_argument('name', '')
+
+        if self.config.get('runtime', 'mode') == 'demo':
+            if not path.startswith('/var/www') and not path.startswith(self.settings['package_path']):
+                self.write({'code': -1, 'msg': u'DEMO状态不允许修改除 /var/www 以外的目录！'})
+                return
+
+        if dadd(_u(path), _u(name)):
+            self.write({'code': 0, 'msg': u'文件夹创建成功！'})
+        else:
+            self.write({'code': -1, 'msg': u'文件夹创建失败！'})
+
+    elif action == 'createfile':
+        path = self.get_argument('path', '')
+        name = self.get_argument('name', '')
+
+        if self.config.get('runtime', 'mode') == 'demo':
+            if not path.startswith('/var/www'):
+                self.write({'code': -1, 'msg': u'DEMO状态不允许修改除 /var/www 以外的目录！'})
+                return
+
+        if fadd(_u(path), _u(name)):
+            self.write({'code': 0, 'msg': u'文件创建成功！'})
+        else:
+            self.write({'code': -1, 'msg': u'文件创建失败！'})
+
+    elif action == 'rename':
+        path = self.get_argument('path', '')
+        name = self.get_argument('name', '')
+
+        if self.config.get('runtime', 'mode') == 'demo':
+            if not path.startswith('/var/www'):
+                self.write({'code': -1, 'msg': u'DEMO状态不允许修改除 /var/www 以外的目录！'})
+                return
+
+        if rename(_u(path), _u(name)):
+            self.write({'code': 0, 'msg': u'重命名成功！'})
+        else:
+            self.write({'code': -1, 'msg': u'重命名失败！'})
+
+    elif action == 'exist':
+        path = self.get_argument('path', '')
+        name = self.get_argument('name', '')
+        self.write({'code': 0, 'msg': '', 'data': os.path.exists(os.path.join(path, name))})
+
+    elif action == 'link':
+        srcpath = self.get_argument('srcpath', '')
+        despath = self.get_argument('despath', '')
+
+        if self.config.get('runtime', 'mode') == 'demo':
+            if not despath.startswith('/var/www') and not despath.startswith(self.settings['package_path']):
+                self.write({'code': -1, 'msg': u'DEMO状态不允许在除 /var/www 以外的目录下创建链接！'})
+                return
+
+        if link(_u(srcpath), _u(despath)):
+            self.write({'code': 0, 'msg': u'链接 %s 创建成功！' % despath})
+        else:
+            self.write({'code': -1, 'msg': u'链接 %s 创建失败！' % despath})
+    
+    elif action == 'delete':
+        paths = self.get_argument('paths', '')
+        paths = paths.split(',')
+
+        if self.config.get('runtime', 'mode') == 'demo':
+            for path in paths:
+                if not path.startswith('/var/www') and not path.startswith(self.settings['package_path']):
+                    self.write({'code': -1, 'msg': u'DEMO状态不允许在除 /var/www 以外的目录执行删除操作！'})
+                    return
+
+        if len(paths) == 1:
+            path = paths[0]
+            if delete(_u(path)):
+                self.write({'code': 0, 'msg': u'已将 %s 移入回收站！' % path})
+            else:
+                self.write({'code': -1, 'msg': u'将 %s 移入回收站失败！' % path})
+        else:
+            for path in paths:
+                if not delete(_u(path)):
+                    self.write({'code': -1, 'msg': u'将 %s 移入回收站失败！' % path})
+                    return
+            self.write({'code': 0, 'msg': u'批量移入回收站成功！'})
+
+    elif action == 'tlist':
+        self.write({'code': 0, 'msg': '', 'data': tlist()})
+
+    elif action == 'trashs':
+        self.write({'code': 0, 'msg': '', 'data': trashs()})
+
+    elif action == 'titem':
+        mount = self.get_argument('mount', '')
+        uuid = self.get_argument('uuid', '')
+        info = titem(_u(mount), _u(uuid))
+        if info:
+            self.write({'code': 0, 'msg': '', 'data': info})
+        else:
+            self.write({'code': -1, 'msg': '获取项目信息失败！'})
+
+    elif action == 'trestore':
+        mount = self.get_argument('mount', '')
+        uuid = self.get_argument('uuid', '')
+        info = titem(_u(mount), _u(uuid))
+        if info and trestore(_u(mount), _u(uuid)):
+            self.write({'code': 0, 'msg': u'已还原 %s 到 %s！' % \
+                (_d(info['name']), _d(info['path']))})
+        else:
+            self.write({'code': -1, 'msg': u'还原失败！'})
+
+    elif action == 'tdelete':
+        mount = self.get_argument('mount', '')
+        uuid = self.get_argument('uuid', '')
+        info = titem(_u(mount), _u(uuid))
+        if info and tdelete(_u(mount), _u(uuid)):
+            self.write({'code': 0, 'msg': u'已删除 %s！' % _d(info['name'])})
+        else:
+            self.write({'code': -1, 'msg': u'删除失败！'})
 def listdir(path, showdotfiles=False, onlydir=None):
     path = os.path.abspath(path)
     if not os.path.exists(path) or not os.path.isdir(path): return False

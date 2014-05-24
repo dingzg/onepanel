@@ -16,4 +16,4 @@
 
 
 """The OnePanel web server and tools."""
-__all__ = ['sc','chkconfig','fdisk','file','mysql','nginx','php','ssh','user','yum','si','task','shell','apache','vsftp','modifymysql']
+__all__ = ['sc','chkconfig','fdisk','file','mysql','nginx','php','ssh','user','yum','si','task','shell','apache','vsftp']
