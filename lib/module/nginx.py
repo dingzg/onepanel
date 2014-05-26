@@ -22,6 +22,7 @@ import os
 import re
 import glob
 import utils
+from tornado.escape import utf8 as _u
 
 DEBUG = False
 
