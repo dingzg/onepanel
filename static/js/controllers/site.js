@@ -420,11 +420,11 @@ function($scope, Module, $routeParams, $location, Request, Backend, Timeout){
 			true
 		);
 
-		$scope.loadproxycaches();
+		//$scope.loadproxycaches();
 	};
 	
 	// load proxy cache list
-	$scope.proxy_caches = [];
+	//$scope.proxy_caches = [];
 	$scope.loadproxycaches = function() {
 		Request.post('/operation/nginx', {
 			'action': 'gethttpsettings',
@@ -831,88 +831,88 @@ function($scope, Module, $routeParams, $location, Request, Backend, Timeout){
 		rewrite_enable: false,
 		rewrite_rules: ''
 	};
-	var server_name_tmpl = {
-		'name': '',
-		'default_name': false
-	};
-	var listen_tmpl = {
-		'ip': '',
-		'port': '80',
-		'ssl': false,
-		'default_server': false
-	};
-	var location_tmpl = {
-		urlpath: '/',
-		engine: 'static',
-		'static': {
-			root: '/var/www/',
-			autocreate: true,
-			autoindex: false,
-			rewrite_enable: false,
-			rewrite_detect_file: true,
-			rewrite_rules: ''
-		},
-		fastcgi: {
-			root: '/var/www/',
-			autocreate: true,
-			fastcgi_pass: '127.0.0.1:9000',
-			rewrite_enable: false,
-			rewrite_detect_file: true,
-			rewrite_rules: ''
-		},
-		proxy: {
-			protocol: 'http',
-			host: '',
-			realip: true,
-			charset: '',
-			backends: [],
-			balance: 'ip_hash',
-			keepalive: '10',
-			proxy_cache_enable: false,
-			proxy_cache: '',
-			proxy_cache_min_uses: '',
-			proxy_cache_methods_post: false,
-			proxy_cache_key: {
-				schema: true,
-				host: false,
-				proxy_host: true,
-				uri: true,
-			},
-			proxy_cache_valid: [],
-			proxy_cache_use_stale: {
-				error: false,
-				timeout: false,
-				invalid_header: false,
-				updating: false,
-				http_500: false,
-				http_502: false,
-				http_503: false,
-				http_504: false,
-				http_404: false
-			},
-			proxy_cache_lock: false,
-			proxy_cache_lock_timeout: '5'
-		},
-		redirect: {
-			url: '',
-			type: '301',
-			option: 'keep'
-		},
-		error: {
-			code: '404'
-		}
-	};
-	var backend_tmpl = {
-		server: '',
-		weight: '',
-		fail_timeout: '10',
-		max_fails: '3'
-	};
-	var proxy_cache_valid_tmpl = {
-		code: 'any',
-		time: '1',
-		time_unit: 'h'
-	};
+	//var server_name_tmpl = {
+	//	'name': '',
+	//	'default_name': false
+	//};
+	//var listen_tmpl = {
+	//	'ip': '',
+	//	'port': '80',
+	//	'ssl': false,
+	//	'default_server': false
+	//};
+	//var location_tmpl = {
+	//	urlpath: '/',
+	//	engine: 'static',
+	//	'static': {
+	//		root: '/var/www/',
+	//		autocreate: true,
+	//		autoindex: false,
+	//		rewrite_enable: false,
+	//		rewrite_detect_file: true,
+	//		rewrite_rules: ''
+	//	},
+	//	fastcgi: {
+	//		root: '/var/www/',
+	//		autocreate: true,
+	//		fastcgi_pass: '127.0.0.1:9000',
+	//		rewrite_enable: false,
+	//		rewrite_detect_file: true,
+	//		rewrite_rules: ''
+	//	},
+	//	proxy: {
+	//		protocol: 'http',
+	//		host: '',
+	//		realip: true,
+	//		charset: '',
+	//		backends: [],
+	//		balance: 'ip_hash',
+	//		keepalive: '10',
+	//		proxy_cache_enable: false,
+	//		proxy_cache: '',
+	//		proxy_cache_min_uses: '',
+	//		proxy_cache_methods_post: false,
+	//		proxy_cache_key: {
+	//			schema: true,
+	//			host: false,
+	//			proxy_host: true,
+	//			uri: true,
+	//		},
+	//		proxy_cache_valid: [],
+	//		proxy_cache_use_stale: {
+	//			error: false,
+	//			timeout: false,
+	//			invalid_header: false,
+	//			updating: false,
+	//			http_500: false,
+	//			http_502: false,
+	//			http_503: false,
+	//			http_504: false,
+	//			http_404: false
+	//		},
+	//		proxy_cache_lock: false,
+	//		proxy_cache_lock_timeout: '5'
+	//	},
+	//	redirect: {
+	//		url: '',
+	//		type: '301',
+	//		option: 'keep'
+	//	},
+	//	error: {
+	//		code: '404'
+	//	}
+	//};
+	//var backend_tmpl = {
+	//	server: '',
+	//	weight: '',
+	//	fail_timeout: '10',
+	//	max_fails: '3'
+	//};
+	//var proxy_cache_valid_tmpl = {
+	//	code: 'any',
+	//	time: '1',
+	//	time_unit: 'h'
+	//};
 	$scope.setting = angular.copy(server_tmpl);
 	$scope.gen_by_onepanel = action == 'new' ? true : false;
 
@@ -961,7 +961,7 @@ function($scope, Module, $routeParams, $location, Request, Backend, Timeout){
 	$scope.proxy_caches = [];
 	$scope.loadproxycaches = function() {
 		Request.post('/operation/apache', {
-			'action': 'gethttpsettings',
+			'action': 'getsubhttpsetting',
 			'items': 'proxy_cache_path[]'
 		}, function(data){
 			if (data.code == 0) {
@@ -1134,45 +1134,45 @@ function($scope, Module, $routeParams, $location, Request, Backend, Timeout){
 
 	
 	// proxy operation
-	$scope.proxy_deletebackend = function(loc_i, i){
-		$scope.setting.locations[loc_i].proxy.backends.splice(i, 1);
-	};
-	$scope.proxy_addbackend = function(loc_i){
-		$scope.setting.locations[loc_i].proxy.backends.push(angular.copy(backend_tmpl));
-		$scope.proxy_addvalid(loc_i);
-	};
-	$scope.proxy_deletevalid = function(loc_i, i){
-		$scope.setting.locations[loc_i].proxy.proxy_cache_valid.splice(i, 1);
-	};
-	$scope.proxy_addvalid = function(loc_i){
-		$scope.setting.locations[loc_i].proxy.proxy_cache_valid.push(angular.copy(proxy_cache_valid_tmpl));
-	};
+	//$scope.proxy_deletebackend = function(loc_i, i){
+	//	$scope.setting.locations[loc_i].proxy.backends.splice(i, 1);
+	//};
+	//$scope.proxy_addbackend = function(loc_i){
+	//	$scope.setting.locations[loc_i].proxy.backends.push(angular.copy(backend_tmpl));
+	//	$scope.proxy_addvalid(loc_i);
+	//};
+	//$scope.proxy_deletevalid = function(loc_i, i){
+	//	$scope.setting.locations[loc_i].proxy.proxy_cache_valid.splice(i, 1);
+	//};
+	//$scope.proxy_addvalid = function(loc_i){
+	//	$scope.setting.locations[loc_i].proxy.proxy_cache_valid.push(angular.copy(proxy_cache_valid_tmpl));
+	//};
 	
 	// automatically set the root path of static and fastcgi engine
-	$scope.$watch('setting.server_names[0].name', function(value, oldvalue){
-		var server_name = value;
-		var old_server_name = oldvalue;
-		var locs = $scope.setting.locations;
-		for (var i=0; i<locs.length; i++) {
-			if (locs[i].urlpath == '/') {
-				var prefix = location_tmpl['static'].root;
-				var expected_path = prefix + '/' + old_server_name;
-				expected_path = expected_path.replace('//', '/');
-				if (locs[i]['static'].root == expected_path) {
-					var root = prefix + '/' +server_name;
-					locs[i]['static'].root = root.replace('//', '/');
-				}
-				var prefix = location_tmpl.fastcgi.root;
-				var expected_path = prefix + '/' + old_server_name;
-				expected_path = expected_path.replace('//', '/');
-				if (locs[i].fastcgi.root == expected_path) {
-					var root = prefix + '/' +server_name;
-					locs[i].fastcgi.root = root.replace('//', '/');
-				}
-			}
-		}
-	});
-	
+	//$scope.$watch('setting.server_names[0].name', function(value, oldvalue){
+	//	var server_name = value;
+	//	var old_server_name = oldvalue;
+	//	var locs = $scope.setting.locations;
+	//	for (var i=0; i<locs.length; i++) {
+	//		if (locs[i].urlpath == '/') {
+	//			var prefix = location_tmpl['static'].root;
+	//			var expected_path = prefix + '/' + old_server_name;
+	//			expected_path = expected_path.replace('//', '/');
+	//			if (locs[i]['static'].root == expected_path) {
+	//				var root = prefix + '/' +server_name;
+	//				locs[i]['static'].root = root.replace('//', '/');
+	//			}
+	//			var prefix = location_tmpl.fastcgi.root;
+	//			var expected_path = prefix + '/' + old_server_name;
+	//			expected_path = expected_path.replace('//', '/');
+	//			if (locs[i].fastcgi.root == expected_path) {
+	//				var root = prefix + '/' +server_name;
+	//				locs[i].fastcgi.root = root.replace('//', '/');
+	//			}
+	//		}
+	//	}
+	//});
+	//
 	// operations when url path change
 	$scope.urlpathchange = function(loc) {
 		if (loc.urlpath.length==0) loc.urlpath = '/';

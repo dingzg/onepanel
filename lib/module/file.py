@@ -37,6 +37,7 @@ from uuid import uuid4
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), r'../com'))
 from utils import b2h, ftime
 from si import Server
+from tornado.escape import utf8 as _u
 
 charsets = ('utf-8', 'gb2312', 'gbk', 'gb18030', 'big5', 'euc-jp', 'euc-kr', 'iso-8859-2', 'shift_jis')
 

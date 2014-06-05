@@ -50,7 +50,7 @@ base_configs = {
 #Parameters		  : None
 #					 
 #Return value	  :
-#					 1  array_configs
+#					 1  
 #---------------------------------------------------------------------------------------------------
 def main_process(self):
     action = self.get_argument('action', '')
@@ -58,6 +58,8 @@ def main_process(self):
         self.write({'code': 0, 'msg': '获取 Apache 配置信息成功！', 'data': loadApacheConfigs()})
     elif action == 'mod':
         self.write({'code': 0, 'msg': 'Apache 服务配置保存成功！','data': modApacheConfigs(self)})
+    elif action == 'getsubhttpsetting':
+        self.write({'code': 0, 'msg': 'Apache 服务配置保存成功！','data': loadSubHttpApacheConfigs(self)})
     return
 # 
 #---------------------------------------------------------------------------------------------------
@@ -83,3 +85,16 @@ def loadApacheConfigs():
 def modApacheConfigs(self):
 	result=cfg_set_array(self,config_file,base_configs,delimiter)
 	return result
+# 
+#---------------------------------------------------------------------------------------------------
+#Function Name	  : loadSubHttpApacheConfigs
+#Usage			  : 
+#Parameters		  : None
+#					 
+#Return value	  :
+#					 1 
+#---------------------------------------------------------------------------------------------------
+def loadSubHttpApacheConfigs(self):
+	print('Debug')
+
+
